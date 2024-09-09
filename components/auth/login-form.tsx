@@ -2,6 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useActionState, useRef } from "react";
 import {
   Form,
   FormControl,
@@ -15,8 +16,10 @@ import { Button } from "../ui/button";
 import { z } from "zod";
 
 import { LoginSchema } from "@/lib/zod-schemas/login";
+import { login } from "@/lib/actions/actions";
 
 export const LoginForm = () => {
+  const [state, action, isPending] = useActionState(login, { message: "" });
   const form = useForm<z.output<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -24,12 +27,15 @@ export const LoginForm = () => {
       password: "",
     },
   });
+  const formRef = useRef<HTMLFormElement>(null);
+  console.log(state);
 
   return (
     <Form {...form}>
       <form
-        action=""
-        onSubmit={form.handleSubmit(() => console.log("submitted valid"))}
+        ref={formRef}
+        action={action}
+        onSubmit={form.handleSubmit(() => formRef.current?.submit())}
         className="space-y-2"
       >
         <FormField
@@ -58,8 +64,13 @@ export const LoginForm = () => {
             </FormItem>
           )}
         />
-        <Button size="sm" className="w-full font-bold">
-          Login
+        <Button
+          type="submit"
+          size="sm"
+          className="w-full font-bold"
+          disabled={isPending}
+        >
+          {isPending ? "Logging in..." : "Log In"}
         </Button>
       </form>
     </Form>
