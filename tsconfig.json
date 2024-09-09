@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "esnext"],
-    "types": ["react/canary"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
