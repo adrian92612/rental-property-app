@@ -1,13 +1,10 @@
-"use client";
-
-import { useActionState } from "react";
+import { loginSocial } from "@/lib/actions/actions";
 import { Button } from "../ui/button";
 import { FaGithub, FaGoogle } from "react-icons/fa";
 
 export const LoginSocialForm = () => {
-  // const [state,action,pending] = useActionState()
   return (
-    <form action="" className="flex items-center gap-2">
+    <form action={loginSocial} className="flex items-center gap-2">
       <Button
         variant="outline"
         size="sm"
