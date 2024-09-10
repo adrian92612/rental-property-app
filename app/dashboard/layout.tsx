@@ -4,7 +4,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="grid sm:grid-cols-[200px_1fr]">
       <SideBar />
-      <main>{children}</main>
+      <main className="relative">{children}</main>
     </div>
   );
 };
