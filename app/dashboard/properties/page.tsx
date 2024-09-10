@@ -1,3 +1,4 @@
+import { PropertyForm } from "@/components/property/property-form";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -23,8 +24,8 @@ const PropertiesPage = () => {
             <MdAddHome className="h-8 w-8" />
           </DialogTrigger>
           <DialogContent className="bg-primary text-primary-foreground w-11/12 max-w-[400px]">
-            <DialogHeader>Add Form</DialogHeader>
-            ADD Form
+            <DialogHeader>Add Property</DialogHeader>
+            <PropertyForm />
           </DialogContent>
         </Dialog>
         <h1 className="font-bold text-lg">Properties</h1>

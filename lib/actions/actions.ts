@@ -44,8 +44,6 @@ export const login = async (
       fields: parsedData.data,
     };
   }
-
-  return { message: "login from server action" };
 };
 
 export const loginSocial = async (formData: FormData) => {
