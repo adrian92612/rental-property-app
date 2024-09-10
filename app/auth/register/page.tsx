@@ -1,5 +1,29 @@
+import { RegistrationForm } from "@/components/auth/register-form";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
+import Link from "next/link";
+
 const RegisterPage = () => {
-  return <div>Register Page</div>;
+  return (
+    <Card className="w-11/12 max-w-[350px] rounded-sm">
+      <CardHeader className="font-bold text-center">
+        Rental Property App
+      </CardHeader>
+      <CardContent>
+        <RegistrationForm />
+      </CardContent>
+      <CardFooter>
+        <Button asChild variant="link" size="sm" className="w-full">
+          <Link href="/auth/login">Already have an account? Login here</Link>
+        </Button>
+      </CardFooter>
+    </Card>
+  );
 };
 
 export default RegisterPage;

@@ -74,8 +74,8 @@ const LogoutBtn = () => {
 };
 
 export const SideBar = async () => {
-  // const user = await auth();
-  // console.log(user);
+  const session = await auth();
+  console.log(session);
   return (
     <div className="sm:sticky sm:top-0 sm:h-screen flex sm:flex-col items-center justify-between px-5 py-3 sm:py-5 bg-primary">
       <div className="sm:hidden">

@@ -2,7 +2,7 @@ import { loginSocial } from "@/lib/actions/actions";
 import { Button } from "../ui/button";
 import { FaGithub, FaGoogle } from "react-icons/fa";
 
-export const LoginSocialForm = () => {
+export const LoginSocialForm = async () => {
   return (
     <form action={loginSocial} className="flex items-center gap-2">
       <Button

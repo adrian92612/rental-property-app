@@ -3,6 +3,7 @@ import prisma from "@/prisma/prisma";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { AdapterUser } from "next-auth/adapters";
 import { createId } from "@paralleldrive/cuid2";
+import { compare } from "bcrypt-ts";
 import Google from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -68,6 +69,34 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           access_type: "offline",
           response_type: "code",
         },
+      },
+    }),
+    CredentialsProvider({
+      async authorize(credentials) {
+        try {
+          const user = await prisma.user.findUnique({
+            where: { email: credentials.email as string },
+          });
+
+          if (!user) throw new Error("Invalid Credentials");
+
+          const isPasswordValid = async () => {
+            if (user.password) {
+              return await compare(
+                credentials.password as string,
+                user.password
+              );
+            }
+            return false;
+          };
+
+          if (!isPasswordValid) throw new Error("Invalid Credentials");
+
+          return user;
+        } catch (error) {
+          console.error("Authorization error: ", error);
+          return null;
+        }
       },
     }),
   ],
