@@ -30,6 +30,7 @@ export const RegistrationForm = () => {
       lastName: "",
       password: "",
       confirmPassword: "",
+      ...(state?.fields ?? {}),
     },
   });
   const formRef = useRef<HTMLFormElement>(null);

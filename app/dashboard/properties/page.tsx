@@ -1,3 +1,4 @@
+import { FormDialog } from "@/components/form-dialog";
 import { PropertyForm } from "@/components/property/property-form";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,24 +11,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { CopyIcon } from "@radix-ui/react-icons";
 import { MdAddHome, MdDarkMode } from "react-icons/md";
 
 const PropertiesPage = () => {
   return (
     <>
       <div className="sticky top-0 flex items-center justify-between p-5 backdrop-blur-sm">
-        <Dialog>
-          <DialogTrigger>
-            <MdAddHome className="h-8 w-8" />
-          </DialogTrigger>
-          <DialogContent className="bg-primary text-primary-foreground w-11/12 max-w-[400px]">
-            <DialogHeader>Add Property</DialogHeader>
-            <PropertyForm />
-          </DialogContent>
-        </Dialog>
+        <FormDialog />
         <h1 className="font-bold text-lg">Properties</h1>
         <div>
           <MdDarkMode className="h-8 w-8" />

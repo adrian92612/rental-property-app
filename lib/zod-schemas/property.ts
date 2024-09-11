@@ -27,9 +27,9 @@ export const AddPropertySchema = z.object({
       invalid_type_error: "Units must be a number",
     })
     .int("Must be a whole number")
-    .min(1, "There must be at least 1 unit")
-    .optional(),
+    .min(1, "There must be at least 1 unit"),
   image: z.string().optional(),
+  propertyId: z.string().optional(),
 });
 
 export type AddPropertyFormData = z.infer<typeof AddPropertySchema>;

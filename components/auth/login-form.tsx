@@ -27,6 +27,7 @@ export const LoginForm = () => {
     defaultValues: {
       email: "",
       password: "",
+      ...(state?.fields ?? {}),
     },
   });
   const formRef = useRef<HTMLFormElement>(null);

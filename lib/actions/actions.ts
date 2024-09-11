@@ -1,11 +1,12 @@
 "use server";
 
-import { signIn, signOut } from "@/auth";
+import { auth, signIn, signOut } from "@/auth";
 import { RegistrationSchema } from "../zod-schemas/register";
 import prisma from "@/prisma/prisma";
 import { genSalt, hashSync } from "bcrypt-ts";
 import { createId } from "@paralleldrive/cuid2";
 import { LoginSchema } from "../zod-schemas/login";
+import { cloudinary } from "../cloudinary-config";
 
 export type loginFormState = {
   message: string;
@@ -14,7 +15,7 @@ export type loginFormState = {
 };
 
 export const login = async (
-  prevState: any,
+  prevState: loginFormState,
   formData: FormData
 ): Promise<loginFormState> => {
   const data = Object.fromEntries(formData);
@@ -55,6 +56,11 @@ export const logout = async () => {
   await signOut({ redirectTo: "/" });
 };
 
+export const getUserId = async (): Promise<string | undefined> => {
+  const session = await auth();
+  return session?.user?.id;
+};
+
 export type registerUserFormState = {
   message: string;
   success?: boolean;
@@ -77,11 +83,6 @@ export const registerUser = async (
 
   const { email, firstName, lastName, password } = parsedData.data;
 
-  // return {
-  //   message: "Failed to register user",
-  //   fields: parsedData.data,
-  // };
-
   try {
     const isEmailUnique = await prisma.user.findUnique({
       where: { email: email },
@@ -89,8 +90,8 @@ export const registerUser = async (
 
     if (isEmailUnique) {
       return {
-        ...prevState,
-        error: "Email address is already registered to another user",
+        message: "Email address is already registered to another user",
+        fields: parsedData.data,
       };
     }
 
@@ -112,5 +113,22 @@ export const registerUser = async (
       message: "Failed to register user",
       fields: parsedData.data,
     };
+  }
+};
+
+export const uploadImage = async (image: File): Promise<string | undefined> => {
+  try {
+    let imageUrl: string | undefined;
+    if (image && image.type.startsWith("image/")) {
+      const arrayBuffer = await image.arrayBuffer();
+      const base64Data = Buffer.from(arrayBuffer).toString("base64");
+      const dataURI = `data:${image.type};base64,${base64Data}`;
+
+      const res = await cloudinary.uploader.upload(dataURI);
+      imageUrl = res.secure_url;
+    }
+    return imageUrl;
+  } catch (error) {
+    console.error("Failed to upload image: ", error);
   }
 };

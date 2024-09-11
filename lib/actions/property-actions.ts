@@ -1,14 +1,18 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { AddPropertySchema } from "../zod-schemas/property";
+import { getUserId, uploadImage } from "./actions";
+import prisma from "@/prisma/prisma";
+import { createId } from "@paralleldrive/cuid2";
 
 export type upsertPropertyFormState = {
   message: string;
   success?: boolean;
-  fields?: Record<string, string>;
+  fields?: Record<string, string | number>;
 };
 export const upsertProperty = async (
-  prevState: any,
+  prevState: upsertPropertyFormState,
   formData: FormData
 ): Promise<upsertPropertyFormState> => {
   const data = Object.fromEntries(formData);
@@ -17,10 +21,67 @@ export const upsertProperty = async (
   const parsedData = AddPropertySchema.safeParse(data);
 
   if (!parsedData.success) {
-    console.log("unsuccess");
     return { message: "Failed to add property", fields: parsedData.data };
   }
 
-  console.log("success");
-  return { message: "upsert", success: true };
+  if (imageFile.name !== "undefined") {
+    parsedData.data.image = await uploadImage(imageFile);
+  }
+
+  const { propertyId, name, address, owner, contactInfo, image, units } =
+    parsedData.data;
+
+  try {
+    const userId = await getUserId();
+    const property = await prisma.property.upsert({
+      where: { id: propertyId ?? "" },
+      update: {
+        name,
+        address,
+        owner,
+        contactInfo,
+        image,
+      },
+      create: {
+        id: createId(),
+        name,
+        image,
+        address,
+        owner,
+        contactInfo,
+        user: {
+          connect: { id: userId },
+        },
+      },
+    });
+
+    if (propertyId) {
+      revalidatePath(`/dashboard/properties/${propertyId}`);
+      return {
+        message: "Property updated successfully!",
+        success: true,
+      };
+    }
+
+    if (units) {
+      const unitData = Array.from({ length: units }, (_, i) => ({
+        id: createId(),
+        number: `Unit ${i + 1}`,
+        rentAmount: 0,
+        dueDate: 1,
+        propertyId: property.id,
+      }));
+
+      await prisma.unit.createMany({ data: unitData });
+    }
+
+    revalidatePath("/dashboard/properties");
+    return { message: "Property has been added!", success: true };
+  } catch (error) {
+    console.error("Failed to add/update property: ", error);
+    return {
+      message: "Failed to add/update property",
+      fields: parsedData.data,
+    };
+  }
 };

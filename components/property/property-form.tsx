@@ -16,23 +16,32 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { Property } from "@prisma/client";
 
-export const PropertyForm = () => {
+type PropertyFormProps = {
+  closeDialog: () => void;
+  property?: Property;
+};
+
+export const PropertyForm = ({ closeDialog, property }: PropertyFormProps) => {
   const [state, action, isPending] = useActionState(upsertProperty, {
     message: "",
   });
   const form = useForm<z.output<typeof AddPropertySchema>>({
     resolver: zodResolver(AddPropertySchema),
     defaultValues: {
-      name: "",
-      address: "",
+      name: property?.name ?? "",
+      address: property?.address ?? "",
       units: 1,
-      owner: "",
-      contactInfo: "",
-      image: "",
+      owner: property?.owner ?? "",
+      contactInfo: property?.contactInfo ?? "",
+      image: property?.image ?? "",
+      ...(state?.fields ?? {}),
     },
   });
   const formRef = useRef<HTMLFormElement>(null);
+
+  if (state.success) closeDialog();
 
   return (
     <Form {...form}>
@@ -48,6 +57,7 @@ export const PropertyForm = () => {
         className="space-y-1"
       >
         {state.message && <span>{state.message}</span>}
+        <input type="hidden" name="propertyId" value={property?.id} />
         <FormField
           control={form.control}
           name="name"
@@ -100,19 +110,22 @@ export const PropertyForm = () => {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="units"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="font-bold">Number of Units</FormLabel>
-              <FormControl>
-                <Input {...field} type="number" min={1} step={1} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {!property && (
+          <FormField
+            control={form.control}
+            name="units"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-bold">Number of Units</FormLabel>
+                <FormControl>
+                  <Input {...field} type="number" min={1} step={1} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+
         <FormField
           control={form.control}
           name="image"
