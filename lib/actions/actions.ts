@@ -40,7 +40,7 @@ export const login = async (
   } catch (error) {
     console.error("Failed to login: ", error);
     return {
-      message: "Failed to login",
+      message: "Invalid credentials",
       fields: parsedData.data,
     };
   }

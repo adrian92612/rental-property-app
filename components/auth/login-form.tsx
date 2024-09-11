@@ -59,6 +59,9 @@ export const LoginForm = () => {
           })(e);
         }}
       >
+        {state.message && (
+          <span className="text-red-500">*{state.message}</span>
+        )}
         <FormField
           control={form.control}
           name="email"

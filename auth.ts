@@ -90,7 +90,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             return false;
           };
 
-          if (!isPasswordValid) throw new Error("Invalid Credentials");
+          if (!(await isPasswordValid())) {
+            throw new Error("Invalid Credentials");
+          }
 
           return user;
         } catch (error) {

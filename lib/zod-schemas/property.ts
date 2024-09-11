@@ -21,7 +21,7 @@ export const AddPropertySchema = z.object({
     .trim()
     .min(1, "Contact information is required")
     .max(100, "Cannot be more than 100 characters"),
-  units: z
+  units: z.coerce
     .number({
       required_error: "Units is required",
       invalid_type_error: "Units must be a number",

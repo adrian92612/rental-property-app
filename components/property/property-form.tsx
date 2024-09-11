@@ -15,6 +15,7 @@ import { AddPropertySchema } from "@/lib/zod-schemas/property";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 
 export const PropertyForm = () => {
   const [state, action, isPending] = useActionState(upsertProperty, {
@@ -46,6 +47,7 @@ export const PropertyForm = () => {
         }}
         className="space-y-1"
       >
+        {state.message && <span>{state.message}</span>}
         <FormField
           control={form.control}
           name="name"
@@ -121,6 +123,7 @@ export const PropertyForm = () => {
                 <Input
                   {...field}
                   type="file"
+                  accept="image/*"
                   className="file:bg-primary-foreground file:rounded-sm"
                 />
               </FormControl>
@@ -128,6 +131,15 @@ export const PropertyForm = () => {
             </FormItem>
           )}
         />
+        <Button
+          type="submit"
+          size="sm"
+          variant="secondary"
+          className="w-full font-bold text-lg"
+          disabled={isPending}
+        >
+          {isPending ? "Adding Property..." : "Add Property"}
+        </Button>
       </form>
     </Form>
   );
