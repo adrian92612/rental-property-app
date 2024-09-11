@@ -10,6 +10,7 @@ import { MdDarkMode } from "react-icons/md";
 import Image from "next/image";
 import { FaLocationDot } from "react-icons/fa6";
 import { Header } from "@/components/header";
+import { DeleteBtn } from "@/components/delete-btn";
 
 const PropertiesPage = async () => {
   const properties = await getProperties();
@@ -23,18 +24,22 @@ const PropertiesPage = async () => {
               <li key={property.id} className="w-11/12 max-w-[400px]">
                 <Card className="rounded-sm">
                   <CardHeader>
-                    <div className="relative w-full h-[250px] flex justify-center items-center overflow-hidden">
-                      <Image
-                        src={property.image ?? ""}
-                        alt="Property Image"
-                        quality={50}
-                        priority={true}
-                        style={{
-                          objectFit: "cover",
-                        }}
-                        fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                      />
+                    <div className="relative border rounded-sm w-full h-[250px] flex justify-center items-center overflow-hidden">
+                      {property.image ? (
+                        <Image
+                          src={property.image}
+                          alt="Property Image"
+                          quality={50}
+                          priority={true}
+                          style={{
+                            objectFit: "cover",
+                          }}
+                          fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                        />
+                      ) : (
+                        <span>{`<No Image Available/>`}</span>
+                      )}
                     </div>
                     <h2>{property.name}</h2>
                   </CardHeader>
@@ -46,9 +51,9 @@ const PropertiesPage = async () => {
                     <p>Owner: {property.owner}</p>
                     <p>Contact Information: {property.contactInfo}</p>
                   </CardContent>
-                  <CardFooter className="ml-auto w-fit">
+                  <CardFooter className="h-22 border-t-2 py-1 flex items-center justify-end gap-1">
                     <FormDialog label={"Properties"} model={property} />
-                    {/* <DeleteBtn /> */}
+                    <DeleteBtn id={property.id} model={"property"} />
                   </CardFooter>
                 </Card>
               </li>

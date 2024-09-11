@@ -47,8 +47,11 @@ export const upsertProperty = async (
   const data = Object.fromEntries(formData);
   const imageFile = formData.get("image") as File;
   delete data.image;
+  console.log(data);
   if (data.propertyId) data.units = "1"; // avoid units zod error
+  console.log(data);
   const parsedData = AddPropertySchema.safeParse(data);
+  console.log(parsedData.error?.flatten().fieldErrors);
 
   if (!parsedData.success) {
     return { message: "Failed to add property", fields: parsedData.data };
@@ -86,6 +89,7 @@ export const upsertProperty = async (
     });
 
     if (propertyId) {
+      revalidatePath("/dashboard/properties");
       revalidatePath(`/dashboard/properties/${propertyId}`);
       return {
         message: "Property updated successfully!",
@@ -109,9 +113,53 @@ export const upsertProperty = async (
     return { message: "Property has been added!", success: true };
   } catch (error) {
     console.error("Failed to add/update property: ", error);
+    delete parsedData.data.image;
     return {
       message: "Failed to add/update property",
       fields: parsedData.data,
+    };
+  }
+};
+
+export type deletePropertyState = {
+  success: boolean;
+  message: string;
+};
+
+export const deleteProperty = async (
+  propertyId: string
+): Promise<deletePropertyState> => {
+  try {
+    const property = await prisma.property.findUnique({
+      where: { id: propertyId },
+      select: { name: true },
+    });
+
+    if (!property) {
+      return {
+        success: false,
+        message: `Property with ID ${propertyId} not found.`,
+      };
+    }
+
+    await prisma.$transaction(async (prisma) => {
+      // Delete all units associated with the property
+      await prisma.unit.deleteMany({ where: { propertyId } });
+
+      // Delete the property itself
+      await prisma.property.delete({ where: { id: propertyId } });
+    });
+
+    revalidatePath("/dashboard/properties");
+    return {
+      success: true,
+      message: `Property ${propertyId} and associated units deleted successfully.`,
+    };
+  } catch (error) {
+    console.error("Failed to delete property: ", error);
+    return {
+      success: false,
+      message: `Failed to delete property ${propertyId}.`,
     };
   }
 };

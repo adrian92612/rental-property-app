@@ -13,6 +13,7 @@ import {
 import { useState } from "react";
 import { Property, Tenant, Unit } from "@prisma/client";
 import { FaEdit } from "react-icons/fa";
+import { Button } from "./ui/button";
 
 type FormDialogProps = {
   label: "Properties";
@@ -42,8 +43,10 @@ export const FormDialog = ({ label, model }: FormDialogProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger>
-        <span className="text-3xl">{model ? <FaEdit /> : icons[label]}</span>
+      <DialogTrigger asChild>
+        <Button variant="dialog" size="zero">
+          {model ? <FaEdit /> : icons[label]}
+        </Button>
       </DialogTrigger>
       <DialogContent className="bg-primary text-primary-foreground w-11/12 max-w-[400px]">
         <DialogHeader>
