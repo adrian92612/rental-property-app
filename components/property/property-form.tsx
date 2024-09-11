@@ -35,11 +35,11 @@ export const PropertyForm = ({ closeDialog, property }: PropertyFormProps) => {
       units: 1,
       owner: property?.owner ?? "",
       contactInfo: property?.contactInfo ?? "",
-      image: property?.image ?? "",
       ...(state?.fields ?? {}),
     },
   });
   const formRef = useRef<HTMLFormElement>(null);
+  console.log(state);
 
   if (state.success) closeDialog();
 
@@ -151,7 +151,13 @@ export const PropertyForm = ({ closeDialog, property }: PropertyFormProps) => {
           className="w-full font-bold text-lg"
           disabled={isPending}
         >
-          {isPending ? "Adding Property..." : "Add Property"}
+          {isPending
+            ? !!property
+              ? "Updating..."
+              : "Adding..."
+            : !!property
+            ? "Update"
+            : "Add"}
         </Button>
       </form>
     </Form>

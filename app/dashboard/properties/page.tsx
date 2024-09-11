@@ -23,7 +23,7 @@ const PropertiesPage = async () => {
               <li key={property.id} className="w-11/12 max-w-[400px]">
                 <Card className="rounded-sm">
                   <CardHeader>
-                    <div className="relative w-full h-[225px] flex justify-center items-center overflow-hidden">
+                    <div className="relative w-full h-[250px] flex justify-center items-center overflow-hidden">
                       <Image
                         src={property.image ?? ""}
                         alt="Property Image"
@@ -46,7 +46,10 @@ const PropertiesPage = async () => {
                     <p>Owner: {property.owner}</p>
                     <p>Contact Information: {property.contactInfo}</p>
                   </CardContent>
-                  <CardFooter>EDIT BUTTON</CardFooter>
+                  <CardFooter className="ml-auto w-fit">
+                    <FormDialog label={"Properties"} model={property} />
+                    {/* <DeleteBtn /> */}
+                  </CardFooter>
                 </Card>
               </li>
             ))}

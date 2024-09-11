@@ -47,6 +47,7 @@ export const upsertProperty = async (
   const data = Object.fromEntries(formData);
   const imageFile = formData.get("image") as File;
   delete data.image;
+  if (data.propertyId) data.units = "1"; // avoid units zod error
   const parsedData = AddPropertySchema.safeParse(data);
 
   if (!parsedData.success) {

@@ -12,6 +12,7 @@ import {
 } from "./ui/dialog";
 import { useState } from "react";
 import { Property, Tenant, Unit } from "@prisma/client";
+import { FaEdit } from "react-icons/fa";
 
 type FormDialogProps = {
   label: "Properties";
@@ -35,10 +36,14 @@ export const FormDialog = ({ label, model }: FormDialogProps) => {
     }
   };
 
+  const icons = {
+    Properties: <MdAddHome />,
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger>
-        <MdAddHome className="h-8 w-8" />
+        <span className="text-3xl">{model ? <FaEdit /> : icons[label]}</span>
       </DialogTrigger>
       <DialogContent className="bg-primary text-primary-foreground w-11/12 max-w-[400px]">
         <DialogHeader>
