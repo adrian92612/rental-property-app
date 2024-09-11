@@ -5,6 +5,35 @@ import { AddPropertySchema } from "../zod-schemas/property";
 import { getUserId, uploadImage } from "./actions";
 import prisma from "@/prisma/prisma";
 import { createId } from "@paralleldrive/cuid2";
+import { Property, Tenant, Unit } from "@prisma/client";
+
+export type PropertiesAllProps = Property & {
+  units: (Unit & {
+    tenant: Tenant | null;
+  })[];
+};
+
+export const getProperties = async (): Promise<PropertiesAllProps[]> => {
+  try {
+    const userId = await getUserId();
+    if (!userId) throw new Error("Invalid user id");
+
+    const properties = await prisma.property.findMany({
+      where: { userId: userId },
+      include: {
+        units: {
+          include: {
+            tenant: true,
+          },
+        },
+      },
+    });
+    return properties;
+  } catch (error) {
+    console.error("Failed to fetch properties: ", error);
+    throw new Error("Failed to fetch properties. Please try again later.");
+  }
+};
 
 export type upsertPropertyFormState = {
   message: string;
