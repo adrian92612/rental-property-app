@@ -9,18 +9,13 @@ import { getProperties } from "@/lib/actions/property-actions";
 import { MdDarkMode } from "react-icons/md";
 import Image from "next/image";
 import { FaLocationDot } from "react-icons/fa6";
+import { Header } from "@/components/header";
 
 const PropertiesPage = async () => {
   const properties = await getProperties();
   return (
     <>
-      <div className="sticky top-0 flex items-center justify-between p-5 backdrop-blur-sm">
-        <FormDialog />
-        <h1 className="font-bold text-lg">Properties</h1>
-        <div>
-          <MdDarkMode className="h-8 w-8" />
-        </div>
-      </div>
+      <Header label="Properties" />
       <div>
         {!!properties.length && (
           <ul className="grid place-items-center gap-4 lg:grid-cols-2 xl:grid-cols-3 pb-5">
