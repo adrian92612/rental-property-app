@@ -8,9 +8,10 @@ import {
 import { getProperties } from "@/lib/actions/property-actions";
 import { MdDarkMode } from "react-icons/md";
 import Image from "next/image";
-import { FaLocationDot } from "react-icons/fa6";
+import { FaLocationDot, FaRegEye } from "react-icons/fa6";
 import { Header } from "@/components/header";
 import { DeleteBtn } from "@/components/delete-btn";
+import { DetailsBtn } from "@/components/details-btn";
 
 const PropertiesPage = async () => {
   const properties = await getProperties();
@@ -52,6 +53,7 @@ const PropertiesPage = async () => {
                     <p>Contact Information: {property.contactInfo}</p>
                   </CardContent>
                   <CardFooter className="h-22 border-t-2 py-1 flex items-center justify-end gap-1">
+                    <DetailsBtn id={property.id} route={"properties"} />
                     <FormDialog label={"Properties"} model={property} />
                     <DeleteBtn id={property.id} model={"property"} />
                   </CardFooter>

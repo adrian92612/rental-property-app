@@ -7,13 +7,32 @@ import prisma from "@/prisma/prisma";
 import { createId } from "@paralleldrive/cuid2";
 import { Property, Tenant, Unit } from "@prisma/client";
 
-export type PropertiesAllProps = Property & {
+export type PropertiesIncludeAll = Property & {
   units: (Unit & {
     tenant: Tenant | null;
   })[];
 };
 
-export const getProperties = async (): Promise<PropertiesAllProps[]> => {
+export type PropertyIncludeAll = Property & {
+  units: (Unit & {
+    tenant: Tenant | null;
+  })[];
+};
+
+export type upsertPropertyFormState = {
+  message: string;
+  success?: boolean;
+  fields?: Record<string, string | number>;
+};
+
+export type deletePropertyState = {
+  success: boolean;
+  message: string;
+};
+
+export const getProperties = async (): Promise<
+  PropertiesIncludeAll[] | null
+> => {
   try {
     const userId = await getUserId();
     if (!userId) throw new Error("Invalid user id");
@@ -28,18 +47,42 @@ export const getProperties = async (): Promise<PropertiesAllProps[]> => {
         },
       },
     });
+
+    if (!properties.length) {
+      throw new Error(`No properties found for User ID ${userId}`);
+    }
+
     return properties;
   } catch (error) {
     console.error("Failed to fetch properties: ", error);
-    throw new Error("Failed to fetch properties. Please try again later.");
+    return null;
   }
 };
 
-export type upsertPropertyFormState = {
-  message: string;
-  success?: boolean;
-  fields?: Record<string, string | number>;
+export const getProperty = async (
+  propertyId: string
+): Promise<PropertyIncludeAll | null> => {
+  try {
+    const property = await prisma.property.findUnique({
+      where: { id: propertyId },
+      include: {
+        units: {
+          include: {
+            tenant: true,
+          },
+        },
+      },
+    });
+
+    if (!property) throw new Error(`Property with ID ${propertyId} not found`);
+
+    return property;
+  } catch (error) {
+    console.error("Failed to fetch property: ", error);
+    return null;
+  }
 };
+
 export const upsertProperty = async (
   prevState: upsertPropertyFormState,
   formData: FormData
@@ -119,11 +162,6 @@ export const upsertProperty = async (
       fields: parsedData.data,
     };
   }
-};
-
-export type deletePropertyState = {
-  success: boolean;
-  message: string;
 };
 
 export const deleteProperty = async (

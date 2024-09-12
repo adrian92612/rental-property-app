@@ -14,6 +14,7 @@ import { useState } from "react";
 import { Property, Tenant, Unit } from "@prisma/client";
 import { FaEdit } from "react-icons/fa";
 import { Button } from "./ui/button";
+import { PiNotePencilBold } from "react-icons/pi";
 
 type FormDialogProps = {
   label: "Properties";
@@ -45,7 +46,7 @@ export const FormDialog = ({ label, model }: FormDialogProps) => {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="dialog" size="zero">
-          {model ? <FaEdit /> : icons[label]}
+          {model ? <PiNotePencilBold /> : icons[label]}
         </Button>
       </DialogTrigger>
       <DialogContent className="bg-primary text-primary-foreground w-11/12 max-w-[400px]">
