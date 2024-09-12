@@ -1,6 +1,8 @@
 "use client";
 
 import { MdAddHome } from "react-icons/md";
+import { IoPersonAdd } from "react-icons/io5";
+import { FaDoorClosed } from "react-icons/fa";
 import { PropertyForm } from "./property/property-form";
 import {
   Dialog,
@@ -12,12 +14,11 @@ import {
 } from "./ui/dialog";
 import { useState } from "react";
 import { Property, Tenant, Unit } from "@prisma/client";
-import { FaEdit } from "react-icons/fa";
 import { Button } from "./ui/button";
 import { PiNotePencilBold } from "react-icons/pi";
 
 type FormDialogProps = {
-  label: "Properties";
+  label: "Properties" | "Units" | "Tenants";
   model?: Property;
 };
 
@@ -39,7 +40,9 @@ export const FormDialog = ({ label, model }: FormDialogProps) => {
   };
 
   const icons = {
-    Properties: <MdAddHome />,
+    Properties: <MdAddHome className="h-8 w-8" />,
+    Units: <FaDoorClosed className="h-8 w-8" />,
+    Tenants: <IoPersonAdd className="h-8 w-8" />,
   };
 
   return (
