@@ -16,6 +16,7 @@ import { useState } from "react";
 import { Property, Tenant, Unit } from "@prisma/client";
 import { Button } from "./ui/button";
 import { PiNotePencilBold } from "react-icons/pi";
+import { UnitForm } from "./unit/unit-form";
 
 type FormDialogProps = {
   label: "Properties" | "Units" | "Tenants";
@@ -30,8 +31,8 @@ export const FormDialog = ({ label, model }: FormDialogProps) => {
     switch (label) {
       case "Properties":
         return <PropertyForm closeDialog={closeDialog} property={model} />;
-      // case "Units":
-      //   return <UnitForm closeDialog={closeDialog} />;
+      case "Units":
+        return <UnitForm closeDialog={closeDialog} />;
       // case "Tenants":
       //   return <TenantForm closeDialog={closeDialog} />;
       default:
@@ -46,7 +47,7 @@ export const FormDialog = ({ label, model }: FormDialogProps) => {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen} modal={true}>
       <DialogTrigger asChild>
         <Button variant="dialog" size="zero">
           {model ? <PiNotePencilBold /> : icons[label]}

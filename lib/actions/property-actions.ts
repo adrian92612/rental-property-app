@@ -105,7 +105,7 @@ export const upsertProperty = async (
   console.log(parsedData.error?.flatten().fieldErrors);
 
   if (!parsedData.success) {
-    return { message: "Failed to add property", fields: parsedData.data };
+    return { message: "Failed to add/edit property", fields: parsedData.data };
   }
 
   if (imageFile.name !== "undefined") {
