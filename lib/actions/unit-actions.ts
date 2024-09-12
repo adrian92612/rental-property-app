@@ -2,11 +2,12 @@
 
 import prisma from "@/prisma/prisma";
 import { createId } from "@paralleldrive/cuid2";
-import { Prisma, Tenant, Unit } from "@prisma/client";
+import { Prisma, Property, Tenant, Unit } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { UnitSchema } from "../zod-schemas/unit";
 
 export type UnitIncludeTenant = Unit & {
+  property: Property;
   tenant: Tenant | null;
 };
 
@@ -75,8 +76,10 @@ export const upsertUnit = async (
   formData: FormData
 ): Promise<upsertUnitFormState> => {
   const data = Object.fromEntries(formData);
+  console.log("DATA: ", data);
 
   const parsedData = UnitSchema.safeParse(data);
+  console.log("PARSED DATA: ", parsedData.error?.flatten().fieldErrors);
 
   if (!parsedData.success) {
     return {

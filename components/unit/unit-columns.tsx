@@ -4,6 +4,9 @@ import { ColumnDef } from "@tanstack/react-table";
 import { UnitsTableInfo } from "@/lib/actions/unit-actions";
 import { Button } from "../ui/button";
 import { ArrowUpDown } from "lucide-react";
+import { DetailsBtn } from "../details-btn";
+import { FormDialog } from "../form-dialog";
+import { UnitForm } from "./unit-form";
 
 export const unitsColumns: ColumnDef<UnitsTableInfo>[] = [
   {
@@ -89,5 +92,19 @@ export const unitsColumns: ColumnDef<UnitsTableInfo>[] = [
       );
     },
     cell: ({ row }) => <span>${row.original.rentAmount.toFixed(2)}</span>,
+  },
+  {
+    accessorKey: "actions",
+    header: "Actions",
+    cell: ({ row }) => (
+      <span>
+        <DetailsBtn id={row.original.id} route={"units"} />
+        <FormDialog label="Units" isEdit={true}>
+          {(closeDialog) => (
+            <UnitForm closeDialog={closeDialog} unit={row.original} />
+          )}
+        </FormDialog>
+      </span>
+    ),
   },
 ];

@@ -1,3 +1,5 @@
+"use client";
+
 import { FaLocationDot } from "react-icons/fa6";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { DetailsBtn } from "../details-btn";
@@ -5,6 +7,7 @@ import { FormDialog } from "../form-dialog";
 import { DeleteBtn } from "../delete-btn";
 import Image from "next/image";
 import { PropertiesIncludeUnits } from "@/lib/actions/property-actions";
+import { PropertyForm } from "./property-form";
 
 export const PropertiesCard = ({
   property,
@@ -44,7 +47,11 @@ export const PropertiesCard = ({
       </CardContent>
       <CardFooter className="h-22 border-t-2 py-1 flex items-center justify-end gap-1">
         <DetailsBtn id={property.id} route={"properties"} />
-        <FormDialog label={"Properties"} model={property} />
+        <FormDialog label="Properties" isEdit={true}>
+          {(closeDialog) => (
+            <PropertyForm closeDialog={closeDialog} property={property} />
+          )}
+        </FormDialog>
         <DeleteBtn id={property.id} model={"property"} />
       </CardFooter>
     </Card>

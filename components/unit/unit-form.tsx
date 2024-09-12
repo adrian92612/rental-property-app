@@ -20,12 +20,13 @@ import { SelectContent } from "@radix-ui/react-select";
 import {
   getPropertyIdsAndNames,
   UnitIncludeTenant,
+  UnitsTableInfo,
   upsertUnit,
 } from "@/lib/actions/unit-actions";
 
 type UnitFormProps = {
   closeDialog: () => void;
-  unit?: UnitIncludeTenant;
+  unit?: UnitIncludeTenant | UnitsTableInfo;
 };
 
 export const UnitForm = ({ closeDialog, unit }: UnitFormProps) => {
@@ -80,39 +81,66 @@ export const UnitForm = ({ closeDialog, unit }: UnitFormProps) => {
         className="space-y-1"
       >
         {state.message && <span>{state.message}</span>}
-        {unit && (
-          <>
-            <input type="hidden" name="unitId" defaultValue={unit.id} />
-          </>
-        )}
-        <FormField
-          control={form.control}
-          name="propertyId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Property</FormLabel>
-              <Select
-                {...field}
-                onValueChange={field.onChange}
-                defaultValue={field.value}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a property" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent className="bg-primary border p-2 max-h-52 overflow-y-auto">
-                  {properties.map((property) => (
-                    <SelectItem key={property.id} value={property.id}>
-                      {property.name}
+        {unit && <input type="hidden" name="unitId" value={unit.id} />}
+
+        {unit ? (
+          <FormField
+            control={form.control}
+            name="propertyId"
+            defaultValue={unit.propertyId}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Property</FormLabel>
+                <Select
+                  {...field}
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a property" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent className="bg-primary border p-2 max-h-52 overflow-y-auto">
+                    <SelectItem value={unit.propertyId}>
+                      {unit.property.name}
                     </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        ) : (
+          <FormField
+            control={form.control}
+            name="propertyId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Property</FormLabel>
+                <Select
+                  {...field}
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a property" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent className="bg-primary border p-2 max-h-52 overflow-y-auto">
+                    {properties.map((property) => (
+                      <SelectItem key={property.id} value={property.id}>
+                        {property.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
         <FormField
           control={form.control}
@@ -127,6 +155,7 @@ export const UnitForm = ({ closeDialog, unit }: UnitFormProps) => {
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="rentAmount"
