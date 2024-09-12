@@ -20,6 +20,7 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         dialog: "bg-transparent text-2xl hover:text-cyan-600",
+        dataHeader: "bg-transparent font-bold ",
       },
       size: {
         default: "h-9 px-4 py-2",
@@ -27,6 +28,7 @@ const buttonVariants = cva(
         lg: "h-10 rounded-md px-8",
         icon: "h-9 w-9",
         zero: "p-0 h-7",
+        dataHeader: "p-0",
       },
     },
     defaultVariants: {
