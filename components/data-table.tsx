@@ -56,6 +56,9 @@ export function DataTable<TData, TValue>({
                     <TableHead
                       key={header.id}
                       className="font-bold text-primary"
+                      style={{
+                        width: header.index === 5 ? 80 : "auto",
+                      }}
                     >
                       {header.isPlaceholder
                         ? null

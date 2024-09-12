@@ -1,22 +1,24 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useState } from "react";
 import { Button } from "./ui/button";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { deleteProperty } from "@/lib/actions/property-actions";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { PopoverArrow, PopoverClose } from "@radix-ui/react-popover";
-import { FaCheck, FaCheckCircle } from "react-icons/fa";
+import { PopoverClose } from "@radix-ui/react-popover";
+import { FaCheck } from "react-icons/fa";
+import { deleteUnit } from "@/lib/actions/unit-actions";
 
 type DeleteBtnProps = {
   id: string;
-  model: "property";
+  model: "property" | "unit";
 };
 
 export const DeleteBtn = ({ id, model }: DeleteBtnProps) => {
   const [isPending, setIsPending] = useState(false);
   const actions = {
     property: () => deleteProperty(id),
+    unit: () => deleteUnit(id),
   };
 
   const handleDelete = async () => {
@@ -42,7 +44,7 @@ export const DeleteBtn = ({ id, model }: DeleteBtnProps) => {
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        side="top"
+        side="left"
         align="center"
         className="popover-content w-fit flex items-center gap-1 bg-primary p-2 text-primary-foreground rounded-full"
       >

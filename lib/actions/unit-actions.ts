@@ -31,6 +31,11 @@ export type upsertUnitFormState = {
   fields?: Record<string, string | number>;
 };
 
+export type deleteUnitState = {
+  message: string;
+  success: boolean;
+};
+
 export const getPropertyIdsAndNames = async (): Promise<
   PropertyIdName[] | null
 > => {
@@ -145,5 +150,24 @@ export const upsertUnit = async (
   } catch (error) {
     console.log("Failed to add/edit unit: ", error);
     return { message: "Failed to add/edit unit", fields: parsedData.data };
+  }
+};
+
+export const deleteUnit = async (unitId: string): Promise<deleteUnitState> => {
+  try {
+    await prisma.unit.delete({
+      where: { id: unitId },
+    });
+    revalidatePath("/dashboard/units");
+    return {
+      success: true,
+      message: `Unit ${unitId} deleted successfully.`,
+    };
+  } catch (error) {
+    console.error("Failed to delete unit, try again later: ", error);
+    return {
+      message: `Failed to delete unit ID ${unitId}`,
+      success: false,
+    };
   }
 };

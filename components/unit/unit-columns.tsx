@@ -7,6 +7,7 @@ import { ArrowUpDown } from "lucide-react";
 import { DetailsBtn } from "../details-btn";
 import { FormDialog } from "../form-dialog";
 import { UnitForm } from "./unit-form";
+import { DeleteBtn } from "../delete-btn";
 
 export const unitsColumns: ColumnDef<UnitsTableInfo>[] = [
   {
@@ -95,16 +96,17 @@ export const unitsColumns: ColumnDef<UnitsTableInfo>[] = [
   },
   {
     accessorKey: "actions",
-    header: "Actions",
+    header: "",
     cell: ({ row }) => (
-      <span>
+      <div className="flex items-center justify-center">
         <DetailsBtn id={row.original.id} route={"units"} />
         <FormDialog label="Units" isEdit={true}>
           {(closeDialog) => (
             <UnitForm closeDialog={closeDialog} unit={row.original} />
           )}
         </FormDialog>
-      </span>
+        <DeleteBtn id={row.original.id} model="unit" />
+      </div>
     ),
   },
 ];
