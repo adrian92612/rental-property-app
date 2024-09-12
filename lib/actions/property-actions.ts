@@ -13,10 +13,18 @@ export type PropertiesIncludeAll = Property & {
   })[];
 };
 
+export type PropertiesIncludeUnits = Property & {
+  units: Unit[];
+};
+
 export type PropertyIncludeAll = Property & {
   units: (Unit & {
     tenant: Tenant | null;
   })[];
+};
+
+export type PropertyIncludeUnits = Property & {
+  units: Unit[];
 };
 
 export type upsertPropertyFormState = {
@@ -30,9 +38,9 @@ export type deletePropertyState = {
   message: string;
 };
 
-export const getProperties = async (): Promise<
-  PropertiesIncludeAll[] | null
-> => {
+export const getProperties = async (
+  includeAll: boolean = true
+): Promise<PropertiesIncludeAll[] | PropertiesIncludeUnits[] | null> => {
   try {
     const userId = await getUserId();
     if (!userId) throw new Error("Invalid user id");
@@ -42,7 +50,7 @@ export const getProperties = async (): Promise<
       include: {
         units: {
           include: {
-            tenant: true,
+            ...(includeAll && { tenant: true }),
           },
         },
       },
