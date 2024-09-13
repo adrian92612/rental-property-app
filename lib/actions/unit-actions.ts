@@ -20,6 +20,11 @@ export type UnitsTableInfo = Unit & {
   } | null;
 };
 
+export type UnitDetailsInfo = Unit & {
+  property: Property;
+  tenant: Tenant | null;
+};
+
 export type PropertyIdName = {
   id: string;
   name: string;
@@ -47,9 +52,32 @@ export const getPropertyIdsAndNames = async (): Promise<
       },
     });
 
+    if (!properties) throw new Error("Properties not found");
+
     return properties;
   } catch (error) {
     console.error("Failed to fetch properties: ", error);
+    return null;
+  }
+};
+
+export const getUnitDetails = async (
+  unitId: string
+): Promise<UnitDetailsInfo | null> => {
+  try {
+    const unit = await prisma.unit.findUnique({
+      where: { id: unitId },
+      include: {
+        property: true,
+        tenant: true,
+      },
+    });
+
+    if (!unit) throw new Error("Unit not found.");
+
+    return unit;
+  } catch (error) {
+    console.error("Failed to fetch unit details: ", error);
     return null;
   }
 };

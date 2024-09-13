@@ -56,9 +56,9 @@ export const getProperties = async (
       },
     });
 
-    // if (!properties.length) {
-    //   throw new Error(`No properties found for User ID ${userId}`);
-    // }
+    if (!properties.length) {
+      throw new Error(`No properties found for User ID ${userId}`);
+    }
 
     return properties;
   } catch (error) {
@@ -82,7 +82,7 @@ export const getProperty = async (
       },
     });
 
-    // if (!property) throw new Error(`Property with ID ${propertyId} not found`);
+    if (!property) throw new Error(`Property with ID ${propertyId} not found`);
 
     return property;
   } catch (error) {
