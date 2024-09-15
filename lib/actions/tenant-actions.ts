@@ -4,11 +4,26 @@ import prisma from "@/prisma/prisma";
 import { TenantSchema } from "../zod-schemas/tenant";
 import { createId } from "@paralleldrive/cuid2";
 import { revalidatePath } from "next/cache";
+import { Tenant } from "@prisma/client";
 
 export type upsertTenantState = {
   message: string;
   success?: boolean;
   fields?: Record<string, string | number | Date>;
+};
+
+export type TenantsTableInfo = Tenant & {};
+
+export const getTenantsTableInfo = async (): Promise<Tenant[] | null> => {
+  try {
+    const tenants = await prisma.tenant.findMany({});
+    if (!tenants.length) throw new Error("Failed to fetch tenants");
+
+    return tenants;
+  } catch (error) {
+    console.error("Failed to fetch tenants: ", error);
+    return null;
+  }
 };
 
 export const upsertTenant = async (

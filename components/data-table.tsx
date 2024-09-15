@@ -52,12 +52,19 @@ export function DataTable<TData, TValue>({
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
+                  console.log("table length", headerGroup.headers.length);
                   return (
                     <TableHead
                       key={header.id}
                       className="font-bold text-primary"
+                      // style={{
+                      //   width: header.column.columnDef.size,
+                      // }}
                       style={{
-                        width: header.index === 5 ? 80 : "auto",
+                        width:
+                          header.index === headerGroup.headers.length - 1
+                            ? header.column.columnDef.size
+                            : "auto",
                       }}
                     >
                       {header.isPlaceholder
