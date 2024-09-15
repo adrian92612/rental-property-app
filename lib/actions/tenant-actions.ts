@@ -12,6 +12,11 @@ export type upsertTenantState = {
   fields?: Record<string, string | number | Date>;
 };
 
+export type deleteTenantState = {
+  message: string;
+  success: boolean;
+};
+
 export type TenantsTableInfo = Tenant & {};
 
 export const getTenantsTableInfo = async (): Promise<Tenant[] | null> => {
@@ -122,6 +127,27 @@ export const upsertTenant = async (
     console.error(msg, error);
     return {
       message: msg,
+    };
+  }
+};
+
+export const deleteTenant = async (
+  tenantId: string
+): Promise<deleteTenantState> => {
+  try {
+    await prisma.tenant.delete({
+      where: { id: tenantId },
+    });
+    revalidatePath("/dashboard/units");
+    return {
+      success: true,
+      message: `Tenant was deleted successfully.`,
+    };
+  } catch (error) {
+    console.error("Failed to delete tenant: ", error);
+    return {
+      message: "Failed to delete tenant",
+      success: false,
     };
   }
 };

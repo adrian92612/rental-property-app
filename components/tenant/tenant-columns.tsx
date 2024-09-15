@@ -89,13 +89,13 @@ export const tenantsColumn: ColumnDef<Tenant>[] = [
     header: "",
     cell: ({ row }) => (
       <div className="flex items-center justify-center">
-        <DetailsBtn id={row.original.id} route={"tenants"} />
+        <DetailsBtn id={row.original.id} route="tenants" />
         <FormDialog label="Tenants" isEdit={true}>
           {(closeDialog) => (
             <TenantForm closeDialog={closeDialog} tenant={row.original} />
           )}
         </FormDialog>
-        <DeleteBtn id={row.original.id} model="unit" />
+        <DeleteBtn id={row.original.id} model="tenant" />
       </div>
     ),
     size: 50,

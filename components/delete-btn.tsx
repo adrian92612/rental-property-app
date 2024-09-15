@@ -8,10 +8,11 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { PopoverClose } from "@radix-ui/react-popover";
 import { FaCheck } from "react-icons/fa";
 import { deleteUnit } from "@/lib/actions/unit-actions";
+import { deleteTenant } from "@/lib/actions/tenant-actions";
 
 type DeleteBtnProps = {
   id: string;
-  model: "property" | "unit";
+  model: "property" | "unit" | "tenant";
 };
 
 export const DeleteBtn = ({ id, model }: DeleteBtnProps) => {
@@ -19,6 +20,7 @@ export const DeleteBtn = ({ id, model }: DeleteBtnProps) => {
   const actions = {
     property: () => deleteProperty(id),
     unit: () => deleteUnit(id),
+    tenant: () => deleteTenant(id),
   };
 
   const handleDelete = async () => {
