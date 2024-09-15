@@ -1,5 +1,11 @@
+import { Header } from "@/components/header";
+
 const TenantsPage = () => {
-  return <div>Tenants Page</div>;
+  return (
+    <>
+      <Header label="Tenants" />
+    </>
+  );
 };
 
 export default TenantsPage;

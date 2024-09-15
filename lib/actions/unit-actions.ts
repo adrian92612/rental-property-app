@@ -109,10 +109,8 @@ export const upsertUnit = async (
   formData: FormData
 ): Promise<upsertUnitFormState> => {
   const data = Object.fromEntries(formData);
-  console.log("DATA: ", data);
 
   const parsedData = UnitSchema.safeParse(data);
-  console.log("PARSED DATA: ", parsedData.error?.flatten().fieldErrors);
 
   if (!parsedData.success) {
     return {
@@ -161,16 +159,16 @@ export const upsertUnit = async (
       },
     });
 
+    revalidatePath("/dashboard/units");
+    revalidatePath(`/dashboard/units/${unitId}`);
+
     if (unitId) {
-      revalidatePath("/dashboard/units");
-      revalidatePath(`/dashboard/units/${unitId}`);
       return {
         success: true,
         message: `${number} was successfully updated!`,
       };
     }
 
-    revalidatePath("/dashboard/units");
     return {
       success: true,
       message: `${number} is added to ${property.name}`,

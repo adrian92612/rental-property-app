@@ -98,11 +98,9 @@ export const upsertProperty = async (
   const data = Object.fromEntries(formData);
   const imageFile = formData.get("image") as File;
   delete data.image;
-  console.log(data);
+
   if (data.propertyId) data.units = "1"; // avoid units zod error
-  console.log(data);
   const parsedData = AddPropertySchema.safeParse(data);
-  console.log(parsedData.error?.flatten().fieldErrors);
 
   if (!parsedData.success) {
     return { message: "Failed to add/edit property", fields: parsedData.data };
@@ -139,9 +137,10 @@ export const upsertProperty = async (
       },
     });
 
+    revalidatePath("/dashboard/properties");
+    revalidatePath(`/dashboard/properties/${propertyId}`);
+
     if (propertyId) {
-      revalidatePath("/dashboard/properties");
-      revalidatePath(`/dashboard/properties/${propertyId}`);
       return {
         message: "Property updated successfully!",
         success: true,
@@ -160,7 +159,6 @@ export const upsertProperty = async (
       await prisma.unit.createMany({ data: unitData });
     }
 
-    revalidatePath("/dashboard/properties");
     return { message: "Property has been added!", success: true };
   } catch (error) {
     console.error("Failed to add/update property: ", error);
