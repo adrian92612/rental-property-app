@@ -7,6 +7,7 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 
@@ -20,6 +21,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "./ui/button";
 import { useState } from "react";
+import { Input } from "./ui/input";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -31,6 +33,7 @@ export function DataTable<TData, TValue>({
   data,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [globalFilter, setGlobalFilter] = useState<any>([]);
 
   const table = useReactTable({
     data,
@@ -39,27 +42,27 @@ export function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    globalFilterFn: "includesString",
     state: {
       sorting,
+      globalFilter,
     },
+    onGlobalFilterChange: setGlobalFilter,
   });
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-4">
       <div className="rounded-sm min-h-96 border border-primary shadow-md">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
-                  console.log("table length", headerGroup.headers.length);
                   return (
                     <TableHead
                       key={header.id}
                       className="font-bold text-primary"
-                      // style={{
-                      //   width: header.column.columnDef.size,
-                      // }}
                       style={{
                         width:
                           header.index === headerGroup.headers.length - 1
@@ -110,11 +113,18 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end gap-2">
+      <div className="flex items-center gap-2">
+        <Input
+          value={globalFilter}
+          onChange={(e) => table.setGlobalFilter(String(e.target.value))}
+          placeholder="Search table..."
+          className="max-w-56 border-primary"
+        />
         <Button
           size="sm"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
+          className="ml-auto"
         >
           Prev
         </Button>

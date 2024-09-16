@@ -151,7 +151,7 @@ export const TenantForm = ({ closeDialog, tenant }: TenantFormProps) => {
             <FormItem>
               <FormLabel className="font-bold">Term in Months</FormLabel>
               <FormControl>
-                <Input {...field} type="number" min={1} max={60} step={1} />
+                <Input {...field} type="number" step={1} />
               </FormControl>
               <FormMessage />
             </FormItem>
