@@ -116,19 +116,29 @@ export const registerUser = async (
   }
 };
 
-export const uploadImage = async (image: File): Promise<string | undefined> => {
+export type uploadImageInfo = {
+  imageUrl: string;
+  publicId: string;
+};
+
+export const uploadImage = async (
+  image: File
+): Promise<uploadImageInfo | undefined> => {
   try {
-    let imageUrl: string | undefined;
     if (image && image.type.startsWith("image/")) {
       const arrayBuffer = await image.arrayBuffer();
       const base64Data = Buffer.from(arrayBuffer).toString("base64");
       const dataURI = `data:${image.type};base64,${base64Data}`;
 
       const res = await cloudinary.uploader.upload(dataURI);
-      imageUrl = res.secure_url;
+
+      return {
+        imageUrl: res.secure_url,
+        publicId: res.public_id,
+      };
     }
-    return imageUrl;
+    throw new Error("File must be an image");
   } catch (error) {
-    console.error("Failed to upload image: ", error);
+    console.error("Error uploading image: ", error);
   }
 };

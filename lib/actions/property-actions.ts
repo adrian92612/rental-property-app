@@ -6,6 +6,7 @@ import { getUserId, uploadImage } from "./actions";
 import prisma from "@/prisma/prisma";
 import { createId } from "@paralleldrive/cuid2";
 import { Property, Tenant, Unit } from "@prisma/client";
+import { cloudinary } from "../cloudinary-config";
 
 export type PropertiesIncludeAll = Property & {
   units: (Unit & {
@@ -31,6 +32,12 @@ export type upsertPropertyFormState = {
   message: string;
   success?: boolean;
   fields?: Record<string, string | number>;
+};
+
+export type updatePropertyImageState = {
+  message: string;
+  success: boolean;
+  imageUrl?: string;
 };
 
 export type deletePropertyState = {
@@ -91,6 +98,39 @@ export const getProperty = async (
   }
 };
 
+export const updatePropertyImage = async (
+  propertyId: string,
+  file: File,
+  publicId: string
+): Promise<updatePropertyImageState> => {
+  try {
+    const res = await uploadImage(file);
+    if (!res) throw new Error("Image upload failed");
+
+    await prisma.property.update({
+      where: { id: propertyId },
+      data: {
+        image: res.imageUrl,
+        imagePublicId: res.publicId,
+      },
+    });
+
+    if (publicId) await cloudinary.uploader.destroy(publicId);
+
+    return {
+      message: `Image for property ${propertyId} updated successfully.`,
+      success: true,
+      imageUrl: res.imageUrl,
+    };
+  } catch (error) {
+    console.error("Failed to update image: ", error);
+    return {
+      message: "Failed to update the image.",
+      success: false,
+    };
+  }
+};
+
 export const upsertProperty = async (
   prevState: upsertPropertyFormState,
   formData: FormData
@@ -107,11 +147,24 @@ export const upsertProperty = async (
   }
 
   if (imageFile.name !== "undefined") {
-    parsedData.data.image = await uploadImage(imageFile);
+    const res = await uploadImage(imageFile);
+    if (res) {
+      const { imageUrl, publicId } = res;
+      parsedData.data.image = imageUrl;
+      parsedData.data.imagePublicId = publicId;
+    }
   }
 
-  const { propertyId, name, address, owner, contactInfo, image, units } =
-    parsedData.data;
+  const {
+    propertyId,
+    name,
+    address,
+    owner,
+    contactInfo,
+    image,
+    imagePublicId,
+    units,
+  } = parsedData.data;
 
   try {
     const userId = await getUserId();
@@ -128,6 +181,7 @@ export const upsertProperty = async (
         id: createId(),
         name,
         image,
+        imagePublicId,
         address,
         owner,
         contactInfo,

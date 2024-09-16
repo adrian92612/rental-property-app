@@ -39,7 +39,6 @@ export const PropertyForm = ({ closeDialog, property }: PropertyFormProps) => {
     },
   });
   const formRef = useRef<HTMLFormElement>(null);
-  console.log(state);
 
   if (state.success) closeDialog();
 
@@ -111,39 +110,42 @@ export const PropertyForm = ({ closeDialog, property }: PropertyFormProps) => {
           )}
         />
         {!property && (
-          <FormField
-            control={form.control}
-            name="units"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="font-bold">Number of Units</FormLabel>
-                <FormControl>
-                  <Input {...field} type="number" min={1} step={1} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <>
+            <FormField
+              control={form.control}
+              name="units"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-bold">Number of Units</FormLabel>
+                  <FormControl>
+                    <Input {...field} type="number" min={1} step={1} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="image"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-bold">Image</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="file"
+                      accept="image/*"
+                      className="file:bg-primary-foreground file:rounded-sm"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </>
         )}
 
-        <FormField
-          control={form.control}
-          name="image"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="font-bold">Image</FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
-                  type="file"
-                  accept="image/*"
-                  className="file:bg-primary-foreground file:rounded-sm"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <Button
           type="submit"
           size="sm"
