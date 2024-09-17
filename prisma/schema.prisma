@@ -31,14 +31,18 @@ model User {
 }
 
 model Property {
-  id            String  @id
-  name          String
-  address       String
-  image         String?
-  imagePublicId String?
-  owner         String
-  contactInfo   String
-  units         Unit[] // Relation to units
+  id              String  @id
+  name            String
+  address         String
+  image           String?
+  imagePublicId   String?
+  owner           String
+  contactInfo     String
+  purchasePrice   Float   @default(0)
+  rentalIncome    Float   @default(0)
+  monthlyExpense  Float   @default(0)
+  mortgagePayment Float   @default(0)
+  units           Unit[] // Relation to units
 
   user   User   @relation(fields: [userId], references: [id])
   userId String
