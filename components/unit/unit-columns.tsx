@@ -105,7 +105,7 @@ export const unitsColumns: ColumnDef<UnitFormData>[] = [
     cell: ({ row }) => (
       <div className="flex items-center justify-center">
         <DetailsBtn id={row.original.id} route={"units"} />
-        <FormDialog label="Units" isEdit={true}>
+        <FormDialog formFor="edit">
           {(closeDialog) => (
             <UnitForm closeDialog={closeDialog} unitId={row.original.id} />
           )}

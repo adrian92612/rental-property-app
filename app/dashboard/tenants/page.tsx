@@ -7,7 +7,7 @@ const TenantsPage = async () => {
   const tenants = await getTenantsTableInfo();
   return (
     <>
-      <Header label="Tenants" />
+      <Header headerLabel="Tenants" formComponent="tenant" />
       <DataTable columns={tenantsColumn} data={tenants || []} />
     </>
   );

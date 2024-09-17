@@ -7,15 +7,16 @@ import { PropertyForm } from "./property/property-form";
 import { TenantForm } from "./tenant/tenant-form";
 
 type HeaderProps = {
-  label: "Properties" | "Units" | "Tenants";
+  headerLabel: string;
+  formComponent: "property" | "unit" | "tenant";
 };
 
-export const Header = ({ label }: HeaderProps) => {
+export const Header = ({ formComponent, headerLabel }: HeaderProps) => {
   const renderForm = (closeDialog: () => void) => {
-    switch (label) {
-      case "Properties":
+    switch (formComponent) {
+      case "property":
         return <PropertyForm closeDialog={closeDialog} />;
-      case "Units":
+      case "unit":
         return <UnitForm closeDialog={closeDialog} />;
       default:
         return <TenantForm closeDialog={closeDialog} />;
@@ -23,10 +24,10 @@ export const Header = ({ label }: HeaderProps) => {
   };
   return (
     <div className="sticky top-0 flex items-center justify-between p-5 backdrop-blur-md z-10">
-      <FormDialog label={label}>
+      <FormDialog formFor={formComponent}>
         {(closeDialog) => renderForm(closeDialog)}
       </FormDialog>
-      <h1 className="font-bold text-lg tracking-widest">{label}</h1>
+      <h1 className="font-bold text-lg tracking-widest">{headerLabel}</h1>
       <div>
         <MdDarkMode className="h-8 w-8" />
       </div>

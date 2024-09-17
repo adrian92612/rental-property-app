@@ -7,7 +7,7 @@ const UnitsPage = async () => {
   const units = await getUnitsTableInfo();
   return (
     <>
-      <Header label="Units" />
+      <Header headerLabel="Units" formComponent="unit" />
       <DataTable columns={unitsColumns} data={units || []} />
     </>
   );

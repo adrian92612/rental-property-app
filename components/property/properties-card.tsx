@@ -110,7 +110,7 @@ export const PropertiesCard = ({
       </CardContent>
       <CardFooter className="h-22 border-t-2 py-1 flex items-center justify-end gap-1">
         <DetailsBtn id={property.id} route={"properties"} />
-        <FormDialog label="Properties" isEdit={true}>
+        <FormDialog formFor="edit">
           {(closeDialog) => (
             <PropertyForm closeDialog={closeDialog} property={property} />
           )}

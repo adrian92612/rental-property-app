@@ -17,35 +17,32 @@ import { Button } from "./ui/button";
 import { PiNotePencilBold } from "react-icons/pi";
 
 type FormDialogProps = {
-  label: "Properties" | "Units" | "Tenants";
+  formFor: "property" | "unit" | "tenant" | "edit";
   isEdit?: Boolean;
   children: (closeDialog: () => void) => React.ReactElement;
 };
 
-export const FormDialog = ({
-  label,
-  isEdit = false,
-  children,
-}: FormDialogProps) => {
+export const FormDialog = ({ formFor, children }: FormDialogProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const closeDialog = () => setIsOpen(false);
 
   const icons = {
-    Properties: <MdAddHome className="h-8 w-8" />,
-    Units: <FaDoorClosed className="h-8 w-8" />,
-    Tenants: <IoPersonAdd className="h-8 w-8" />,
+    property: <MdAddHome className="h-8 w-8" />,
+    unit: <FaDoorClosed className="h-8 w-8" />,
+    tenant: <IoPersonAdd className="h-8 w-8" />,
+    edit: <PiNotePencilBold />,
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen} modal={true}>
       <DialogTrigger asChild>
         <Button variant="dialog" size="zero">
-          {isEdit ? <PiNotePencilBold /> : icons[label]}
+          {icons[formFor]}
         </Button>
       </DialogTrigger>
       <DialogContent className="bg-primary text-primary-foreground w-11/12 max-w-[400px]">
         <DialogHeader>
-          <DialogTitle>{isEdit ? "Edit" : "Add"}</DialogTitle>
+          <DialogTitle>{formFor === "edit" ? "Edit" : "Add"}</DialogTitle>
           <DialogDescription className="sr-only">
             Form for adding/editing models
           </DialogDescription>

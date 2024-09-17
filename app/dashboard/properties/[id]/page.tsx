@@ -1,4 +1,5 @@
 import { DataTable } from "@/components/data-table";
+import { Header } from "@/components/header";
 import { PropertiesCard } from "@/components/property/properties-card";
 import { propertyUnitsColumns } from "@/components/property/property-unit-columns";
 import {
@@ -15,21 +16,27 @@ const PropertyDetailsPage = async ({ params }: { params: { id: string } }) => {
   if (!property) return <div>404 Not Found</div>;
 
   return (
-    <div className="grid lg:grid-cols-2 mt-5 gap-5">
-      <Card>
-        <CardHeader></CardHeader>
-        <CardContent></CardContent>
-        <CardFooter></CardFooter>
-      </Card>
-      <Card>
-        <CardHeader></CardHeader>
-        <CardContent></CardContent>
-        <CardFooter></CardFooter>
-      </Card>
-      <div className="lg:col-span-2">
-        <DataTable columns={propertyUnitsColumns} data={property.units || []} />
+    <>
+      <Header headerLabel="Property Details" formComponent="property" />
+      <div className="grid lg:grid-cols-2 mt-5 gap-5">
+        <Card>
+          <CardHeader></CardHeader>
+          <CardContent></CardContent>
+          <CardFooter></CardFooter>
+        </Card>
+        <Card>
+          <CardHeader></CardHeader>
+          <CardContent></CardContent>
+          <CardFooter></CardFooter>
+        </Card>
+        <div className="lg:col-span-2">
+          <DataTable
+            columns={propertyUnitsColumns}
+            data={property.units || []}
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

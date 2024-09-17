@@ -88,7 +88,7 @@ export const tenantsColumn: ColumnDef<Tenant>[] = [
     cell: ({ row }) => (
       <div className="flex items-center justify-center">
         <DetailsBtn id={row.original.id} route="tenants" />
-        <FormDialog label="Tenants" isEdit={true}>
+        <FormDialog formFor="edit">
           {(closeDialog) => (
             <TenantForm closeDialog={closeDialog} tenant={row.original} />
           )}
