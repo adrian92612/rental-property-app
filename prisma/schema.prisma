@@ -39,7 +39,6 @@ model Property {
   owner           String
   contactInfo     String
   purchasePrice   Float   @default(0)
-  rentalIncome    Float   @default(0)
   monthlyExpense  Float   @default(0)
   mortgagePayment Float   @default(0)
   units           Unit[] // Relation to units

@@ -30,11 +30,14 @@ export const PropertyForm = ({ closeDialog, property }: PropertyFormProps) => {
   const form = useForm<z.output<typeof AddPropertySchema>>({
     resolver: zodResolver(AddPropertySchema),
     defaultValues: {
-      name: property?.name ?? "",
-      address: property?.address ?? "",
+      name: property?.name,
+      address: property?.address,
       units: 1,
-      owner: property?.owner ?? "",
-      contactInfo: property?.contactInfo ?? "",
+      owner: property?.owner,
+      contactInfo: property?.contactInfo,
+      purchasePrice: property?.purchasePrice ?? 0,
+      monthlyExpense: property?.monthlyExpense ?? 0,
+      mortgagePayment: property?.mortgagePayment ?? 0,
       ...(state?.fields ?? {}),
     },
   });
@@ -57,6 +60,7 @@ export const PropertyForm = ({ closeDialog, property }: PropertyFormProps) => {
       >
         {state.message && <span>{state.message}</span>}
         <input type="hidden" name="propertyId" value={property?.id} />
+
         <FormField
           control={form.control}
           name="name"
@@ -70,6 +74,7 @@ export const PropertyForm = ({ closeDialog, property }: PropertyFormProps) => {
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="address"
@@ -83,6 +88,7 @@ export const PropertyForm = ({ closeDialog, property }: PropertyFormProps) => {
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="owner"
@@ -96,6 +102,7 @@ export const PropertyForm = ({ closeDialog, property }: PropertyFormProps) => {
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="contactInfo"
@@ -109,6 +116,49 @@ export const PropertyForm = ({ closeDialog, property }: PropertyFormProps) => {
             </FormItem>
           )}
         />
+
+        <FormField
+          control={form.control}
+          name="purchasePrice"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="font-bold">Purchase Price</FormLabel>
+              <FormControl>
+                <Input {...field} type="number" step={1} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="monthlyExpense"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="font-bold">Monthly Expenses</FormLabel>
+              <FormControl>
+                <Input {...field} type="number" step={1} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="mortgagePayment"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="font-bold">Mortgage Payment</FormLabel>
+              <FormControl>
+                <Input {...field} type="number" step={1} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         {!property && (
           <>
             <FormField
