@@ -120,6 +120,8 @@ export const updatePropertyImage = async (
     });
 
     if (publicId) await cloudinary.uploader.destroy(publicId);
+    revalidatePath("/dashboard/properties");
+    revalidatePath(`/dashboard/properties/${propertyId}`);
 
     return {
       message: `Image for property ${propertyId} updated successfully.`,

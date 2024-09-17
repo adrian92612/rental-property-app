@@ -9,18 +9,26 @@ import { PopoverClose } from "@radix-ui/react-popover";
 import { FaCheck } from "react-icons/fa";
 import { deleteUnit } from "@/lib/actions/unit-actions";
 import { deleteTenant } from "@/lib/actions/tenant-actions";
+import { useRouter } from "next/navigation";
 
 type DeleteBtnProps = {
   id: string;
   model: "property" | "unit" | "tenant";
+  redirect?: boolean;
 };
 
-export const DeleteBtn = ({ id, model }: DeleteBtnProps) => {
+export const DeleteBtn = ({ id, model, redirect = false }: DeleteBtnProps) => {
   const [isPending, setIsPending] = useState(false);
+  const router = useRouter();
   const actions = {
     property: () => deleteProperty(id),
     unit: () => deleteUnit(id),
     tenant: () => deleteTenant(id),
+  };
+  const routes = {
+    property: "/dashboard/properties",
+    unit: "/dashboard/units",
+    tenant: "/dashboard/tenants",
   };
 
   const handleDelete = async () => {
@@ -28,8 +36,8 @@ export const DeleteBtn = ({ id, model }: DeleteBtnProps) => {
       setIsPending(true);
       const res = await actions[model]();
       if (res.success) {
-        console.log(res.message);
         // do some toast
+        if (redirect) router.push(routes[model]);
       }
     } catch (error) {
       console.error(error);
