@@ -12,12 +12,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
-import React, { Children, useState } from "react";
-import { Property, Tenant, Unit } from "@prisma/client";
+import React, { useState } from "react";
 import { Button } from "./ui/button";
 import { PiNotePencilBold } from "react-icons/pi";
-import { UnitForm } from "./unit/unit-form";
-import { UnitIncludeTenant, UnitsTableInfo } from "@/lib/actions/unit-actions";
 
 type FormDialogProps = {
   label: "Properties" | "Units" | "Tenants";

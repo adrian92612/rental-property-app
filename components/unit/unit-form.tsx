@@ -19,20 +19,22 @@ import { Select, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { SelectContent } from "@radix-ui/react-select";
 import {
   getPropertyIdsAndNames,
-  UnitIncludeTenant,
-  UnitsTableInfo,
+  getUnitFormData,
+  UnitFormData,
   upsertUnit,
 } from "@/lib/actions/unit-actions";
 
 type UnitFormProps = {
   closeDialog: () => void;
-  unit?: UnitIncludeTenant | UnitsTableInfo;
+  unitId?: string;
 };
 
-export const UnitForm = ({ closeDialog, unit }: UnitFormProps) => {
+export const UnitForm = ({ closeDialog, unitId }: UnitFormProps) => {
   const [properties, setProperties] = useState<
     { id: string; name: string }[] | null
   >([]);
+  const [unit, setUnit] = useState<UnitFormData | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const [state, action, isPending] = useActionState(upsertUnit, {
     message: "",
@@ -41,9 +43,9 @@ export const UnitForm = ({ closeDialog, unit }: UnitFormProps) => {
   const form = useForm<z.output<typeof UnitSchema>>({
     resolver: zodResolver(UnitSchema),
     defaultValues: {
-      number: unit?.number ?? "",
-      rentAmount: unit?.rentAmount ?? 0,
-      dueDate: unit?.dueDate ?? 1,
+      number: "",
+      rentAmount: 0,
+      dueDate: 1,
       ...(state?.fields ?? {}),
     },
   });
@@ -51,20 +53,35 @@ export const UnitForm = ({ closeDialog, unit }: UnitFormProps) => {
 
   useEffect(() => {
     // Fetch properties when component is mounted
-    const fetchProperties = async () => {
-      const fetchedProperties = await getPropertyIdsAndNames();
-      setProperties(fetchedProperties);
+    const fetchData = async () => {
+      try {
+        if (unitId) {
+          const unit = await getUnitFormData(unitId);
+          setUnit(unit);
+          form.reset({
+            number: unit?.number,
+            rentAmount: unit?.rentAmount,
+            dueDate: unit?.dueDate ?? 1,
+            propertyId: unit?.propertyId,
+          });
+        } else {
+          const fetchedProperties = await getPropertyIdsAndNames();
+          setProperties(fetchedProperties);
+        }
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
-    fetchProperties();
+    fetchData();
   }, []);
-
-  console.log(state);
 
   if (state.success) closeDialog();
 
-  if (!properties) {
-    return <h2>No Properties available</h2>;
+  if (isLoading) {
+    return <div>Loading data...</div>;
   }
 
   return (
@@ -129,7 +146,7 @@ export const UnitForm = ({ closeDialog, unit }: UnitFormProps) => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent className="bg-primary border p-2 max-h-52 overflow-y-auto">
-                    {properties.map((property) => (
+                    {properties?.map((property) => (
                       <SelectItem key={property.id} value={property.id}>
                         {property.name}
                       </SelectItem>
@@ -145,6 +162,7 @@ export const UnitForm = ({ closeDialog, unit }: UnitFormProps) => {
         <FormField
           control={form.control}
           name="number"
+          defaultValue={unit?.number}
           render={({ field }) => (
             <FormItem>
               <FormLabel className="font-bold">Unit Number</FormLabel>

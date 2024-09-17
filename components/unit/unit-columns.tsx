@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { UnitsTableInfo } from "@/lib/actions/unit-actions";
+import { UnitFormData } from "@/lib/actions/unit-actions";
 import { Button } from "../ui/button";
 import { ArrowUpDown } from "lucide-react";
 import { DetailsBtn } from "../details-btn";
@@ -9,7 +9,7 @@ import { FormDialog } from "../form-dialog";
 import { UnitForm } from "./unit-form";
 import { DeleteBtn } from "../delete-btn";
 
-export const unitsColumns: ColumnDef<UnitsTableInfo>[] = [
+export const unitsColumns: ColumnDef<UnitFormData>[] = [
   {
     accessorKey: "number", // Unit number
     header: ({ column }) => {
@@ -107,7 +107,7 @@ export const unitsColumns: ColumnDef<UnitsTableInfo>[] = [
         <DetailsBtn id={row.original.id} route={"units"} />
         <FormDialog label="Units" isEdit={true}>
           {(closeDialog) => (
-            <UnitForm closeDialog={closeDialog} unit={row.original} />
+            <UnitForm closeDialog={closeDialog} unitId={row.original.id} />
           )}
         </FormDialog>
         <DeleteBtn id={row.original.id} model="unit" />

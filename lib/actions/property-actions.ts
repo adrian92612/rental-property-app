@@ -28,6 +28,10 @@ export type PropertyIncludeUnits = Property & {
   units: Unit[];
 };
 
+export type PropUnitIncludeTenant = Unit & {
+  tenant: Tenant | null;
+};
+
 export type upsertPropertyFormState = {
   message: string;
   success?: boolean;
