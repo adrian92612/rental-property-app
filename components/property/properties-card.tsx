@@ -78,7 +78,11 @@ export const PropertyCard = ({
       <CardContent>
         <Content label="Owner:" value={property.owner} />
         <Content label="Contact Info:" value={property.contactInfo} />
-        <Content label="Value:" value="$xx,xxx,xxxx" />
+        <Content
+          label="Purchase Price:"
+          value={`$${property.purchasePrice.toFixed(2).toString()}`}
+        />
+        <Content label="Units:" value={property.units.length.toString()} />
         <Content label="Added On:" value={format(property.createdAt, "PPP")} />
         <Content
           label="Updated On:"

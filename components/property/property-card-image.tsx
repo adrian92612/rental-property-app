@@ -43,7 +43,7 @@ export const PropertyCardImage = ({ property }: { property: Property }) => {
     }
   };
   return (
-    <div className="relative border rounded-sm w-full h-[250px] flex justify-center items-center overflow-hidden">
+    <div className="relative border rounded-sm w-full h-[300px] flex justify-center items-center overflow-hidden">
       {isPending ? (
         <span>Updating image...</span>
       ) : previewImage ? (

@@ -152,7 +152,7 @@ export const upsertProperty = async (
     return { message: "Failed to add/edit property", fields: parsedData.data };
   }
 
-  if (imageFile.name !== "undefined") {
+  if (imageFile?.name !== "undefined") {
     const res = await uploadImage(imageFile);
     if (res) {
       const { imageUrl, publicId } = res;
@@ -169,6 +169,9 @@ export const upsertProperty = async (
     contactInfo,
     image,
     imagePublicId,
+    purchasePrice,
+    monthlyExpense,
+    mortgagePayment,
     units,
   } = parsedData.data;
 
@@ -181,6 +184,9 @@ export const upsertProperty = async (
         address,
         owner,
         contactInfo,
+        purchasePrice,
+        monthlyExpense,
+        mortgagePayment,
         image,
       },
       create: {
@@ -191,6 +197,9 @@ export const upsertProperty = async (
         address,
         owner,
         contactInfo,
+        purchasePrice,
+        monthlyExpense,
+        mortgagePayment,
         user: {
           connect: { id: userId },
         },
