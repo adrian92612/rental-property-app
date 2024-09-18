@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useActionState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -17,25 +17,15 @@ import { Button } from "../ui/button";
 import { UnitSchema } from "@/lib/zod-schemas/unit";
 import { Select, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { SelectContent } from "@radix-ui/react-select";
-import {
-  getPropertyIdsAndNames,
-  getUnitFormData,
-  UnitFormData,
-  upsertUnit,
-} from "@/lib/actions/unit-actions";
+import { UnitFormData, upsertUnit } from "@/lib/actions/unit-actions";
 
 type UnitFormProps = {
   closeDialog: () => void;
-  unitId?: string;
+  unit?: UnitFormData;
+  properties?: { id: string; name: string }[];
 };
 
-export const UnitForm = ({ closeDialog, unitId }: UnitFormProps) => {
-  const [properties, setProperties] = useState<
-    { id: string; name: string }[] | null
-  >([]);
-  const [unit, setUnit] = useState<UnitFormData | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
+export const UnitForm = ({ closeDialog, unit, properties }: UnitFormProps) => {
   const [state, action, isPending] = useActionState(upsertUnit, {
     message: "",
   });
@@ -43,46 +33,15 @@ export const UnitForm = ({ closeDialog, unitId }: UnitFormProps) => {
   const form = useForm<z.output<typeof UnitSchema>>({
     resolver: zodResolver(UnitSchema),
     defaultValues: {
-      number: "",
-      rentAmount: 0,
-      dueDate: 1,
+      number: unit?.number,
+      rentAmount: unit?.rentAmount ?? 0,
+      dueDate: unit?.dueDate ?? 1,
       ...(state?.fields ?? {}),
     },
   });
   const formRef = useRef<HTMLFormElement>(null);
 
-  useEffect(() => {
-    // Fetch properties when component is mounted
-    const fetchData = async () => {
-      try {
-        if (unitId) {
-          const unit = await getUnitFormData(unitId);
-          setUnit(unit);
-          form.reset({
-            number: unit?.number,
-            rentAmount: unit?.rentAmount,
-            dueDate: unit?.dueDate ?? 1,
-            propertyId: unit?.propertyId,
-          });
-        } else {
-          const fetchedProperties = await getPropertyIdsAndNames();
-          setProperties(fetchedProperties);
-        }
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
   if (state.success) closeDialog();
-
-  if (isLoading) {
-    return <div>Loading data...</div>;
-  }
 
   return (
     <Form {...form}>

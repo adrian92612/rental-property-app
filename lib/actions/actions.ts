@@ -14,6 +14,11 @@ export type loginFormState = {
   fields?: Record<string, string>;
 };
 
+export type uploadImageInfo = {
+  imageUrl: string;
+  publicId: string;
+};
+
 export const login = async (
   prevState: loginFormState,
   formData: FormData
@@ -114,11 +119,6 @@ export const registerUser = async (
       fields: parsedData.data,
     };
   }
-};
-
-export type uploadImageInfo = {
-  imageUrl: string;
-  publicId: string;
 };
 
 export const uploadImage = async (

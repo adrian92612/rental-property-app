@@ -15,7 +15,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "../ui/chart";
-import { Content } from "./properties-card";
 
 type IncomeExpenseChartProps = {
   rentalIncome: number;
@@ -49,18 +48,25 @@ export const IncomeExpenseChart = ({
     },
   };
 
-  const getRentalIncomeCover = () => {
-    return `${((rentalIncome / (monthlyExpense + mortgage)) * 100).toFixed(
-      2
-    )}%`;
-  };
+  const calculate = (
+    data: "cashflow" | "incomeCover" | "spending" | "mortgage"
+  ) => {
+    let res;
+    switch (data) {
+      case "cashflow":
+        res = (rentalIncome - (monthlyExpense + mortgage)).toFixed(2);
+      case "incomeCover":
+        res = ((rentalIncome / (monthlyExpense + mortgage)) * 100).toFixed(2);
+      case "spending":
+        res = ((monthlyExpense / rentalIncome) * 100).toFixed(2);
+      default:
+        res = ((mortgage / rentalIncome) * 100).toFixed(2);
+    }
 
-  const getSpending = () => {
-    return ((monthlyExpense / rentalIncome) * 100).toFixed(2);
-  };
-
-  const getMortgageRatio = () => {
-    return ((mortgage / rentalIncome) * 100).toFixed(2);
+    if (res === "Infinity" || res === "-Infinity" || res === "NaN") {
+      return "N/A";
+    }
+    return res;
   };
 
   return (
@@ -99,20 +105,17 @@ export const IncomeExpenseChart = ({
       </CardContent>
       <CardFooter className="flex-col items-start ">
         <div className="font-bold">
-          {`Monthy cashflow of 
-          ${(rentalIncome - (monthlyExpense + mortgage)).toFixed(2)}
-          `}
+          Monthly cashflow of {calculate("cashflow")}
         </div>
         <div className="text-muted-foreground text-sm">
-          ** Rental income covers {getRentalIncomeCover()}% of your expenses.
+          ** Rental income covers {calculate("incomeCover")}% of your expenses.
         </div>
         <div className="text-muted-foreground text-sm">
-          {rentalIncome === 0
-            ? "** No rental income"
-            : `** You are spending ${getSpending()}% of your income on property expenses.`}
+          ** You are spending {calculate("spending")}% of your income on
+          property expenses.
         </div>
         <div className="text-muted-foreground text-sm">
-          ** Mortgage takes up {getMortgageRatio()}% of the rental income.
+          ** Mortgage takes up {calculate("mortgage")}% of the rental income.
         </div>
       </CardFooter>
     </Card>

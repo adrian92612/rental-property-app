@@ -7,9 +7,9 @@ import { DetailsBtn } from "../details-btn";
 import { FormDialog } from "../form-dialog";
 import { UnitForm } from "../unit/unit-form";
 import { DeleteBtn } from "../delete-btn";
-import { PropUnitIncludeTenant } from "@/lib/actions/property-actions";
+import { UnitFormData } from "@/lib/actions/unit-actions";
 
-export const propertyUnitsColumns: ColumnDef<PropUnitIncludeTenant>[] = [
+export const propertyUnitsColumns: ColumnDef<UnitFormData>[] = [
   {
     accessorKey: "number", // Unit number
     header: ({ column }) => {
@@ -91,7 +91,7 @@ export const propertyUnitsColumns: ColumnDef<PropUnitIncludeTenant>[] = [
         <DetailsBtn id={row.original.id} route={"units"} />
         <FormDialog formFor="edit">
           {(closeDialog) => (
-            <UnitForm closeDialog={closeDialog} unitId={row.original.id} />
+            <UnitForm closeDialog={closeDialog} unit={row.original} />
           )}
         </FormDialog>
         <DeleteBtn id={row.original.id} model="unit" />

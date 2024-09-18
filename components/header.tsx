@@ -9,15 +9,20 @@ import { TenantForm } from "./tenant/tenant-form";
 type HeaderProps = {
   headerLabel: string;
   formComponent: "property" | "unit" | "tenant";
+  properties?: { id: string; name: string }[];
 };
 
-export const Header = ({ formComponent, headerLabel }: HeaderProps) => {
+export const Header = ({
+  formComponent,
+  headerLabel,
+  properties,
+}: HeaderProps) => {
   const renderForm = (closeDialog: () => void) => {
     switch (formComponent) {
       case "property":
         return <PropertyForm closeDialog={closeDialog} />;
       case "unit":
-        return <UnitForm closeDialog={closeDialog} />;
+        return <UnitForm closeDialog={closeDialog} properties={properties} />;
       default:
         return <TenantForm closeDialog={closeDialog} />;
     }

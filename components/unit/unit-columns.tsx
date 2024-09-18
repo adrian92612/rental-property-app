@@ -6,8 +6,8 @@ import { Button } from "../ui/button";
 import { ArrowUpDown } from "lucide-react";
 import { DetailsBtn } from "../details-btn";
 import { FormDialog } from "../form-dialog";
-import { UnitForm } from "./unit-form";
 import { DeleteBtn } from "../delete-btn";
+import { UnitForm } from "./unit-form";
 
 export const unitsColumns: ColumnDef<UnitFormData>[] = [
   {
@@ -27,7 +27,7 @@ export const unitsColumns: ColumnDef<UnitFormData>[] = [
     cell: ({ row }) => <span>{row.original.number}</span>,
   },
   {
-    accessorKey: "property.name", // Property name (Assuming you're fetching the property relation)
+    accessorKey: "property.name",
     header: ({ column }) => {
       return (
         <Button
@@ -107,7 +107,7 @@ export const unitsColumns: ColumnDef<UnitFormData>[] = [
         <DetailsBtn id={row.original.id} route={"units"} />
         <FormDialog formFor="edit">
           {(closeDialog) => (
-            <UnitForm closeDialog={closeDialog} unitId={row.original.id} />
+            <UnitForm closeDialog={closeDialog} unit={row.original} />
           )}
         </FormDialog>
         <DeleteBtn id={row.original.id} model="unit" />
