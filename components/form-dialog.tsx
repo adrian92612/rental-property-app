@@ -18,7 +18,6 @@ import { PiNotePencilBold } from "react-icons/pi";
 
 type FormDialogProps = {
   formFor: "property" | "unit" | "tenant" | "edit";
-  isEdit?: Boolean;
   children: (closeDialog: () => void) => React.ReactElement;
 };
 
