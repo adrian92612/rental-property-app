@@ -10,8 +10,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { AssignTenant } from "@/components/unit/assign-tenant";
+import { RemoveTenant } from "@/components/unit/remove-tenant";
 import { UnitDetailsCard } from "@/components/unit/unit-details-card";
 import { UnitForm } from "@/components/unit/unit-form";
+import { getTenantsTableInfo } from "@/lib/actions/tenant-actions";
 import {
   getPropertyIdsAndNames,
   getUnitDetails,
@@ -22,6 +25,9 @@ import { MdOutlineAssignmentInd } from "react-icons/md";
 const UnitDetailsPage = async ({ params }: { params: { id: string } }) => {
   const unit = await getUnitDetails(params.id);
   const fetchedProperties = await getPropertyIdsAndNames();
+  const tenants = await getTenantsTableInfo();
+
+  const availableTenants = tenants?.filter((tenant) => tenant.unitId === null);
 
   if (!unit) return <div>404 Not Found</div>;
 
@@ -38,37 +44,49 @@ const UnitDetailsPage = async ({ params }: { params: { id: string } }) => {
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle className="text-lg">Tenant Details</CardTitle>
-              <Button size="zero" variant="dialog">
-                <MdOutlineAssignmentInd />
-              </Button>
+              {!unit.tenant ? (
+                <AssignTenant
+                  tenants={availableTenants || []}
+                  unitId={unit.id}
+                />
+              ) : (
+                <RemoveTenant tenantId={unit.tenant.id} unitId={unit.id} />
+              )}
             </div>
           </CardHeader>
           <CardContent>
-            {unit.tenant ? (
-              <>
-                <Content label="First Name: " value={unit.tenant.firstName} />
-                <Content label="Last Name: " value={unit.tenant.lastName} />
-                <Content label="Email Address: " value={unit.tenant.email} />
-                <Content
-                  label="Phone Number: "
-                  value={unit.tenant.phoneNumber}
-                />
-                <Content
-                  label="Lease Start: "
-                  value={format(new Date(unit.tenant.leaseStart), "PPP")}
-                />
-                <Content
-                  label="Lease End: "
-                  value={format(new Date(unit.tenant.leaseEnd), "PPP")}
-                />
-                <Content
-                  label="Lease Term: "
-                  value={`${unit.tenant.termInMonths} months`}
-                />
-              </>
-            ) : (
-              <div>Unit is currently vacant</div>
-            )}
+            <Content
+              label="First Name: "
+              value={unit.tenant?.firstName || ""}
+            />
+            <Content label="Last Name: " value={unit.tenant?.lastName || ""} />
+            <Content label="Email Address: " value={unit.tenant?.email || ""} />
+            <Content
+              label="Phone Number: "
+              value={unit.tenant?.phoneNumber || ""}
+            />
+            <Content
+              label="Lease Start: "
+              value={
+                unit.tenant?.leaseStart
+                  ? format(unit.tenant.leaseStart, "PPP")
+                  : ""
+              }
+            />
+            <Content
+              label="Lease End: "
+              value={
+                unit.tenant?.leaseEnd ? format(unit.tenant.leaseEnd, "PPP") : ""
+              }
+            />
+            <Content
+              label="Lease Term: "
+              value={
+                unit.tenant?.termInMonths
+                  ? `${unit.tenant.termInMonths} months`
+                  : ""
+              }
+            />
           </CardContent>
           <CardFooter></CardFooter>
         </Card>
