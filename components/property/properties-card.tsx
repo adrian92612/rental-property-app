@@ -18,7 +18,7 @@ type ContentProps = {
   value: string;
 };
 
-const Content = ({ label, value }: ContentProps) => {
+export const Content = ({ label, value }: ContentProps) => {
   return (
     <div className="flex items-center gap-3">
       <span className="font-bold">{label}</span>
@@ -66,7 +66,7 @@ export const PropertyCard = ({
   property: PropertyIncludeAll;
 }) => {
   return (
-    <Card className="w-full max-w-xl">
+    <Card className="w-full">
       <CardHeader>
         <PropertyCardImage property={property} />
         <h2 className="font-bold">{property.name}</h2>
