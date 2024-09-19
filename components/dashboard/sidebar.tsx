@@ -8,6 +8,7 @@ import { FaKey } from "react-icons/fa6";
 import { MdSpaceDashboard } from "react-icons/md";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { getAvatarFallback } from "@/lib/utils";
 
 const links = [
   {
@@ -57,11 +58,6 @@ const NavLinks = () => {
 
 const LogoutBtn = async () => {
   const user = await getUserImage();
-  const getFallback = () => {
-    return `${user?.firstName.slice(0, 1) || ""}${
-      user?.lastName.slice(0, 1) || ""
-    }`;
-  };
   return (
     <form
       action={logout}
@@ -69,7 +65,9 @@ const LogoutBtn = async () => {
     >
       <Avatar>
         <AvatarImage src={user?.image || ""} alt="Picture of user" />
-        <AvatarFallback>{getFallback()}</AvatarFallback>
+        <AvatarFallback>
+          {getAvatarFallback(user?.firstName || "", user?.lastName || "")}
+        </AvatarFallback>
       </Avatar>
       <Button variant="destructive" size="sm" className="font-bold rounded-sm">
         Logout

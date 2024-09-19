@@ -1,0 +1,75 @@
+"use client";
+
+import { Tenant } from "@prisma/client";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
+import { Content } from "../property/properties-card";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { getAvatarFallback } from "@/lib/utils";
+import { DeleteBtn } from "../delete-btn";
+import { FormDialog } from "../form-dialog";
+import { TenantForm } from "./tenant-form";
+import { differenceInDays, format } from "date-fns";
+
+type PersonalInformationProps = {
+  tenant: Tenant;
+};
+
+export const PersonalInformation = ({ tenant }: PersonalInformationProps) => {
+  const daysRemaining = differenceInDays(new Date(tenant.leaseEnd), new Date());
+  return (
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-lg">
+            Personal & Lease Information
+          </CardTitle>
+          <Avatar className="border border-primary">
+            <AvatarImage src={tenant?.image || ""} alt="Picture of tenant" />
+            <AvatarFallback>
+              {getAvatarFallback(tenant.firstName, tenant.lastName)}
+            </AvatarFallback>
+          </Avatar>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <h2 className="font-bold text-lg">- Personal</h2>
+        <Content label="First Name:" value={tenant.firstName} />
+        <Content label="Last Name:" value={tenant.lastName} />
+        <Content label="Email Address:" value={tenant.email} />
+        <Content label="Phone Number:" value={tenant.phoneNumber} />
+        <h2 className="font-bold text-lg">- Lease</h2>
+        <Content
+          label="Terms:"
+          value={`${tenant.termInMonths.toString()} months`}
+        />
+        <Content
+          label="Lease Start:"
+          value={format(tenant.leaseStart, "PPP")}
+        />
+        <Content label="Lease End:" value={format(tenant.leaseEnd, "PPP")} />
+        <Content
+          label="Days Remaining:"
+          value={
+            daysRemaining > 0
+              ? `${daysRemaining} ${daysRemaining === 1 ? "day" : "days"}`
+              : "Expired"
+          }
+        />
+      </CardContent>
+      <CardFooter className="flex justify-end">
+        <FormDialog formFor="edit">
+          {(closeDialog) => (
+            <TenantForm closeDialog={closeDialog} tenant={tenant} />
+          )}
+        </FormDialog>
+        <DeleteBtn id={tenant.id} model="tenant" />
+      </CardFooter>
+    </Card>
+  );
+};

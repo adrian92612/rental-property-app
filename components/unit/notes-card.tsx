@@ -66,9 +66,9 @@ const Note = ({ note, index, notes, unitId }: NoteProps) => {
             <RiDeleteBin5Fill className="h-4 w-4" />
           </Button>
         </AlertDialogTrigger>
-        <AlertDialogContent className="bg-primary-foreground">
+        <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Confirm deletion of this note?</AlertDialogTitle>
+            <AlertDialogTitle>Delete this note?</AlertDialogTitle>
             <AlertDialogDescription>{note}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

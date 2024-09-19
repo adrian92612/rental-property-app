@@ -24,6 +24,21 @@ export type successState = {
 
 export type TenantsTableInfo = Tenant & {};
 
+export const getTenantData = async (
+  tenantId: string
+): Promise<Tenant | null> => {
+  try {
+    const tenant = await prisma.tenant.findUnique({
+      where: { id: tenantId },
+    });
+
+    return tenant;
+  } catch (error) {
+    console.error("Failed to fetch tenant data: ", error);
+    return null;
+  }
+};
+
 export const getTenantsTableInfo = async (): Promise<Tenant[] | null> => {
   try {
     const tenants = await prisma.tenant.findMany({});

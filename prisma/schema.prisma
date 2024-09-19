@@ -76,6 +76,7 @@ model Tenant {
   leaseEnd      DateTime
   image         String?
   imagePublicId String?
+  notes         String[]
 
   unit   Unit?   @relation(fields: [unitId], references: [id])
   unitId String? @unique

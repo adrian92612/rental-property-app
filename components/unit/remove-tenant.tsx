@@ -40,9 +40,9 @@ export const RemoveTenant = ({ unitId, tenantId }: RemoveTenantProps) => {
           <IoPersonRemove className="h-8 w-8" />
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent className="bg-primary-foreground">
+      <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Confirm removal of tenant</AlertDialogTitle>
+          <AlertDialogTitle>Remove this tenant?</AlertDialogTitle>
           <AlertDialogDescription>
             This will remove the tenant from this unit.
           </AlertDialogDescription>
