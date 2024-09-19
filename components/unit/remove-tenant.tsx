@@ -37,7 +37,7 @@ export const RemoveTenant = ({ unitId, tenantId }: RemoveTenantProps) => {
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button size="zero" variant="dialog" disabled={loading}>
-          <IoPersonRemove />
+          <IoPersonRemove className="h-8 w-8" />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent className="bg-primary-foreground">

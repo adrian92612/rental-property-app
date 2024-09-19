@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/card";
 import { AssignTenant } from "@/components/unit/assign-tenant";
 import { RemoveTenant } from "@/components/unit/remove-tenant";
+import { TenantDetailsCard } from "@/components/unit/tenant-details-card";
 import { UnitDetailsCard } from "@/components/unit/unit-details-card";
 import { UnitForm } from "@/components/unit/unit-form";
 import { getTenantsTableInfo } from "@/lib/actions/tenant-actions";
@@ -40,56 +41,11 @@ const UnitDetailsPage = async ({ params }: { params: { id: string } }) => {
       />
       <div className="grid lg:grid-cols-2 mt-5 gap-5">
         <UnitDetailsCard unit={unit} />
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-lg">Tenant Details</CardTitle>
-              {!unit.tenant ? (
-                <AssignTenant
-                  tenants={availableTenants || []}
-                  unitId={unit.id}
-                />
-              ) : (
-                <RemoveTenant tenantId={unit.tenant.id} unitId={unit.id} />
-              )}
-            </div>
-          </CardHeader>
-          <CardContent>
-            <Content
-              label="First Name: "
-              value={unit.tenant?.firstName || ""}
-            />
-            <Content label="Last Name: " value={unit.tenant?.lastName || ""} />
-            <Content label="Email Address: " value={unit.tenant?.email || ""} />
-            <Content
-              label="Phone Number: "
-              value={unit.tenant?.phoneNumber || ""}
-            />
-            <Content
-              label="Lease Start: "
-              value={
-                unit.tenant?.leaseStart
-                  ? format(unit.tenant.leaseStart, "PPP")
-                  : ""
-              }
-            />
-            <Content
-              label="Lease End: "
-              value={
-                unit.tenant?.leaseEnd ? format(unit.tenant.leaseEnd, "PPP") : ""
-              }
-            />
-            <Content
-              label="Lease Term: "
-              value={
-                unit.tenant?.termInMonths
-                  ? `${unit.tenant.termInMonths} months`
-                  : ""
-              }
-            />
-          </CardContent>
-          <CardFooter></CardFooter>
-        </Card>
+        <TenantDetailsCard
+          tenant={unit.tenant}
+          availableTenants={availableTenants || []}
+          unitId={unit.id}
+        />
       </div>
     </>
   );

@@ -19,6 +19,12 @@ export type uploadImageInfo = {
   publicId: string;
 };
 
+export type registerUserFormState = {
+  message: string;
+  success?: boolean;
+  fields?: Record<string, string>;
+};
+
 export const login = async (
   prevState: loginFormState,
   formData: FormData
@@ -66,10 +72,29 @@ export const getUserId = async (): Promise<string | undefined> => {
   return session?.user?.id;
 };
 
-export type registerUserFormState = {
-  message: string;
-  success?: boolean;
-  fields?: Record<string, string>;
+export type getUserImageObj = {
+  firstName: string;
+  lastName: string;
+  image: string | null;
+};
+
+export const getUserImage = async (): Promise<getUserImageObj | null> => {
+  try {
+    const userId = await getUserId();
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        firstName: true,
+        lastName: true,
+        image: true,
+      },
+    });
+    if (user) return user;
+    throw new Error("User not found");
+  } catch (error) {
+    console.error("Unable to get user image: ", error);
+    return null;
+  }
 };
 
 export const registerUser = async (

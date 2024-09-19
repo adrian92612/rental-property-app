@@ -1,4 +1,4 @@
-import { logout } from "@/lib/actions/actions";
+import { getUserImage, logout } from "@/lib/actions/actions";
 import { Button } from "../ui/button";
 import { Popover, PopoverContent } from "../ui/popover";
 import { IoIosMenu } from "react-icons/io";
@@ -8,7 +8,6 @@ import { FaKey } from "react-icons/fa6";
 import { MdSpaceDashboard } from "react-icons/md";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { auth } from "@/auth";
 
 const links = [
   {
@@ -56,15 +55,21 @@ const NavLinks = () => {
   );
 };
 
-const LogoutBtn = () => {
+const LogoutBtn = async () => {
+  const user = await getUserImage();
+  const getFallback = () => {
+    return `${user?.firstName.slice(0, 1) || ""}${
+      user?.lastName.slice(0, 1) || ""
+    }`;
+  };
   return (
     <form
       action={logout}
       className="flex items-center gap-2 sm:border-t border-primary-foreground sm:pt-2 w-full justify-end"
     >
       <Avatar>
-        <AvatarImage src="" alt="Picture of user" />
-        <AvatarFallback>AV</AvatarFallback>
+        <AvatarImage src={user?.image || ""} alt="Picture of user" />
+        <AvatarFallback>{getFallback()}</AvatarFallback>
       </Avatar>
       <Button variant="destructive" size="sm" className="font-bold rounded-sm">
         Logout

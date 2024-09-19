@@ -45,7 +45,7 @@ export const AssignTenant = ({ tenants, unitId }: AssignTenantProps) => {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button size="zero" variant="dialog" disabled={loading}>
-          <MdOutlineAssignmentInd />
+          <MdOutlineAssignmentInd className="h-8 w-8" />
         </Button>
       </PopoverTrigger>
       <PopoverContent side="left">
