@@ -23,7 +23,7 @@ export const TenantDetailsCard = ({
     }`;
   };
   return (
-    <Card>
+    <Card className="w-full">
       <CardHeader>
         <div className="flex items-center justify-between">
           <Avatar className="border border-primary">

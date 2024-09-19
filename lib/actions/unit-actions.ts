@@ -36,6 +36,12 @@ export type deleteUnitState = {
   success: boolean;
 };
 
+export type FormState = {
+  success?: boolean;
+  message: string;
+  fields?: Record<string, string>;
+};
+
 export const getPropertyIdsAndNames = async (): Promise<
   PropertyIdName[] | null
 > => {
@@ -121,6 +127,68 @@ export const getUnitsTableInfo = async (): Promise<UnitFormData[] | null> => {
   } catch (error) {
     console.error("Failed to fetch units: ", error);
     return null;
+  }
+};
+
+export const addNote = async (
+  prevState: any,
+  formData: FormData
+): Promise<FormState> => {
+  const unitId = formData.get("unitId") as string;
+  const note = formData.get("note") as string;
+  try {
+    await prisma.unit.update({
+      where: { id: unitId },
+      data: {
+        notes: {
+          push: note,
+        },
+      },
+    });
+
+    revalidatePath(`/dashboard/units/${unitId}`);
+    return {
+      success: true,
+      message: "Note has been added to the unit",
+    };
+  } catch (error) {
+    console.error("Failed to add note to unit: ", error);
+    return {
+      success: false,
+      message: "Failed to add note to unit, try again later.",
+      fields: {
+        note: note,
+      },
+    };
+  }
+};
+
+export const deleteNote = async (
+  unitId: string,
+  index: number,
+  notes: string[]
+): Promise<{ success: boolean; message: string }> => {
+  try {
+    const newNotes = notes.filter((_, i) => i !== index);
+    await prisma.unit.update({
+      where: { id: unitId },
+      data: {
+        notes: newNotes,
+      },
+    });
+
+    revalidatePath(`/dashboard/units/${unitId}`);
+
+    return {
+      success: true,
+      message: "Note has been deleted",
+    };
+  } catch (error) {
+    console.error("Failed to delete note: ", error);
+    return {
+      success: false,
+      message: "Failed to delete note",
+    };
   }
 };
 

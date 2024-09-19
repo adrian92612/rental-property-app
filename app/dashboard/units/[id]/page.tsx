@@ -1,27 +1,13 @@
-import { FormDialog } from "@/components/form-dialog";
 import { Header } from "@/components/header";
-import { Content } from "@/components/property/properties-card";
-import { PropertyCardImage } from "@/components/property/property-card-image";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { AssignTenant } from "@/components/unit/assign-tenant";
-import { RemoveTenant } from "@/components/unit/remove-tenant";
+import { Documents } from "@/components/unit/documents-card";
+import { Notes } from "@/components/unit/notes-card";
 import { TenantDetailsCard } from "@/components/unit/tenant-details-card";
 import { UnitDetailsCard } from "@/components/unit/unit-details-card";
-import { UnitForm } from "@/components/unit/unit-form";
 import { getTenantsTableInfo } from "@/lib/actions/tenant-actions";
 import {
   getPropertyIdsAndNames,
   getUnitDetails,
 } from "@/lib/actions/unit-actions";
-import { format } from "date-fns";
-import { MdOutlineAssignmentInd } from "react-icons/md";
 
 const UnitDetailsPage = async ({ params }: { params: { id: string } }) => {
   const unit = await getUnitDetails(params.id);
@@ -46,6 +32,8 @@ const UnitDetailsPage = async ({ params }: { params: { id: string } }) => {
           availableTenants={availableTenants || []}
           unitId={unit.id}
         />
+        <Notes notes={unit.notes} unitId={unit.id} />
+        <Documents />
       </div>
     </>
   );

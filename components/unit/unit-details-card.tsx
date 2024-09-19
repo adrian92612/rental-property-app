@@ -17,7 +17,7 @@ import { PropertyCardImage } from "../property/property-card-image";
 
 export const UnitDetailsCard = ({ unit }: { unit: UnitDetailsInfo }) => {
   return (
-    <Card>
+    <Card className="w-full">
       <CardHeader>
         <CardTitle className="text-lg">{unit.number}</CardTitle>
       </CardHeader>
