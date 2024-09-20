@@ -1,11 +1,18 @@
 import { Tenant } from "@prisma/client";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
 import { AssignTenant } from "./assign-tenant";
 import { RemoveTenant } from "./remove-tenant";
 import { Content } from "../property/properties-card";
 import { format } from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { getAvatarFallback } from "@/lib/utils";
+import { DetailsBtn } from "../details-btn";
 
 type TenantDetailsCardProps = {
   tenant: Tenant | null;
@@ -19,7 +26,7 @@ export const TenantDetailsCard = ({
   unitId,
 }: TenantDetailsCardProps) => {
   return (
-    <Card className="w-full">
+    <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
           <Avatar className="border border-primary">
@@ -32,11 +39,7 @@ export const TenantDetailsCard = ({
             </AvatarFallback>
           </Avatar>
           <CardTitle className="text-lg">Tenant Details</CardTitle>
-          {!tenant ? (
-            <AssignTenant tenants={availableTenants || []} unitId={unitId} />
-          ) : (
-            <RemoveTenant tenantId={tenant.id} unitId={unitId} />
-          )}
+          <div>{tenant && <DetailsBtn id={tenant.id} route={"tenants"} />}</div>
         </div>
       </CardHeader>
       <CardContent>
@@ -57,6 +60,13 @@ export const TenantDetailsCard = ({
           value={tenant?.termInMonths ? `${tenant.termInMonths} months` : ""}
         />
       </CardContent>
+      <CardFooter className="justify-end">
+        {!tenant ? (
+          <AssignTenant tenants={availableTenants || []} unitId={unitId} />
+        ) : (
+          <RemoveTenant tenantId={tenant.id} unitId={unitId} />
+        )}
+      </CardFooter>
     </Card>
   );
 };

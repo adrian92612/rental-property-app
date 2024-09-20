@@ -1,10 +1,11 @@
 "use client";
 
 import { useActionState, useState } from "react";
-import { Button } from "../ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Textarea } from "../ui/textarea";
-import { addNote, deleteNote } from "@/lib/actions/unit-actions";
+import { Button } from "./ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Textarea } from "./ui/textarea";
+import { addUnitNote, deleteUnitNote } from "@/lib/actions/unit-actions";
+import { addTenantNote, deleteTenantNote } from "@/lib/actions/tenant-actions";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import {
   AlertDialog,
@@ -16,27 +17,35 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "../ui/alert-dialog";
+} from "./ui/alert-dialog";
 import { cn } from "@/lib/utils";
 
 type NotesProps = {
   notes: string[];
-  unitId: string;
+  id: string;
+  model: "unit" | "tenant";
 };
 
 type NoteProps = {
   note: string;
   index: number;
   notes: string[];
-  unitId: string;
+  id: string;
+  model: "unit" | "tenant";
 };
 
-const Note = ({ note, index, notes, unitId }: NoteProps) => {
+const Note = ({ note, index, notes, id, model }: NoteProps) => {
   const [pending, setPending] = useState<boolean>(false);
+
+  const action = {
+    unit: () => deleteUnitNote(id, index, notes),
+    tenant: () => deleteTenantNote(id, index, notes),
+  };
+
   const handleDelete = async () => {
     try {
       setPending(true);
-      const res = await deleteNote(unitId, index, notes);
+      const res = await action[model]();
       if (res.success) {
         //do something
       } else {
@@ -83,16 +92,23 @@ const Note = ({ note, index, notes, unitId }: NoteProps) => {
   );
 };
 
-export const Notes = ({ notes, unitId }: NotesProps) => {
-  const [state, action, isPending] = useActionState(addNote, { message: "" });
+export const Notes = ({ notes, id, model }: NotesProps) => {
+  const getAction = () => {
+    return model === "unit" ? addUnitNote : addTenantNote;
+  };
+
+  const [state, action, isPending] = useActionState(getAction(), {
+    message: "",
+  });
+
   return (
-    <Card className="w-full lg:col-span-2">
+    <Card className={cn(model === "unit" ? "lg:col-span-2" : "xl:col-span-3")}>
       <CardHeader>
         <CardTitle>Notes</CardTitle>
       </CardHeader>
       <CardContent className="grid lg:grid-cols-2 gap-5">
         <form action={action}>
-          <input type="hidden" name="unitId" value={unitId} />
+          <input type="hidden" name="id" value={id} />
           <Textarea
             name="note"
             disabled={isPending}
@@ -110,7 +126,13 @@ export const Notes = ({ notes, unitId }: NotesProps) => {
           {notes.length ? (
             notes.map((note, i) => (
               <li key={i}>
-                <Note note={note} index={i} notes={notes} unitId={unitId} />
+                <Note
+                  note={note}
+                  index={i}
+                  notes={notes}
+                  id={id}
+                  model={model}
+                />
               </li>
             ))
           ) : (

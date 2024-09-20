@@ -11,6 +11,10 @@ export type UnitDetailsInfo = Unit & {
   tenant: Tenant | null;
 };
 
+export type UnitWithTenant = Unit & {
+  tenant: Tenant | null;
+};
+
 export type UnitFormData = Unit & {
   property: {
     name: string;
@@ -90,6 +94,7 @@ export const getUnitFormData = async (
 export const getUnitDetails = async (
   unitId: string
 ): Promise<UnitDetailsInfo | null> => {
+  if (!unitId) return null;
   try {
     const unit = await prisma.unit.findUnique({
       where: { id: unitId },
@@ -162,8 +167,69 @@ export const addNote = async (
     };
   }
 };
+export const addUnitNote = async (
+  prevState: any,
+  formData: FormData
+): Promise<FormState> => {
+  const unitId = formData.get("id") as string;
+  const note = formData.get("note") as string;
+  try {
+    await prisma.unit.update({
+      where: { id: unitId },
+      data: {
+        notes: {
+          push: note,
+        },
+      },
+    });
+
+    revalidatePath(`/dashboard/units/${unitId}`);
+    return {
+      success: true,
+      message: "Note has been added to the unit",
+    };
+  } catch (error) {
+    console.error("Failed to add note to unit: ", error);
+    return {
+      success: false,
+      message: "Failed to add note to unit, try again later.",
+      fields: {
+        note: note,
+      },
+    };
+  }
+};
 
 export const deleteNote = async (
+  unitId: string,
+  index: number,
+  notes: string[]
+): Promise<{ success: boolean; message: string }> => {
+  try {
+    const newNotes = notes.filter((_, i) => i !== index);
+    await prisma.unit.update({
+      where: { id: unitId },
+      data: {
+        notes: newNotes,
+      },
+    });
+
+    revalidatePath(`/dashboard/units/${unitId}`);
+
+    return {
+      success: true,
+      message: "Note has been deleted",
+    };
+  } catch (error) {
+    console.error("Failed to delete note: ", error);
+    return {
+      success: false,
+      message: "Failed to delete note",
+    };
+  }
+};
+
+export const deleteUnitNote = async (
   unitId: string,
   index: number,
   notes: string[]

@@ -5,8 +5,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
-import { Button } from "../ui/button";
+} from "./ui/card";
+import { Button } from "./ui/button";
+import { cn } from "@/lib/utils";
 
 const Document = ({ label }: { label: string }) => {
   return (
@@ -22,26 +23,20 @@ const Document = ({ label }: { label: string }) => {
   );
 };
 
-const documentList = [
-  "Lease Agreement",
-  "Tenant Application Form",
-  "Inspection Report",
-  "Payment Receipts",
-  "Maintenance Requests",
-  "Eviction Notice",
-  "Insurance",
-  "Utility Bills",
-];
+type DocumentsProps = {
+  list: string[];
+  model: "unit" | "tenant";
+};
 
-export const Documents = () => {
+export const Documents = ({ list, model }: DocumentsProps) => {
   return (
-    <Card className="w-full lg:col-span-2">
+    <Card className={cn(model === "unit" ? "lg:col-span-2" : "xl:col-span-3")}>
       <CardHeader>
         <CardTitle>Documents</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid place-items-end md:grid-cols-2 lg:grid-cols-3 gap-2">
-          {documentList.map((doc, i) => (
+        <div className="grid  md:grid-cols-2 lg:grid-cols-3 gap-2">
+          {list.map((doc, i) => (
             <Document key={i} label={doc} />
           ))}
         </div>

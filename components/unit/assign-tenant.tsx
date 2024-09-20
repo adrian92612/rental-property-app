@@ -44,31 +44,31 @@ export const AssignTenant = ({ tenants, unitId }: AssignTenantProps) => {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button size="zero" variant="dialog" disabled={loading}>
-          <MdOutlineAssignmentInd className="h-8 w-8" />
+        <Button size="sm" disabled={loading}>
+          Assign
         </Button>
       </PopoverTrigger>
       <PopoverContent side="left">
         <Command>
           <CommandInput placeholder="Select a tenant..." />
           <CommandList>
-            <CommandEmpty>No available tenants found</CommandEmpty>
-          </CommandList>
-          <CommandGroup>
-            {tenants.map((tenant) => {
-              const fullname = `${tenant.firstName} ${tenant.lastName}`;
+            <CommandEmpty>No available tenants...</CommandEmpty>
+            <CommandGroup>
+              {tenants.map((tenant) => {
+                const fullname = `${tenant.firstName} ${tenant.lastName}`;
 
-              return (
-                <CommandItem
-                  id={tenant.id}
-                  value={fullname}
-                  onSelect={() => handleSelect(tenant.id)}
-                >
-                  {fullname}
-                </CommandItem>
-              );
-            })}
-          </CommandGroup>
+                return (
+                  <CommandItem
+                    id={tenant.id}
+                    value={fullname}
+                    onSelect={() => handleSelect(tenant.id)}
+                  >
+                    {fullname}
+                  </CommandItem>
+                );
+              })}
+            </CommandGroup>
+          </CommandList>
         </Command>
       </PopoverContent>
     </Popover>

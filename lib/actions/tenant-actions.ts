@@ -21,6 +21,11 @@ export type successState = {
   success: boolean;
   message: string;
 };
+export type successStateWithFields = {
+  success: boolean;
+  message: string;
+  fields?: Record<string, string>;
+};
 
 export type TenantsTableInfo = Tenant & {};
 
@@ -110,6 +115,68 @@ export const removeTenant = async (
   }
 };
 
+export const addTenantNote = async (
+  prevState: any,
+  formData: FormData
+): Promise<successStateWithFields> => {
+  const tenantId = formData.get("id") as string;
+  const note = formData.get("note") as string;
+  try {
+    await prisma.tenant.update({
+      where: { id: tenantId },
+      data: {
+        notes: {
+          push: note,
+        },
+      },
+    });
+
+    revalidatePath(`/dashboard/units/${tenantId}`);
+    return {
+      success: true,
+      message: "Note has been added to the unit",
+    };
+  } catch (error) {
+    console.error("Failed to add note to unit: ", error);
+    return {
+      success: false,
+      message: "Failed to add note to unit, try again later.",
+      fields: {
+        note: note,
+      },
+    };
+  }
+};
+
+export const deleteTenantNote = async (
+  tenantId: string,
+  index: number,
+  notes: string[]
+): Promise<{ success: boolean; message: string }> => {
+  try {
+    const newNotes = notes.filter((_, i) => i !== index);
+    await prisma.tenant.update({
+      where: { id: tenantId },
+      data: {
+        notes: newNotes,
+      },
+    });
+
+    revalidatePath(`/dashboard/units/${tenantId}`);
+
+    return {
+      success: true,
+      message: "Note has been deleted",
+    };
+  } catch (error) {
+    console.error("Failed to delete note: ", error);
+    return {
+      success: false,
+      message: "Failed to delete note",
+    };
+  }
+};
+
 export const upsertTenant = async (
   prevState: upsertTenantState,
   formData: FormData
@@ -190,16 +257,11 @@ export const upsertTenant = async (
     revalidatePath("/dashboard/tenants");
     revalidatePath(`/dashboard/tenants/${tenantId}`);
 
-    if (tenantId) {
-      return {
-        message: `${firstName} ${lastName} has been successfully updated.`,
-        success: true,
-      };
-    }
-
     return {
-      message: `${firstName} ${lastName} has been added to Tenants`,
       success: true,
+      message: `${firstName} ${lastName} has been successfully ${
+        tenantId ? "updated" : "added"
+      }.`,
     };
   } catch (error) {
     const msg = `Failed to ${tenantId ? "update" : "add"} tenant`;

@@ -65,7 +65,7 @@ export const DeleteBtn = ({ id, model, redirect = false }: DeleteBtnProps) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="dialog" size="zero">
+        <Button variant="dialog" size="zero" disabled={isPending}>
           <RiDeleteBin5Fill />
         </Button>
       </AlertDialogTrigger>

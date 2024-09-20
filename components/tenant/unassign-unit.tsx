@@ -1,6 +1,6 @@
 "use client";
 
-import { IoPersonRemove } from "react-icons/io5";
+import { useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,49 +9,51 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
+  AlertDialogTitle,
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
 import { Button } from "../ui/button";
-import { AlertDialogTitle } from "@radix-ui/react-alert-dialog";
-import { useState } from "react";
 import { removeTenant } from "@/lib/actions/tenant-actions";
 
-type RemoveTenantProps = {
-  unitId: string;
+type UnassignUnitProps = {
   tenantId: string;
+  unitId: string;
 };
 
-export const RemoveTenant = ({ unitId, tenantId }: RemoveTenantProps) => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const handleRemoveTenant = async () => {
+export const UnassignUnit = ({ tenantId, unitId }: UnassignUnitProps) => {
+  const [pending, setPending] = useState<boolean>(false);
+  const handleRemove = async () => {
     try {
-      setLoading(true);
+      setPending(true);
       const res = await removeTenant(tenantId, unitId);
+      if (res.success) {
+        //do something
+      } else {
+        // do something
+      }
     } catch (error) {
-      console.log(`Failed to remove tenant: ${error}`);
+      console.log(error);
     } finally {
-      setLoading(false);
+      setPending(false);
     }
   };
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button size="sm" disabled={loading}>
+        <Button size="sm" disabled={pending}>
           Unassign
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Remove this tenant?</AlertDialogTitle>
+          <AlertDialogTitle>Unassign this unit?</AlertDialogTitle>
           <AlertDialogDescription>
-            This will remove the tenant from this unit.
+            This will remove the tenant from this unit
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleRemoveTenant}>
-            Confirm
-          </AlertDialogAction>
+          <AlertDialogAction onClick={handleRemove}>Confirm</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
