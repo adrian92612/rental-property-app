@@ -85,7 +85,6 @@ export const TenantForm = ({ closeDialog, tenant }: TenantFormProps) => {
             action(new FormData(formRef.current!));
           })(e);
         }}
-        className="space-y-1"
       >
         {tenant && (
           <>
@@ -103,7 +102,7 @@ export const TenantForm = ({ closeDialog, tenant }: TenantFormProps) => {
           name="firstName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-bold">First Name</FormLabel>
+              <FormLabel>First Name</FormLabel>
               <FormControl>
                 <Input {...field} placeholder="John" />
               </FormControl>
@@ -117,7 +116,7 @@ export const TenantForm = ({ closeDialog, tenant }: TenantFormProps) => {
           name="lastName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-bold">Last Name</FormLabel>
+              <FormLabel>Last Name</FormLabel>
               <FormControl>
                 <Input {...field} placeholder="Doe" />
               </FormControl>
@@ -131,7 +130,7 @@ export const TenantForm = ({ closeDialog, tenant }: TenantFormProps) => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-bold">Email Address</FormLabel>
+              <FormLabel>Email Address</FormLabel>
               <FormControl>
                 <Input {...field} placeholder="john.doe@example.com" />
               </FormControl>
@@ -145,7 +144,7 @@ export const TenantForm = ({ closeDialog, tenant }: TenantFormProps) => {
           name="phoneNumber"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-bold">Phone Number</FormLabel>
+              <FormLabel>Phone Number</FormLabel>
               <FormControl>
                 <Input {...field} type="tel" placeholder="123456789" />
               </FormControl>
@@ -159,9 +158,9 @@ export const TenantForm = ({ closeDialog, tenant }: TenantFormProps) => {
           name="termInMonths"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-bold">Term in Months</FormLabel>
+              <FormLabel>Term in Months</FormLabel>
               <FormControl>
-                <Input {...field} type="number" step={1} />
+                <Input {...field} type="number" step={1} placeholder="1-60" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -172,15 +171,15 @@ export const TenantForm = ({ closeDialog, tenant }: TenantFormProps) => {
           control={form.control}
           name="leaseStart"
           render={({ field }) => (
-            <FormItem className="flex flex-col">
+            <FormItem className="">
               <FormLabel>Lease Start</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
-                      variant={"outline"}
+                      variant="outline"
                       className={cn(
-                        "w-full pl-3 text-left font-normal",
+                        "w-full pl-3 text-left border-0 border-b-2 rounded-none shadow-none",
                         !field.value && "text-muted-foreground"
                       )}
                     >
@@ -217,7 +216,7 @@ export const TenantForm = ({ closeDialog, tenant }: TenantFormProps) => {
           name="leaseEnd"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-bold">Lease End</FormLabel>
+              <FormLabel>Lease End</FormLabel>
               <FormControl>
                 <Input
                   {...field}
@@ -233,17 +232,16 @@ export const TenantForm = ({ closeDialog, tenant }: TenantFormProps) => {
         <Button
           type="submit"
           size="sm"
-          variant="secondary"
-          className="w-full font-bold text-lg"
+          className="w-full font-bold mt-4"
           disabled={isPending}
         >
           {isPending
             ? !!tenant
-              ? "Updating..."
-              : "Adding..."
+              ? "Updating Tenant..."
+              : "Adding Tenant..."
             : !!tenant
-            ? "Update"
-            : "Add"}
+            ? "Update Tenant"
+            : "Add Tenant"}
         </Button>
       </form>
     </Form>

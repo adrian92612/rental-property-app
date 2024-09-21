@@ -67,7 +67,6 @@ export const PropertyForm = ({ closeDialog, property }: PropertyFormProps) => {
             action(new FormData(formRef.current!));
           })(e);
         }}
-        className="space-y-1"
       >
         {state.message && <span>{state.message}</span>}
         <input type="hidden" name="propertyId" value={property?.id} />
@@ -77,7 +76,7 @@ export const PropertyForm = ({ closeDialog, property }: PropertyFormProps) => {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-bold">Property Name</FormLabel>
+              <FormLabel>Property Name</FormLabel>
               <FormControl>
                 <Input {...field} placeholder="Prima Tower" />
               </FormControl>
@@ -210,17 +209,16 @@ export const PropertyForm = ({ closeDialog, property }: PropertyFormProps) => {
         <Button
           type="submit"
           size="sm"
-          variant="secondary"
-          className="w-full font-bold text-lg"
+          className="rounded-sm font-bold mt-4 px-10 w-full"
           disabled={isPending}
         >
           {isPending
             ? !!property
-              ? "Updating..."
-              : "Adding..."
+              ? "Updating Property..."
+              : "Adding Property..."
             : !!property
-            ? "Update"
-            : "Add"}
+            ? "Update Property"
+            : "Add Property"}
         </Button>
       </form>
     </Form>

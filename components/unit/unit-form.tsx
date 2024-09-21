@@ -15,8 +15,13 @@ import { z } from "zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { UnitSchema } from "@/lib/zod-schemas/unit";
-import { Select, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { SelectContent } from "@radix-ui/react-select";
+import {
+  Select,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+} from "../ui/select";
 import { UnitFormData, upsertUnit } from "@/lib/actions/unit-actions";
 import { useToast } from "@/hooks/use-toast";
 
@@ -64,7 +69,6 @@ export const UnitForm = ({ closeDialog, unit, properties }: UnitFormProps) => {
             action(new FormData(formRef.current!));
           })(e);
         }}
-        className="space-y-1"
       >
         {state.message && <span>{state.message}</span>}
         {unit && <input type="hidden" name="unitId" value={unit.id} />}
@@ -87,7 +91,7 @@ export const UnitForm = ({ closeDialog, unit, properties }: UnitFormProps) => {
                       <SelectValue placeholder="Select a property" />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent className="bg-primary border p-2 max-h-52 overflow-y-auto">
+                  <SelectContent className="border p-2 max-h-52 overflow-y-auto">
                     <SelectItem value={unit.propertyId}>
                       {unit.property.name}
                     </SelectItem>
@@ -114,7 +118,7 @@ export const UnitForm = ({ closeDialog, unit, properties }: UnitFormProps) => {
                       <SelectValue placeholder="Select a property" />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent className="bg-primary border p-2 max-h-52 overflow-y-auto">
+                  <SelectContent className="border p-2 overflow-y-auto">
                     {properties?.map((property) => (
                       <SelectItem key={property.id} value={property.id}>
                         {property.name}
@@ -174,17 +178,16 @@ export const UnitForm = ({ closeDialog, unit, properties }: UnitFormProps) => {
         <Button
           type="submit"
           size="sm"
-          variant="secondary"
-          className="w-full font-bold text-lg"
+          className="w-full mt-4 font-bold "
           disabled={isPending}
         >
           {isPending
             ? !!unit
-              ? "Updating..."
-              : "Adding..."
+              ? "Updating Unit..."
+              : "Adding Unit..."
             : !!unit
-            ? "Update"
-            : "Add"}
+            ? "Update Unit"
+            : "Add Unit"}
         </Button>
       </form>
     </Form>
