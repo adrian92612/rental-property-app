@@ -7,8 +7,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  Content,
 } from "../ui/card";
-import { Content } from "../property/properties-card";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { getAvatarFallback } from "@/lib/utils";
 import { DeleteBtn } from "../delete-btn";

@@ -1,7 +1,15 @@
 "use client";
 
 import { FaLocationDot } from "react-icons/fa6";
-import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  Content,
+} from "../ui/card";
 import { DetailsBtn } from "../details-btn";
 import { FormDialog } from "../form-dialog";
 import { DeleteBtn } from "../delete-btn";
@@ -13,41 +21,27 @@ import { PropertyForm } from "./property-form";
 import { PropertyCardImage } from "./property-card-image";
 import { format } from "date-fns";
 
-type ContentProps = {
-  label: string;
-  value: string;
-};
-
-export const Content = ({ label, value }: ContentProps) => {
-  return (
-    <div className="flex items-start gap-3">
-      <span className="font-bold">{label}</span>
-      <span>{value}</span>
-    </div>
-  );
-};
-
 export const PropertiesCard = ({
   property,
 }: {
   property: PropertiesIncludeUnits;
 }) => {
   return (
-    <Card className="rounded-sm">
+    <Card>
       <CardHeader>
         <PropertyCardImage property={property} />
-        <h2 className="font-bold">{property.name}</h2>
-      </CardHeader>
-      <CardContent className="text-sm">
-        <p className="inline-flex items-center gap-2">
+        <CardTitle className="mt-2">{property.name}</CardTitle>
+        <CardDescription className="flex items-center gap-2 text-primary">
           <FaLocationDot />
           <span>{property.address}</span>
-        </p>
-        <p>Owner: {property.owner}</p>
-        <p>Contact Information: {property.contactInfo}</p>
-        <p>No. of Units: {property.units.length}</p>
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="text-sm">
+        <Content label="Owner:" value={property.owner} />
+        <Content label="Contact Info:" value={property.contactInfo} />
+        <Content label="Units:" value={property.units.length.toString()} />
       </CardContent>
-      <CardFooter className="h-22 border-t-2 py-1 flex items-center justify-end gap-1">
+      <CardFooter className="justify-end gap-1 pb-2">
         <DetailsBtn id={property.id} route={"properties"} />
         <FormDialog formFor="edit">
           {(closeDialog) => (
@@ -89,7 +83,7 @@ export const PropertyCard = ({
           value={format(property.updatedAt, "PPP")}
         />
       </CardContent>
-      <CardFooter className="h-22 flex items-center justify-end gap-1">
+      <CardFooter className="justify-end gap-1 pb-2">
         <FormDialog formFor="edit">
           {(closeDialog) => (
             <PropertyForm closeDialog={closeDialog} property={property} />

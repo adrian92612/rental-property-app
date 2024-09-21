@@ -85,7 +85,7 @@ export const IncomeExpenseChart = ({
             <XAxis
               dataKey="category"
               tickLine={false}
-              tickMargin={10}
+              tickMargin={5}
               axisLine={false}
             />
             <ChartTooltip
@@ -95,7 +95,7 @@ export const IncomeExpenseChart = ({
             <Bar dataKey="value" fill="var(--color-desktop)" radius={8}>
               <LabelList
                 position="top"
-                offset={12}
+                offset={8}
                 className="fill-foreground"
                 dataKey="value"
               />
@@ -103,7 +103,7 @@ export const IncomeExpenseChart = ({
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start ">
+      <CardFooter className="flex-col items-start pb-6">
         <div className="font-bold">
           Monthly cashflow of {calculate("cashflow")}
         </div>

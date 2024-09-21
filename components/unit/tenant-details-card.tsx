@@ -5,10 +5,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  Content,
 } from "../ui/card";
 import { AssignTenant } from "./assign-tenant";
 import { RemoveTenant } from "./remove-tenant";
-import { Content } from "../property/properties-card";
 import { format } from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { getAvatarFallback } from "@/lib/utils";

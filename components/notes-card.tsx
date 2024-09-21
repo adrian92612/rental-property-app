@@ -141,7 +141,7 @@ export const Notes = ({ notes, id, model }: NotesProps) => {
               </li>
             ))
           ) : (
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground pl-5">
               No notes available...
             </p>
           )}

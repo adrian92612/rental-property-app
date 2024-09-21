@@ -9,9 +9,9 @@ const PropertiesPage = async () => {
       <Header headerLabel="Properties" formComponent="property" />
       <section>
         {properties && properties.length && (
-          <ul className="grid place-items-center gap-4 lg:grid-cols-2 xl:grid-cols-3 pb-5">
+          <ul className="grid justify-items-stretch gap-5 lg:grid-cols-2 xl:grid-cols-3 pb-5">
             {properties.map((property) => (
-              <li key={property.id} className="w-11/12 max-w-[400px]">
+              <li key={property.id} className="">
                 <PropertiesCard property={property} />
               </li>
             ))}

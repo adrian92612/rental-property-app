@@ -9,7 +9,7 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "rounded-xl border bg-card text-card-foreground shadow flex flex-col",
+      "rounded-sm border  bg-card text-card-foreground shadow-lg flex flex-col",
       className
     )}
     {...props}
@@ -23,7 +23,7 @@ const CardHeader = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex flex-col space-y-1.5 p-6", className)}
+    className={cn("flex flex-col px-6 mb-4 pt-6", className)}
     {...props}
   />
 ));
@@ -57,7 +57,7 @@ const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("p-6 pt-0 flex-grow", className)} {...props} />
+  <div ref={ref} className={cn("px-6 flex-grow pb-2", className)} {...props} />
 ));
 CardContent.displayName = "CardContent";
 
@@ -67,11 +67,25 @@ const CardFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex items-center p-6 pt-0", className)}
+    className={cn("flex items-center px-6 pb-2", className)}
     {...props}
   />
 ));
 CardFooter.displayName = "CardFooter";
+
+type ContentProps = {
+  label: string;
+  value: string;
+};
+
+export const Content = ({ label, value }: ContentProps) => {
+  return (
+    <div className="flex items-start gap-1">
+      <span className="font-bold">{label}</span>
+      <span>{value}</span>
+    </div>
+  );
+};
 
 export {
   Card,

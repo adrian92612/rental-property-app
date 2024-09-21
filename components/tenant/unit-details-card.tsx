@@ -5,8 +5,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  Content,
 } from "../ui/card";
-import { Content } from "../property/properties-card";
 import { UnassignUnit } from "./unassign-unit";
 import { AssignUnit } from "./assign-unit";
 import { PropertiesIncludeAll } from "@/lib/actions/property-actions";
