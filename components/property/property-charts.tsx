@@ -70,7 +70,7 @@ export const IncomeExpenseChart = ({
   };
 
   return (
-    <Card className="w-full">
+    <Card>
       <CardHeader>
         <CardTitle>Monthly Income Vs Expense</CardTitle>
         <CardDescription>

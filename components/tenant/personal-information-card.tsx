@@ -72,7 +72,7 @@ export const PersonalInformation = ({ tenant }: PersonalInformationProps) => {
             <TenantForm closeDialog={closeDialog} tenant={tenant} />
           )}
         </FormDialog>
-        <DeleteBtn id={tenant.id} model="tenant" />
+        <DeleteBtn id={tenant.id} model="tenant" redirect />
       </CardFooter>
     </Card>
   );

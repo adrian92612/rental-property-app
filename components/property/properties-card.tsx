@@ -66,7 +66,7 @@ export const PropertyCard = ({
   property: PropertyIncludeAll;
 }) => {
   return (
-    <Card className="w-full">
+    <Card>
       <CardHeader>
         <PropertyCardImage property={property} />
         <h2 className="font-bold">{property.name}</h2>
@@ -95,7 +95,7 @@ export const PropertyCard = ({
             <PropertyForm closeDialog={closeDialog} property={property} />
           )}
         </FormDialog>
-        <DeleteBtn id={property.id} model={"property"} redirect={true} />
+        <DeleteBtn id={property.id} model={"property"} redirect />
       </CardFooter>
     </Card>
   );

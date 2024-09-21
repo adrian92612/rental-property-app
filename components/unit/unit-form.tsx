@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useRef } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -18,6 +18,7 @@ import { UnitSchema } from "@/lib/zod-schemas/unit";
 import { Select, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { SelectContent } from "@radix-ui/react-select";
 import { UnitFormData, upsertUnit } from "@/lib/actions/unit-actions";
+import { useToast } from "@/hooks/use-toast";
 
 type UnitFormProps = {
   closeDialog: () => void;
@@ -40,8 +41,17 @@ export const UnitForm = ({ closeDialog, unit, properties }: UnitFormProps) => {
     },
   });
   const formRef = useRef<HTMLFormElement>(null);
+  const { toast } = useToast();
 
-  if (state.success) closeDialog();
+  useEffect(() => {
+    if (state.success) {
+      toast({
+        title: `Unit has been succesfully ${unit ? "updated" : "added"}`,
+      });
+      state.success = false;
+      closeDialog();
+    }
+  }, [state.success, toast, unit, closeDialog]);
 
   return (
     <Form {...form}>
@@ -140,7 +150,7 @@ export const UnitForm = ({ closeDialog, unit, properties }: UnitFormProps) => {
             <FormItem>
               <FormLabel className="font-bold">Rent Amount</FormLabel>
               <FormControl>
-                <Input {...field} type="number" min={0} />
+                <Input {...field} type="number" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -154,7 +164,7 @@ export const UnitForm = ({ closeDialog, unit, properties }: UnitFormProps) => {
             <FormItem>
               <FormLabel className="font-bold">Due Date</FormLabel>
               <FormControl>
-                <Input {...field} type="number" min={1} max={31} step={1} />
+                <Input {...field} type="number" step={1} />
               </FormControl>
               <FormMessage />
             </FormItem>

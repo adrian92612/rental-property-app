@@ -36,7 +36,7 @@ export const UnitDetailsCard = ({ unit }: { unit: UnitDetailsInfo }) => {
         <FormDialog formFor="edit">
           {(closeDialog) => <UnitForm closeDialog={closeDialog} unit={unit} />}
         </FormDialog>
-        <DeleteBtn id={unit.id} model="unit" />
+        <DeleteBtn id={unit.id} model="unit" redirect />
       </CardFooter>
     </Card>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useRef } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -17,6 +17,7 @@ import { z } from "zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Property } from "@prisma/client";
+import { useToast } from "@/hooks/use-toast";
 
 type PropertyFormProps = {
   closeDialog: () => void;
@@ -27,6 +28,7 @@ export const PropertyForm = ({ closeDialog, property }: PropertyFormProps) => {
   const [state, action, isPending] = useActionState(upsertProperty, {
     message: "",
   });
+
   const form = useForm<z.output<typeof AddPropertySchema>>({
     resolver: zodResolver(AddPropertySchema),
     defaultValues: {
@@ -42,8 +44,17 @@ export const PropertyForm = ({ closeDialog, property }: PropertyFormProps) => {
     },
   });
   const formRef = useRef<HTMLFormElement>(null);
+  const { toast } = useToast();
 
-  if (state.success) closeDialog();
+  useEffect(() => {
+    if (state.success) {
+      toast({
+        title: `Property has been ${property ? "updated" : "added"}`,
+      });
+      closeDialog();
+    }
+    state.success = false;
+  }, [state.success, toast, property]);
 
   return (
     <Form {...form}>

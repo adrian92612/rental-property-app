@@ -7,6 +7,19 @@ import { genSalt, hashSync } from "bcrypt-ts";
 import { createId } from "@paralleldrive/cuid2";
 import { LoginSchema } from "../zod-schemas/login";
 import { cloudinary } from "../cloudinary-config";
+import { successState } from "./tenant-actions";
+import { revalidatePath } from "next/cache";
+
+export type FormState = {
+  success: boolean;
+  message: string;
+  fields?: Record<string, string>;
+};
+
+export type SuccessState = {
+  success: boolean;
+  message: string;
+};
 
 export type loginFormState = {
   message: string;
@@ -165,5 +178,115 @@ export const uploadImage = async (
     throw new Error("File must be an image");
   } catch (error) {
     console.error("Error uploading image: ", error);
+  }
+};
+
+export const addNote = async (
+  prevState: any,
+  formData: FormData
+): Promise<FormState> => {
+  const id = formData.get("id") as string;
+  const note = formData.get("note") as string;
+  const model = formData.get("model") as string;
+  try {
+    if (model === "property") {
+      await prisma.property.update({
+        where: { id: id },
+        data: {
+          notes: {
+            push: note,
+          },
+        },
+      });
+      revalidatePath(`/dashboard/properties/${id}`);
+    } else if (model === "unit") {
+      await prisma.unit.update({
+        where: { id: id },
+        data: {
+          notes: {
+            push: note,
+          },
+        },
+      });
+      revalidatePath(`/dashboard/units/${id}`);
+    } else if (model === "tenant") {
+      await prisma.tenant.update({
+        where: { id: id },
+        data: {
+          notes: {
+            push: note,
+          },
+        },
+      });
+
+      revalidatePath(`/dashboard/tenants/${id}`);
+    } else {
+      throw new Error(`${model} does not exists`);
+    }
+
+    return {
+      success: true,
+      message: `Note has been added to ${model}`,
+    };
+  } catch (error) {
+    console.error("Failed to add note: ", error);
+    return {
+      success: false,
+      message: "failed to add note, try again later.",
+      fields: { prevState },
+    };
+  }
+};
+
+type deleteNotesProps = {
+  id: string;
+  index: number;
+  notes: string[];
+  model: "property" | "unit" | "tenant";
+};
+
+export const deleteNote = async ({
+  id,
+  index,
+  notes,
+  model,
+}: deleteNotesProps): Promise<SuccessState> => {
+  try {
+    const newNotes = notes.filter((_, i) => i !== index);
+    if (model === "property") {
+      await prisma.property.update({
+        where: { id: id },
+        data: {
+          notes: newNotes,
+        },
+      });
+      revalidatePath(`/dashboard/properties/${id}`);
+    } else if (model === "unit") {
+      await prisma.unit.update({
+        where: { id: id },
+        data: {
+          notes: newNotes,
+        },
+      });
+      revalidatePath(`/dashboard/units/${id}`);
+    } else if (model === "tenant") {
+      await prisma.tenant.update({
+        where: { id: id },
+        data: {
+          notes: newNotes,
+        },
+      });
+      revalidatePath(`/dashboard/tenants/${id}`);
+    }
+    return {
+      success: true,
+      message: `Note has been deleted from ${model}`,
+    };
+  } catch (error) {
+    console.error("Failed to delete note: ", error);
+    return {
+      success: false,
+      message: "Failed to delete note, try again later",
+    };
   }
 };

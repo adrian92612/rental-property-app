@@ -1,11 +1,9 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Textarea } from "./ui/textarea";
-import { addUnitNote, deleteUnitNote } from "@/lib/actions/unit-actions";
-import { addTenantNote, deleteTenantNote } from "@/lib/actions/tenant-actions";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import {
   AlertDialog,
@@ -19,11 +17,13 @@ import {
   AlertDialogTrigger,
 } from "./ui/alert-dialog";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
+import { addNote, deleteNote } from "@/lib/actions/actions";
 
 type NotesProps = {
   notes: string[];
   id: string;
-  model: "unit" | "tenant";
+  model: "unit" | "tenant" | "property";
 };
 
 type NoteProps = {
@@ -31,26 +31,21 @@ type NoteProps = {
   index: number;
   notes: string[];
   id: string;
-  model: "unit" | "tenant";
+  model: "unit" | "tenant" | "property";
 };
 
 const Note = ({ note, index, notes, id, model }: NoteProps) => {
   const [pending, setPending] = useState<boolean>(false);
-
-  const action = {
-    unit: () => deleteUnitNote(id, index, notes),
-    tenant: () => deleteTenantNote(id, index, notes),
-  };
+  const { toast } = useToast();
 
   const handleDelete = async () => {
     try {
       setPending(true);
-      const res = await action[model]();
-      if (res.success) {
-        //do something
-      } else {
-        // do something
-      }
+      const res = await deleteNote({ id, index, notes, model });
+
+      toast({
+        title: res.message,
+      });
     } catch (error) {
       console.log(error);
     } finally {
@@ -62,7 +57,7 @@ const Note = ({ note, index, notes, id, model }: NoteProps) => {
     <div
       className={cn(
         pending && "text-muted-foreground",
-        "flex items-start p-2 hover:bg-muted rounded-sm"
+        "flex items-start hover:bg-muted px-4"
       )}
     >
       <p className="flex-1">{`- ${note}`}</p>
@@ -93,22 +88,32 @@ const Note = ({ note, index, notes, id, model }: NoteProps) => {
 };
 
 export const Notes = ({ notes, id, model }: NotesProps) => {
-  const getAction = () => {
-    return model === "unit" ? addUnitNote : addTenantNote;
-  };
-
-  const [state, action, isPending] = useActionState(getAction(), {
+  const [state, action, isPending] = useActionState(addNote, {
+    success: false,
     message: "",
   });
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (state.success) {
+      toast({
+        title: state.message,
+      });
+    }
+    state.success = false;
+  }, [state.success, toast]);
 
   return (
-    <Card className={cn(model === "unit" ? "lg:col-span-2" : "xl:col-span-3")}>
+    <Card
+      className={cn(model === "tenant" ? "xl:col-span-3" : "lg:col-span-2")}
+    >
       <CardHeader>
         <CardTitle>Notes</CardTitle>
       </CardHeader>
       <CardContent className="grid lg:grid-cols-2 gap-5">
         <form action={action}>
           <input type="hidden" name="id" value={id} />
+          <input type="hidden" name="model" value={model} />
           <Textarea
             name="note"
             disabled={isPending}
@@ -122,7 +127,7 @@ export const Notes = ({ notes, id, model }: NotesProps) => {
             </Button>
           </div>
         </form>
-        <ul className="max-h-52 overflow-y-auto p-2 border rounded-sm shadow-sm text-sm">
+        <ul className="h-52 overflow-y-auto py-2 border rounded-sm shadow-sm">
           {notes.length ? (
             notes.map((note, i) => (
               <li key={i}>

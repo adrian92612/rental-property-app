@@ -22,6 +22,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "../ui/calendar";
 import { addMonths, format } from "date-fns";
+import { useToast } from "@/hooks/use-toast";
 
 type TenantFormProps = {
   closeDialog: () => void;
@@ -49,6 +50,7 @@ export const TenantForm = ({ closeDialog, tenant }: TenantFormProps) => {
   const { watch, setValue } = form;
   const leaseStart = watch("leaseStart");
   const termInMonths = watch("termInMonths");
+  const { toast } = useToast();
 
   useEffect(() => {
     if (leaseStart && termInMonths) {
@@ -60,9 +62,17 @@ export const TenantForm = ({ closeDialog, tenant }: TenantFormProps) => {
     }
   }, [leaseStart, termInMonths, setValue]);
 
-  const formRef = useRef<HTMLFormElement>(null);
+  useEffect(() => {
+    if (state.success) {
+      toast({
+        title: `Tenant has been succesfully ${tenant ? "updated" : "added"}`,
+      });
+      closeDialog();
+      state.success = false;
+    }
+  }, [state.success, toast, tenant, closeDialog]);
 
-  if (state.success) closeDialog();
+  const formRef = useRef<HTMLFormElement>(null);
 
   return (
     <Form {...form}>

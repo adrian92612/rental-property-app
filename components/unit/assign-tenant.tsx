@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
-import { MdOutlineAssignmentInd } from "react-icons/md";
 import {
   Command,
   CommandEmpty,
@@ -14,6 +13,7 @@ import {
 } from "../ui/command";
 import { Tenant } from "@prisma/client";
 import { assignTenant } from "@/lib/actions/tenant-actions";
+import { useToast } from "@/hooks/use-toast";
 
 type AssignTenantProps = {
   tenants: Tenant[];
@@ -23,20 +23,22 @@ type AssignTenantProps = {
 export const AssignTenant = ({ tenants, unitId }: AssignTenantProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const { toast } = useToast();
 
   const handleSelect = async (tenantId: string) => {
-    console.log(tenantId);
     try {
       setLoading(true);
       setOpen(false);
       const res = await assignTenant(tenantId, unitId);
-      if (res.success) {
-        // do something else
-      } else {
-        throw new Error(res.message || "Failed to assign tenant");
-      }
+      const msg = res.success
+        ? "Tenant has been assigned"
+        : "Failed to assign tenant";
+      toast({
+        title: msg,
+      });
     } catch (error) {
       console.log(error);
+      toast({ title: "Something went wrong, try again later" });
     } finally {
       setLoading(false);
     }
@@ -59,6 +61,7 @@ export const AssignTenant = ({ tenants, unitId }: AssignTenantProps) => {
 
                 return (
                   <CommandItem
+                    key={tenant.id}
                     id={tenant.id}
                     value={fullname}
                     onSelect={() => handleSelect(tenant.id)}

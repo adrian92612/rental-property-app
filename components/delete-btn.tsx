@@ -21,6 +21,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "./ui/alert-dialog";
+import { useToast } from "@/hooks/use-toast";
 
 type DeleteBtnProps = {
   id: string;
@@ -31,6 +32,7 @@ type DeleteBtnProps = {
 export const DeleteBtn = ({ id, model, redirect = false }: DeleteBtnProps) => {
   const [isPending, setIsPending] = useState(false);
   const router = useRouter();
+  const { toast } = useToast();
   const actions = {
     property: () => deleteProperty(id),
     unit: () => deleteUnit(id),
@@ -51,12 +53,20 @@ export const DeleteBtn = ({ id, model, redirect = false }: DeleteBtnProps) => {
     try {
       setIsPending(true);
       const res = await actions[model]();
-      if (res.success) {
-        // do some toast
-        if (redirect) router.push(routes[model]);
-      }
+      const msg = res.success
+        ? `${getTitle()} has been deleted`
+        : `Failed to delete ${getTitle()}`;
+
+      toast({
+        title: msg,
+      });
+
+      if (res.success && redirect) router.push(routes[model]);
     } catch (error) {
       console.error(error);
+      toast({
+        title: "Something went wrong, try again later",
+      });
     } finally {
       setIsPending(false);
     }

@@ -1,10 +1,35 @@
 import { DataTable } from "@/components/data-table";
+import { Documents } from "@/components/documents-card";
 import { Header } from "@/components/header";
+import { Notes } from "@/components/notes-card";
 import { PropertyCard } from "@/components/property/properties-card";
 import { IncomeExpenseChart } from "@/components/property/property-charts";
 import { propertyUnitsColumns } from "@/components/property/property-unit-columns";
 import { getProperty } from "@/lib/actions/property-actions";
 import { UnitFormData } from "@/lib/actions/unit-actions";
+
+const documentList = [
+  "Property Deed",
+  "Title Report",
+  "Mortgage Documents",
+  "Property Tax Statements",
+  "Insurance Policies",
+  "Inspection Reports",
+  "Appraisal Reports",
+  "Maintenance and Repair Records",
+  "Renovation and Improvement Documents",
+  "Zoning and Compliance Certificates",
+  "Environmental Reports",
+  "Certificates of Occupancy",
+  "Floor Plans and Blueprints",
+  "Utility Bills",
+  "Lease Agreements for Units",
+  "Tenant Roster",
+  "Rental Income Statements",
+  "Property Management Agreements",
+  "Homeowners Association (HOA) Documents",
+  "Licenses and Permits",
+];
 
 const PropertyDetailsPage = async ({ params }: { params: { id: string } }) => {
   const property = await getProperty(params.id);
@@ -24,7 +49,7 @@ const PropertyDetailsPage = async ({ params }: { params: { id: string } }) => {
   return (
     <>
       <Header headerLabel="Property Details" formComponent="property" />
-      <div className="grid lg:grid-cols-2 mt-5 gap-5">
+      <div className="grid justify-items-stretch lg:grid-cols-2 mt-5 gap-5">
         <PropertyCard property={property} />
         <IncomeExpenseChart
           rentalIncome={getRentalIncome()}
@@ -32,12 +57,18 @@ const PropertyDetailsPage = async ({ params }: { params: { id: string } }) => {
           mortgage={property.mortgagePayment}
         />
 
-        <div className="lg:col-span-2 w-full">
+        <div className="lg:col-span-2">
           <DataTable
             columns={propertyUnitsColumns}
             data={unitsWithPropertyName}
           />
         </div>
+        <Notes
+          notes={property.notes || []}
+          id={property.id}
+          model={"property"}
+        />
+        <Documents list={documentList} model={"unit"} />
       </div>
     </>
   );

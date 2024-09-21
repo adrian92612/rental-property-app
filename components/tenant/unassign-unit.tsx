@@ -14,6 +14,7 @@ import {
 } from "../ui/alert-dialog";
 import { Button } from "../ui/button";
 import { removeTenant } from "@/lib/actions/tenant-actions";
+import { useToast } from "@/hooks/use-toast";
 
 type UnassignUnitProps = {
   tenantId: string;
@@ -22,17 +23,22 @@ type UnassignUnitProps = {
 
 export const UnassignUnit = ({ tenantId, unitId }: UnassignUnitProps) => {
   const [pending, setPending] = useState<boolean>(false);
+  const { toast } = useToast();
   const handleRemove = async () => {
     try {
       setPending(true);
       const res = await removeTenant(tenantId, unitId);
-      if (res.success) {
-        //do something
-      } else {
-        // do something
-      }
+      const msg = res.success
+        ? "Unit has been unassigned"
+        : "Failed to unassign unit";
+      toast({
+        title: msg,
+      });
     } catch (error) {
       console.log(error);
+      toast({
+        title: "Something went wrong, try again later",
+      });
     } finally {
       setPending(false);
     }

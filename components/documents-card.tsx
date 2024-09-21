@@ -1,3 +1,5 @@
+"use client";
+
 import { FaFileDownload } from "react-icons/fa";
 import {
   Card,
@@ -8,14 +10,21 @@ import {
 } from "./ui/card";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
 
 const Document = ({ label }: { label: string }) => {
+  const { toast } = useToast();
   return (
     <div className="flex gap-1 items-center w-full">
       {label}
       <Button
         size="zero"
         className="bg-transparent text-primary shadow-none h-5 w-5 hover:text-primary-foreground"
+        onClick={() => {
+          toast({
+            title: `Downloading ${label}...`,
+          });
+        }}
       >
         <FaFileDownload />
       </Button>

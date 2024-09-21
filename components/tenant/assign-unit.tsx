@@ -15,6 +15,8 @@ import { PropertiesIncludeAll } from "@/lib/actions/property-actions";
 import { Unit } from "@prisma/client";
 import { UnitWithTenant } from "@/lib/actions/unit-actions";
 import { assignTenant } from "@/lib/actions/tenant-actions";
+import { useToast } from "@/hooks/use-toast";
+import { MdSportsGolf } from "react-icons/md";
 
 type AssignUnitProps = {
   properties: PropertiesIncludeAll[];
@@ -26,6 +28,7 @@ export const AssignUnit = ({ properties, tenantId }: AssignUnitProps) => {
   const [open2, setOpen2] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [units, setUnits] = useState<Unit[]>([]);
+  const { toast } = useToast();
 
   const handleSelect = (units: UnitWithTenant[]) => {
     const vacantUnits = units.filter((unit) => unit.tenant === null);
@@ -33,18 +36,22 @@ export const AssignUnit = ({ properties, tenantId }: AssignUnitProps) => {
     unitPopoverRef.current?.click();
   };
 
-  const handleAssignUnit = async (unitId: string) => {
+  const handleAssignUnit = async (unitId: string, unitNumber: string) => {
     try {
       setOpen2(false);
       setLoading(true);
       const res = await assignTenant(tenantId, unitId);
-      if (res.success) {
-        // do something
-      } else {
-        // do something
-      }
+      const msg = res.success
+        ? "Unit has been assigned"
+        : "Failed to assign unit";
+      toast({
+        title: msg,
+      });
     } catch (error) {
       console.log(error);
+      toast({
+        title: "Something went wrong, try again later",
+      });
     } finally {
       setLoading(false);
     }
@@ -53,7 +60,7 @@ export const AssignUnit = ({ properties, tenantId }: AssignUnitProps) => {
   const unitPopoverRef = useRef<HTMLButtonElement>(null);
 
   return (
-    <>
+    <div className="relative">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button size="sm" className="z-10" disabled={loading}>
@@ -86,7 +93,7 @@ export const AssignUnit = ({ properties, tenantId }: AssignUnitProps) => {
             ref={unitPopoverRef}
             tabIndex={-1}
             disabled={loading}
-            className="absolute border-none shadow-none bg-transparent p-0 z-[-1]"
+            className="absolute border-none shadow-none bg-transparent p-0 z-[-1] left-0"
           ></Button>
         </PopoverTrigger>
         <PopoverContent side="left">
@@ -99,7 +106,7 @@ export const AssignUnit = ({ properties, tenantId }: AssignUnitProps) => {
                   <CommandItem
                     key={unit.id}
                     value={unit.id}
-                    onSelect={() => handleAssignUnit(unit.id)}
+                    onSelect={() => handleAssignUnit(unit.id, unit.number)}
                   >
                     {unit.number}
                   </CommandItem>
@@ -109,6 +116,6 @@ export const AssignUnit = ({ properties, tenantId }: AssignUnitProps) => {
           </Command>
         </PopoverContent>
       </Popover>
-    </>
+    </div>
   );
 };
