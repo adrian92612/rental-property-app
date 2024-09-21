@@ -1,17 +1,18 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { Libre_Baskerville, Montserrat } from "next/font/google";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["800", "900", "500", "700"],
+  variable: "--font-montserrat",
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+
+const libreBaskerville = Libre_Baskerville({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-libre-baskerville",
 });
 
 export const metadata: Metadata = {
@@ -25,9 +26,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className={`${libreBaskerville.variable} ${montserrat.variable}`}
+    >
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased max-w-screen-2xl 2xl:mx-auto 2xl:border-x-2`}
+        className={
+          "font-libreBaskerville antialiased max-w-screen-2xl 2xl:mx-auto 2xl:border-x-2"
+        }
       >
         {children}
       </body>
