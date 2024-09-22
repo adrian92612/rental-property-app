@@ -1,3 +1,5 @@
+"use client";
+
 import { getUserImage, logout } from "@/lib/actions/actions";
 import { Button } from "../ui/button";
 import { IoIosMenu } from "react-icons/io";
@@ -7,8 +9,14 @@ import { MdSpaceDashboard } from "react-icons/md";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { getAvatarFallback } from "@/lib/utils";
-import { Sheet, SheetClose, SheetContent, SheetTrigger } from "../ui/sheet";
-import { SideBarSheet } from "./sidebar-sheet";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTrigger,
+} from "../ui/sheet";
+import { useState } from "react";
 
 const links = [
   {
@@ -33,7 +41,7 @@ const links = [
   },
 ];
 
-export const NavLinks = () => {
+const NavLinks = () => {
   return (
     <nav>
       <ul>
@@ -43,7 +51,7 @@ export const NavLinks = () => {
               asChild
               variant="link"
               size="lg"
-              className="text-primary text-xl hover:bg-white w-full justify-start rounded-none px-14"
+              className="text-primary-foreground text-xl hover:bg-primary-foreground hover:text-primary w-full justify-start rounded-none"
             >
               <Link href={link.href} className="flex items-center gap-3">
                 {link.icon} {link.label}
@@ -61,7 +69,7 @@ const LogoutBtn = async () => {
   return (
     <form
       action={logout}
-      className="flex items-center gap-2 sm:border-t border-primary sm:pt-2 w-full justify-end"
+      className="flex items-center gap-2 sm:border-t border-primary-foreground sm:pt-2 w-full justify-end"
     >
       <Avatar>
         <AvatarImage src={user?.image || ""} alt="Picture of user" />
@@ -76,10 +84,20 @@ const LogoutBtn = async () => {
   );
 };
 
-export const SideBar = async () => {
+export const SideBar = () => {
+  const [open, setOpen] = useState(false);
   return (
-    <div className="sm:sticky sm:top-0 sm:h-screen flex sm:flex-col items-center justify-between px-5 py-3 sm:py-5 bg-primary-foreground overflow-hidden">
-      <SideBarSheet />
+    <div className="sm:sticky sm:top-0 sm:h-screen flex sm:flex-col items-center justify-between px-5 py-3 sm:py-5 bg-primary">
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetTrigger className="sm:hidden">
+          <IoIosMenu className="h-8 w-8 text-primary-foreground" />
+        </SheetTrigger>
+        <SheetContent side="left">
+          <SheetHeader onClick={() => setOpen(false)} className="bg-red-100">
+            <NavLinks />
+          </SheetHeader>
+        </SheetContent>
+      </Sheet>
 
       <div className="hidden sm:block">
         <NavLinks />
