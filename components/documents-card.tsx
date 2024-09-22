@@ -18,8 +18,9 @@ const Document = ({ label }: { label: string }) => {
     <div className="flex gap-1 items-center w-full">
       {label}
       <Button
-        size="zero"
-        className="bg-transparent text-primary shadow-none h-5 w-5 hover:text-primary-foreground"
+        size="icon"
+        variant="ghost"
+        className="h-5 w-5"
         onClick={() => {
           toast({
             title: `Downloading ${label}...`,

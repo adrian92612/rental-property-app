@@ -124,7 +124,7 @@ export const updatePropertyImage = async (
     revalidatePath(`/dashboard/properties/${propertyId}`);
 
     return {
-      message: `Image for property ${propertyId} updated successfully.`,
+      message: "Image for property updated successfully.",
       success: true,
       imageUrl: res.imageUrl,
     };

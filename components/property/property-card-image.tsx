@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import { RiImageEditFill } from "react-icons/ri";
 import { Property } from "@prisma/client";
+import { useToast } from "@/hooks/use-toast";
 
 export const PropertyCardImage = ({ property }: { property: Property }) => {
   const [previewImage, setPreviewImage] = useState<string | null>(
@@ -13,6 +14,7 @@ export const PropertyCardImage = ({ property }: { property: Property }) => {
   );
   const [isPending, setIsPending] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
 
   const handleButtonClick = () => fileInputRef.current?.click();
 
@@ -30,9 +32,12 @@ export const PropertyCardImage = ({ property }: { property: Property }) => {
         property.imagePublicId ?? ""
       );
 
+      toast({
+        title: res.message,
+      });
+
       if (res.success) {
         setPreviewImage(res.imageUrl ?? "");
-        // do something else
       } else {
         throw new Error(`Failed to update image of ${property.name}`);
       }
@@ -72,9 +77,10 @@ export const PropertyCardImage = ({ property }: { property: Property }) => {
         onClick={handleButtonClick}
         disabled={isPending}
         size="icon"
-        className="absolute p-1 top-0 right-0 m-1 backdrop-blur-md bg-primary-foreground rounded-full overflow-hidden text-primary border-2 border-primary hover:text-cyan-600"
+        variant="ghost"
+        className="absolute top-0 h-7 w-7 border right-0 m-1.5 bg-primary-foreground overflow-hidden text-primary text-2xl"
       >
-        <RiImageEditFill className="h-8 w-8" />
+        <RiImageEditFill />
       </Button>
     </div>
   );

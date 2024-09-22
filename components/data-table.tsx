@@ -53,7 +53,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      <div className="rounded-sm min-h-96 border border-primary shadow-md">
+      <div className="rounded-sm min-h-96 border shadow-lg">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -118,7 +118,7 @@ export function DataTable<TData, TValue>({
           value={globalFilter}
           onChange={(e) => table.setGlobalFilter(String(e.target.value))}
           placeholder="Search table..."
-          className="max-w-56 border-primary"
+          className="max-w-56 bg-card shadow-lg"
         />
         <Button
           size="sm"

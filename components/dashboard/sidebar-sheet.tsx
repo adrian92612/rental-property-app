@@ -11,9 +11,9 @@ export const SideBarSheet = () => {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger className="sm:hidden">
-        <IoIosMenu className="h-8 w-8 text-primary" />
+        <IoIosMenu className="h-8 w-8 text-primary-foreground" />
       </SheetTrigger>
-      <SheetContent side="left" className="p-0 pt-10 bg-primary-foreground">
+      <SheetContent side="left" className="p-0 pt-10 bg-popover-foreground">
         <SheetHeader onClick={() => setOpen(false)}>
           <NavLinks />
         </SheetHeader>

@@ -64,10 +64,12 @@ const Note = ({ note, index, notes, id, model }: NoteProps) => {
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button
+            variant="ghost"
+            size="icon"
+            className="h-5 w-5 text-lg"
             disabled={pending}
-            className="ml-2 mt-1 bg-transparent p-0 h-4 w-4 shadow-none text-primary hover:text-primary-foreground"
           >
-            <RiDeleteBin5Fill className="h-4 w-4" />
+            <RiDeleteBin5Fill />
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>

@@ -67,12 +67,17 @@ export const PersonalInformation = ({ tenant }: PersonalInformationProps) => {
         </div>
       </CardContent>
       <CardFooter className="flex justify-end">
-        <FormDialog formFor="edit">
+        <FormDialog formFor="edit" className="text-2xl">
           {(closeDialog) => (
             <TenantForm closeDialog={closeDialog} tenant={tenant} />
           )}
         </FormDialog>
-        <DeleteBtn id={tenant.id} model="tenant" redirect />
+        <DeleteBtn
+          id={tenant.id}
+          model="tenant"
+          redirect
+          className="text-2xl"
+        />
       </CardFooter>
     </Card>
   );

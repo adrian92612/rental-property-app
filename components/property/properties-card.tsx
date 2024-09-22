@@ -42,13 +42,17 @@ export const PropertiesCard = ({
         <Content label="Units:" value={property.units.length.toString()} />
       </CardContent>
       <CardFooter className="justify-end gap-1 pb-2">
-        <DetailsBtn id={property.id} route={"properties"} />
-        <FormDialog formFor="edit">
+        <DetailsBtn
+          id={property.id}
+          route={"properties"}
+          className="text-2xl"
+        />
+        <FormDialog formFor="edit" className="text-2xl">
           {(closeDialog) => (
             <PropertyForm closeDialog={closeDialog} property={property} />
           )}
         </FormDialog>
-        <DeleteBtn id={property.id} model={"property"} />
+        <DeleteBtn id={property.id} model={"property"} className="text-2xl" />
       </CardFooter>
     </Card>
   );
@@ -84,12 +88,17 @@ export const PropertyCard = ({
         />
       </CardContent>
       <CardFooter className="justify-end gap-1 pb-2">
-        <FormDialog formFor="edit">
+        <FormDialog formFor="edit" className="2xl">
           {(closeDialog) => (
             <PropertyForm closeDialog={closeDialog} property={property} />
           )}
         </FormDialog>
-        <DeleteBtn id={property.id} model={"property"} redirect />
+        <DeleteBtn
+          id={property.id}
+          model={"property"}
+          redirect
+          className="text-2xl"
+        />
       </CardFooter>
     </Card>
   );

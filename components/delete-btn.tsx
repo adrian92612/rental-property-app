@@ -22,14 +22,21 @@ import {
   AlertDialogTrigger,
 } from "./ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 type DeleteBtnProps = {
   id: string;
   model: "property" | "unit" | "tenant";
   redirect?: boolean;
+  className?: string;
 };
 
-export const DeleteBtn = ({ id, model, redirect = false }: DeleteBtnProps) => {
+export const DeleteBtn = ({
+  id,
+  model,
+  redirect = false,
+  className,
+}: DeleteBtnProps) => {
   const [isPending, setIsPending] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
@@ -75,7 +82,12 @@ export const DeleteBtn = ({ id, model, redirect = false }: DeleteBtnProps) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="dialog" size="zero" disabled={isPending}>
+        <Button
+          variant="ghost"
+          size="icon"
+          className={cn("text-xl", className)}
+          disabled={isPending}
+        >
           <RiDeleteBin5Fill />
         </Button>
       </AlertDialogTrigger>
@@ -83,7 +95,7 @@ export const DeleteBtn = ({ id, model, redirect = false }: DeleteBtnProps) => {
         <AlertDialogHeader>
           <AlertDialogTitle>Delete this {getTitle()}?</AlertDialogTitle>
           <AlertDialogDescription>
-            This will be permenantly removed.
+            This {model} will be permenantly removed.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

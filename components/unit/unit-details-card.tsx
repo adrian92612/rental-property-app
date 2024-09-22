@@ -32,10 +32,10 @@ export const UnitDetailsCard = ({ unit }: { unit: UnitDetailsInfo }) => {
         <Content label="Updated At:" value={format(unit.updatedAt, "PPP")} />
       </CardContent>
       <CardFooter className="justify-end items-center">
-        <FormDialog formFor="edit">
+        <FormDialog formFor="edit" className="text-2xl">
           {(closeDialog) => <UnitForm closeDialog={closeDialog} unit={unit} />}
         </FormDialog>
-        <DeleteBtn id={unit.id} model="unit" redirect />
+        <DeleteBtn id={unit.id} model="unit" redirect className="text-2xl" />
       </CardFooter>
     </Card>
   );

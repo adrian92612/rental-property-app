@@ -15,27 +15,38 @@ import {
 import React, { useState } from "react";
 import { Button } from "./ui/button";
 import { PiNotePencilBold } from "react-icons/pi";
+import { cn } from "@/lib/utils";
+import { Edit } from "lucide-react";
 
 type FormDialogProps = {
   formFor: "property" | "unit" | "tenant" | "edit";
   children: (closeDialog: () => void) => React.ReactElement;
+  className?: string;
 };
 
-export const FormDialog = ({ formFor, children }: FormDialogProps) => {
+export const FormDialog = ({
+  formFor,
+  children,
+  className,
+}: FormDialogProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const closeDialog = () => setIsOpen(false);
 
   const icons = {
-    property: <MdAddHome className="h-8 w-8" />,
-    unit: <FaDoorClosed className="h-8 w-8" />,
-    tenant: <IoPersonAdd className="h-8 w-8" />,
+    property: <MdAddHome />,
+    unit: <FaDoorClosed />,
+    tenant: <IoPersonAdd />,
     edit: <PiNotePencilBold />,
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen} modal={true}>
       <DialogTrigger asChild>
-        <Button variant="dialog" size="zero">
+        <Button
+          variant="ghost"
+          size="icon"
+          className={cn(formFor === "edit" ? "text-xl" : "text-3xl", className)}
+        >
           {icons[formFor]}
         </Button>
       </DialogTrigger>

@@ -39,7 +39,15 @@ export const TenantDetailsCard = ({
             </AvatarFallback>
           </Avatar>
           <CardTitle className="text-lg">Tenant Details</CardTitle>
-          <div>{tenant && <DetailsBtn id={tenant.id} route={"tenants"} />}</div>
+          <div>
+            {tenant && (
+              <DetailsBtn
+                id={tenant.id}
+                route={"tenants"}
+                className="text-2xl"
+              />
+            )}
+          </div>
         </div>
       </CardHeader>
       <CardContent>

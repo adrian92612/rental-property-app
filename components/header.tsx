@@ -5,7 +5,7 @@ import { FormDialog } from "./form-dialog";
 import { UnitForm } from "./unit/unit-form";
 import { PropertyForm } from "./property/property-form";
 import { TenantForm } from "./tenant/tenant-form";
-import { Libre_Baskerville } from "next/font/google";
+import { Button } from "./ui/button";
 
 type HeaderProps = {
   headerLabel: string;
@@ -29,14 +29,14 @@ export const Header = ({
     }
   };
   return (
-    <div className="sticky top-0 flex items-center justify-between p-5 backdrop-blur-md z-10">
+    <div className="sticky top-0 flex items-center justify-between p-5 backdrop-blur-md z-10 ">
       <FormDialog formFor={formComponent}>
         {(closeDialog) => renderForm(closeDialog)}
       </FormDialog>
       <h1 className="font-bold text-lg tracking-widest">{headerLabel}</h1>
-      <div>
-        <MdDarkMode className="h-8 w-8" />
-      </div>
+      <Button variant="ghost" size="icon" className="text-4xl">
+        <MdDarkMode />
+      </Button>
     </div>
   );
 };

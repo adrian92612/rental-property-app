@@ -34,7 +34,9 @@ export const UnitDetails = async ({
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle>Unit Details</CardTitle>
-          {unit && <DetailsBtn id={unit.id} route="units" />}
+          {unit && (
+            <DetailsBtn id={unit.id} route="units" className="text-2xl" />
+          )}
         </div>
       </CardHeader>
       <CardContent>
