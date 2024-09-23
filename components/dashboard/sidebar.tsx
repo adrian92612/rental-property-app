@@ -7,7 +7,6 @@ import { MdSpaceDashboard } from "react-icons/md";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { getAvatarFallback } from "@/lib/utils";
-import { Sheet, SheetClose, SheetContent, SheetTrigger } from "../ui/sheet";
 import { SideBarSheet } from "./sidebar-sheet";
 
 const links = [
@@ -43,7 +42,7 @@ export const NavLinks = () => {
               asChild
               variant="link"
               size="default"
-              className="text-primary-foreground dark:text-primary hover:bg-background text-xl w-full justify-start rounded-none px-14"
+              className="font-montserrat text-background dark:text-foreground hover:text-foreground hover:bg-background text-xl w-full justify-start rounded-none px-14 h-12"
             >
               <Link href={link.href} className="flex items-center gap-3">
                 {link.icon} {link.label}
@@ -78,7 +77,7 @@ const LogoutBtn = async () => {
 
 export const SideBar = async () => {
   return (
-    <div className="sm:sticky sm:top-0 sm:h-screen flex sm:flex-col border-r-2 items-center justify-between px-5 py-3 sm:py-5 bg-foreground dark:bg-background overflow-hidden">
+    <div className="sm:sticky sm:top-0 sm:h-screen flex sm:flex-col items-center justify-between px-5 py-3 sm:py-5 bg-card-foreground dark:bg-card overflow-hidden">
       <SideBarSheet />
 
       <div className="hidden sm:block">
