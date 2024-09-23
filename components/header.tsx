@@ -1,11 +1,12 @@
 "use client";
 
-import { MdDarkMode } from "react-icons/md";
+import { MdDarkMode, MdLightMode } from "react-icons/md";
 import { FormDialog } from "./form-dialog";
 import { UnitForm } from "./unit/unit-form";
 import { PropertyForm } from "./property/property-form";
 import { TenantForm } from "./tenant/tenant-form";
 import { Button } from "./ui/button";
+import { useTheme } from "next-themes";
 
 type HeaderProps = {
   headerLabel: string;
@@ -28,15 +29,35 @@ export const Header = ({
         return <TenantForm closeDialog={closeDialog} />;
     }
   };
+  const { setTheme, resolvedTheme } = useTheme();
+
   return (
-    <div className="sticky top-0 flex items-center justify-between p-5 backdrop-blur-md z-10 ">
+    <div className="sticky top-0 flex items-center justify-between p-5 backdrop-blur-md z-10 dark:text-primary">
       <FormDialog formFor={formComponent}>
         {(closeDialog) => renderForm(closeDialog)}
       </FormDialog>
       <h1 className="font-bold text-lg tracking-widest">{headerLabel}</h1>
-      <Button variant="ghost" size="icon" className="text-4xl">
-        <MdDarkMode />
-      </Button>
+      <div className="flex items-center">
+        {resolvedTheme === "light" ? (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-4xl"
+            onClick={() => setTheme("dark")}
+          >
+            <MdDarkMode />
+          </Button>
+        ) : (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-4xl"
+            onClick={() => setTheme("light")}
+          >
+            <MdLightMode />
+          </Button>
+        )}
+      </div>
     </div>
   );
 };

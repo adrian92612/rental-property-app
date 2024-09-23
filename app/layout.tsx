@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Libre_Baskerville, Montserrat } from "next/font/google";
+import { ThemeProvider } from "@/components/ui/theme-provider";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -32,10 +33,16 @@ export default function RootLayout({
     >
       <body
         className={
-          "font-libreBaskerville antialiased max-w-screen-2xl 2xl:mx-auto 2xl:border-x-2"
+          "font-libreBaskerville antialiased max-w-screen-2xl 2xl:mx-auto 2xl:border-x-2 bg-background text-primary"
         }
       >
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
       <Toaster />
     </html>
