@@ -30,6 +30,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${libreBaskerville.variable} ${montserrat.variable}`}
+      suppressHydrationWarning
     >
       <body
         className={
@@ -38,13 +39,14 @@ export default function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="system"
+          enableSystem
           disableTransitionOnChange
         >
           {children}
         </ThemeProvider>
+        <Toaster />
       </body>
-      <Toaster />
     </html>
   );
 }

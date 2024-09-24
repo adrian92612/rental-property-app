@@ -46,9 +46,7 @@ export type FormState = {
   fields?: Record<string, string>;
 };
 
-export const getPropertyIdsAndNames = async (): Promise<
-  PropertyIdName[] | null
-> => {
+export const getPropertyIdsAndNames = async (): Promise<PropertyIdName[]> => {
   try {
     const properties = prisma.property.findMany({
       select: {
@@ -62,7 +60,7 @@ export const getPropertyIdsAndNames = async (): Promise<
     return properties;
   } catch (error) {
     console.error("Failed to fetch properties: ", error);
-    return null;
+    return [];
   }
 };
 
@@ -113,7 +111,7 @@ export const getUnitDetails = async (
   }
 };
 
-export const getUnitsTableInfo = async (): Promise<UnitFormData[] | null> => {
+export const getUnitsTableInfo = async (): Promise<UnitFormData[]> => {
   try {
     const units = await prisma.unit.findMany({
       include: {
@@ -131,7 +129,7 @@ export const getUnitsTableInfo = async (): Promise<UnitFormData[] | null> => {
     return units;
   } catch (error) {
     console.error("Failed to fetch units: ", error);
-    return null;
+    return [];
   }
 };
 
