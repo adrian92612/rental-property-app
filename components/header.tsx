@@ -32,7 +32,7 @@ export const Header = ({
   const { setTheme, resolvedTheme } = useTheme();
 
   return (
-    <div className="sticky top-0 flex items-center justify-between p-5 backdrop-blur-md z-10 dark:text-primary">
+    <div className="sticky top-0 flex items-center justify-between px-5 py-2 backdrop-blur-md z-10 dark:text-primary">
       <FormDialog formFor={formComponent}>
         {(closeDialog) => renderForm(closeDialog)}
       </FormDialog>

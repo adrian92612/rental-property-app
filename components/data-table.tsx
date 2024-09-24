@@ -22,6 +22,7 @@ import {
 import { Button } from "./ui/button";
 import { useState } from "react";
 import { Input } from "./ui/input";
+import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -124,19 +125,20 @@ export function DataTable<TData, TValue>({
           size="sm"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
-          className="ml-auto"
+          className="ml-auto text-3xl"
         >
-          Prev
+          <MdNavigateBefore />
         </Button>
-        <p>
-          {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
-        </p>
+        <div className="min-w-fit">
+          {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
+        </div>
         <Button
           size="sm"
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
+          className="text-3xl"
         >
-          Next
+          <MdNavigateNext />
         </Button>
       </div>
     </div>
