@@ -34,7 +34,7 @@ export default function RootLayout({
     >
       <body
         className={
-          "font-libreBaskerville antialiased max-w-screen-2xl 2xl:mx-auto 2xl:border-x-2 bg-background text-primary"
+          "font-libreBaskerville antialiased max-w-screen-2xl 2xl:mx-auto 2xl:border-x-2 bg-background text-primary "
         }
       >
         <ThemeProvider

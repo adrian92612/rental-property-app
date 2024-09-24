@@ -77,7 +77,7 @@ const LogoutBtn = async () => {
 
 export const SideBar = async () => {
   return (
-    <div className="sm:sticky sm:top-0 sm:h-screen flex sm:flex-col items-center justify-between px-5 py-3 sm:py-5 bg-card-foreground dark:bg-card overflow-hidden">
+    <div className=" sm:h-screen flex sm:flex-col items-center justify-between px-5 py-3 sm:py-5 bg-card-foreground dark:bg-card overflow-x-hidden overflow-y-auto">
       <SideBarSheet />
 
       <div className="hidden sm:block">
