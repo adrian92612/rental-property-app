@@ -15,8 +15,8 @@ export const tenantsColumn: ColumnDef<Tenant>[] = [
     header: ({ column }) => {
       return (
         <Button
-          variant="dataHeader"
-          size="dataHeader"
+          variant="tableHeader"
+          size="none"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Full Name
@@ -35,8 +35,8 @@ export const tenantsColumn: ColumnDef<Tenant>[] = [
     header: ({ column }) => {
       return (
         <Button
-          variant="dataHeader"
-          size="dataHeader"
+          variant="tableHeader"
+          size="none"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Email Address
@@ -51,8 +51,8 @@ export const tenantsColumn: ColumnDef<Tenant>[] = [
     header: ({ column }) => {
       return (
         <Button
-          variant="dataHeader"
-          size="dataHeader"
+          variant="tableHeader"
+          size="none"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Phone Number
@@ -67,8 +67,8 @@ export const tenantsColumn: ColumnDef<Tenant>[] = [
     header: ({ column }) => {
       return (
         <Button
-          variant="dataHeader"
-          size="dataHeader"
+          variant="tableHeader"
+          size="none"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Status

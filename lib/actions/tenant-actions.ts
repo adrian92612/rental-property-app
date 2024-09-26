@@ -44,15 +44,15 @@ export const getTenantData = async (
   }
 };
 
-export const getTenantsTableInfo = async (): Promise<Tenant[] | null> => {
+export const getTenantsTableInfo = async (): Promise<Tenant[]> => {
   try {
     const tenants = await prisma.tenant.findMany({});
-    if (!tenants.length) throw new Error("Failed to fetch tenants");
+    if (!tenants) throw new Error("Failed to fetch tenants");
 
     return tenants;
   } catch (error) {
     console.error("Failed to fetch tenants: ", error);
-    return null;
+    throw error;
   }
 };
 

@@ -49,7 +49,7 @@ const PropertyDetailsPage = async ({ params }: { params: { id: string } }) => {
   return (
     <>
       <Header headerLabel="Property Details" formComponent="property" />
-      <div className="grid justify-items-stretch lg:grid-cols-2 mt-5 gap-5">
+      <div className="grid justify-items-stretch lg:grid-cols-2 mt-5 gap-5 pb-5">
         <PropertyCard property={property} />
         <IncomeExpenseChart
           rentalIncome={getRentalIncome()}
@@ -57,12 +57,6 @@ const PropertyDetailsPage = async ({ params }: { params: { id: string } }) => {
           mortgage={property.mortgagePayment}
         />
 
-        <div className="lg:col-span-2">
-          <DataTable
-            columns={propertyUnitsColumns}
-            data={unitsWithPropertyName}
-          />
-        </div>
         <Notes
           notes={property.notes || []}
           id={property.id}
@@ -70,6 +64,7 @@ const PropertyDetailsPage = async ({ params }: { params: { id: string } }) => {
         />
         <Documents list={documentList} model={"unit"} />
       </div>
+      <DataTable columns={propertyUnitsColumns} data={unitsWithPropertyName} />
     </>
   );
 };

@@ -49,7 +49,6 @@ type UnitsPerPropertyBarChartProps = {
 const UnitsPerPropertyBarChart = ({
   groupedUnits,
 }: UnitsPerPropertyBarChartProps) => {
-  console.log(groupedUnits);
   const chartData = Object.entries(groupedUnits).map(([propertyId, group]) => ({
     propertyName: group.propertyName,
     units: group.units.length,

@@ -15,8 +15,8 @@ export const unitsColumns: ColumnDef<UnitFormData>[] = [
     header: ({ column }) => {
       return (
         <Button
-          variant="dataHeader"
-          size="dataHeader"
+          variant="tableHeader"
+          size="none"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Unit No.
@@ -31,8 +31,8 @@ export const unitsColumns: ColumnDef<UnitFormData>[] = [
     header: ({ column }) => {
       return (
         <Button
-          variant="dataHeader"
-          size="dataHeader"
+          variant="tableHeader"
+          size="none"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Property Name
@@ -47,8 +47,8 @@ export const unitsColumns: ColumnDef<UnitFormData>[] = [
     header: ({ column }) => {
       return (
         <Button
-          variant="dataHeader"
-          size="dataHeader"
+          variant="tableHeader"
+          size="none"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Due Date
@@ -66,8 +66,8 @@ export const unitsColumns: ColumnDef<UnitFormData>[] = [
     header: ({ column }) => {
       return (
         <Button
-          variant="dataHeader"
-          size="dataHeader"
+          variant="tableHeader"
+          size="none"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Rent
@@ -83,8 +83,8 @@ export const unitsColumns: ColumnDef<UnitFormData>[] = [
     header: ({ column }) => {
       return (
         <Button
-          variant="dataHeader"
-          size="dataHeader"
+          variant="tableHeader"
+          size="none"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Status

@@ -36,7 +36,9 @@ export const Header = ({
       <FormDialog formFor={formComponent}>
         {(closeDialog) => renderForm(closeDialog)}
       </FormDialog>
-      <h1 className="font-bold text-lg tracking-widest">{headerLabel}</h1>
+      <h1 className="font-bold text-lg tracking-widest text-center">
+        {headerLabel}
+      </h1>
       <div className="flex items-center">
         {resolvedTheme === "light" ? (
           <Button
