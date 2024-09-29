@@ -139,7 +139,6 @@ const TenantTermDistribution = ({ tenants }: TenantListInfoProps) => {
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter></CardFooter>
     </Card>
   );
 };

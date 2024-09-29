@@ -1,13 +1,18 @@
-import { getProperties } from "@/lib/actions/property-actions";
+import {
+  getProperties,
+  PropertiesIncludeAll,
+} from "@/lib/actions/property-actions";
 import { Header } from "@/components/header";
 import { Properties } from "@/components/property/properties";
+import { PropertiesInfo } from "@/components/property/property-charts";
 
 const PropertiesPage = async () => {
-  const properties = await getProperties(false);
+  const properties = (await getProperties()) as PropertiesIncludeAll[];
   return (
     <>
       <Header headerLabel="Properties" formComponent="property" />
-      <Properties properties={properties || []} />
+      <PropertiesInfo properties={properties} />
+      <Properties properties={properties} />
     </>
   );
 };

@@ -51,7 +51,7 @@ export type deletePropertyState = {
 
 export const getProperties = async (
   includeAll: boolean = true
-): Promise<PropertiesIncludeAll[] | PropertiesIncludeUnits[] | null> => {
+): Promise<PropertiesIncludeAll[] | PropertiesIncludeUnits[]> => {
   try {
     const userId = await getUserId();
     if (!userId) throw new Error("Invalid user id");
@@ -74,7 +74,7 @@ export const getProperties = async (
     return properties;
   } catch (error) {
     console.error("Failed to fetch properties: ", error);
-    return null;
+    throw error;
   }
 };
 

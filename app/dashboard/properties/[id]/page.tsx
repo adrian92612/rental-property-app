@@ -36,8 +36,9 @@ const PropertyDetailsPage = async ({ params }: { params: { id: string } }) => {
 
   if (!property) return <div>404 Not Found</div>;
 
-  const getRentalIncome = () =>
-    property.units.reduce((total, unit) => total + unit.rentAmount, 0);
+  const rentalIncome = property.units
+    .filter((unit) => unit.tenant !== null)
+    .reduce((total, unit) => total + unit.rentAmount, 0);
 
   const unitsWithPropertyName: UnitFormData[] = property.units.map((unit) => ({
     ...unit,
@@ -52,7 +53,7 @@ const PropertyDetailsPage = async ({ params }: { params: { id: string } }) => {
       <div className="grid justify-items-stretch lg:grid-cols-2 mt-5 gap-5 pb-5">
         <PropertyCard property={property} />
         <IncomeExpenseChart
-          rentalIncome={getRentalIncome()}
+          rentalIncome={rentalIncome}
           monthlyExpense={property.monthlyExpense}
           mortgage={property.mortgagePayment}
         />

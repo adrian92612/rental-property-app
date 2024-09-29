@@ -71,7 +71,12 @@ export const UnitForm = ({ closeDialog, unit, properties }: UnitFormProps) => {
         }}
       >
         {state.message && <span>{state.message}</span>}
-        {unit && <input type="hidden" name="unitId" value={unit.id} />}
+        {unit && (
+          <>
+            <input type="hidden" name="unitId" value={unit.id} />
+            <input type="hidden" name="tenantId" value={unit.tenant?.id} />
+          </>
+        )}
 
         {unit ? (
           <FormField
