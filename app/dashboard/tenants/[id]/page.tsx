@@ -3,10 +3,7 @@ import { Header } from "@/components/header";
 import { Notes } from "@/components/notes-card";
 import { PersonalInformation } from "@/components/tenant/personal-information-card";
 import { UnitDetails } from "@/components/tenant/unit-details-card";
-import {
-  getProperties,
-  PropertiesIncludeAll,
-} from "@/lib/actions/property-actions";
+import { getProperties } from "@/lib/actions/property-actions";
 import { getTenantData } from "@/lib/actions/tenant-actions";
 
 const documentList = [
@@ -28,7 +25,7 @@ const documentList = [
 
 const TenantDetailsPage = async ({ params }: { params: { id: string } }) => {
   const tenant = await getTenantData(params.id);
-  const properties = (await getProperties(true)) as PropertiesIncludeAll[];
+  const properties = await getProperties();
 
   if (!tenant) return <div>No Tenant Found</div>;
 

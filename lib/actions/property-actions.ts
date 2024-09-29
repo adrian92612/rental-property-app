@@ -49,9 +49,7 @@ export type deletePropertyState = {
   message: string;
 };
 
-export const getProperties = async (
-  includeAll: boolean = true
-): Promise<PropertiesIncludeAll[] | PropertiesIncludeUnits[]> => {
+export const getProperties = async (): Promise<PropertiesIncludeAll[]> => {
   try {
     const userId = await getUserId();
     if (!userId) throw new Error("Invalid user id");
@@ -61,7 +59,7 @@ export const getProperties = async (
       include: {
         units: {
           include: {
-            ...(includeAll && { tenant: true }),
+            tenant: true,
           },
         },
       },
