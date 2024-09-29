@@ -26,20 +26,22 @@ type PropertyFormProps = {
 
 export const PropertyForm = ({ closeDialog, property }: PropertyFormProps) => {
   const [state, action, isPending] = useActionState(upsertProperty, {
+    success: false,
     message: "",
   });
 
   const form = useForm<z.output<typeof AddPropertySchema>>({
     resolver: zodResolver(AddPropertySchema),
+    mode: "onBlur",
     defaultValues: {
       name: property?.name,
       address: property?.address,
       units: 1,
       owner: property?.owner,
       contactInfo: property?.contactInfo,
-      purchasePrice: property?.purchasePrice ?? 0,
-      monthlyExpense: property?.monthlyExpense ?? 0,
-      mortgagePayment: property?.mortgagePayment ?? 0,
+      purchasePrice: property?.purchasePrice || undefined,
+      monthlyExpense: property?.monthlyExpense || undefined,
+      mortgagePayment: property?.mortgagePayment || undefined,
       ...(state?.fields ?? {}),
     },
   });
@@ -134,7 +136,7 @@ export const PropertyForm = ({ closeDialog, property }: PropertyFormProps) => {
             <FormItem>
               <FormLabel className="font-bold">Purchase Price</FormLabel>
               <FormControl>
-                <Input {...field} type="number" step={1} />
+                <Input {...field} type="number" placeholder="0" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -148,7 +150,7 @@ export const PropertyForm = ({ closeDialog, property }: PropertyFormProps) => {
             <FormItem>
               <FormLabel className="font-bold">Monthly Expenses</FormLabel>
               <FormControl>
-                <Input {...field} type="number" step={1} />
+                <Input {...field} type="number" placeholder="0" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -162,7 +164,7 @@ export const PropertyForm = ({ closeDialog, property }: PropertyFormProps) => {
             <FormItem>
               <FormLabel className="font-bold">Mortgage Payment</FormLabel>
               <FormControl>
-                <Input {...field} type="number" step={1} />
+                <Input {...field} type="number" placeholder="0" />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -5,42 +5,19 @@ import { TenantSchema } from "../zod-schemas/tenant";
 import { createId } from "@paralleldrive/cuid2";
 import { revalidatePath } from "next/cache";
 import { Tenant } from "@prisma/client";
+import { FormResponse, Response } from "./actions";
 
-export type upsertTenantState = {
-  message: string;
-  success?: boolean;
-  fields?: Record<string, string | number | Date>;
-};
-
-export type deleteTenantState = {
-  message: string;
-  success: boolean;
-};
-
-export type successState = {
-  success: boolean;
-  message: string;
-};
-export type successStateWithFields = {
-  success: boolean;
-  message: string;
-  fields?: Record<string, string>;
-};
-
-export type TenantsTableInfo = Tenant & {};
-
-export const getTenantData = async (
-  tenantId: string
-): Promise<Tenant | null> => {
+export const getTenantData = async (tenantId: string): Promise<Tenant> => {
   try {
     const tenant = await prisma.tenant.findUnique({
       where: { id: tenantId },
     });
 
+    if (!tenant) throw new Error("Failed to get tenant");
     return tenant;
   } catch (error) {
     console.error("Failed to fetch tenant data: ", error);
-    return null;
+    throw error;
   }
 };
 
@@ -59,7 +36,7 @@ export const getTenantsTableInfo = async (): Promise<Tenant[]> => {
 export const assignTenant = async (
   tenantId: string,
   unitId: string
-): Promise<{ message: string; success: boolean }> => {
+): Promise<Response> => {
   try {
     await prisma.tenant.update({
       where: { id: tenantId },
@@ -67,6 +44,7 @@ export const assignTenant = async (
         unitId: unitId,
       },
     });
+
     revalidatePath(`/dashboard/units/${unitId}`);
     revalidatePath(`/dashboard/tenants/${tenantId}`);
     revalidatePath("/dashboard/units");
@@ -79,8 +57,8 @@ export const assignTenant = async (
   } catch (error) {
     console.error("Failed to assign tenant to a unit: ", error);
     return {
-      message: `Failed to assign tenant to unit, error: ${error}`,
       success: false,
+      message: `Failed to assign tenant to unit, error: ${error}`,
     };
   }
 };
@@ -88,7 +66,7 @@ export const assignTenant = async (
 export const removeTenant = async (
   tenantId: string,
   unitId: string
-): Promise<successState> => {
+): Promise<Response> => {
   try {
     await prisma.tenant.update({
       where: { id: tenantId },
@@ -116,9 +94,9 @@ export const removeTenant = async (
 };
 
 export const upsertTenant = async (
-  prevState: upsertTenantState,
+  prevState: FormResponse,
   formData: FormData
-): Promise<upsertTenantState> => {
+): Promise<FormResponse> => {
   const data = Object.fromEntries(formData);
   const leaseStartDate = new Date(
     (data.leaseStart as string).replace(/(\d+)(st|nd|rd|th)/, "$1")
@@ -135,6 +113,7 @@ export const upsertTenant = async (
 
   if (!parsedData.success) {
     return {
+      success: false,
       message: "Validation failed",
       fields: parsedData.data,
     };
@@ -159,6 +138,7 @@ export const upsertTenant = async (
 
     if (existingTenant && existingTenant.id !== tenantId) {
       return {
+        success: false,
         message: "A tenant with this email already exists.",
         fields: parsedData.data,
       };
@@ -205,14 +185,14 @@ export const upsertTenant = async (
     const msg = `Failed to ${tenantId ? "update" : "add"} tenant`;
     console.error(msg, error);
     return {
+      success: false,
       message: msg,
+      fields: parsedData.data,
     };
   }
 };
 
-export const deleteTenant = async (
-  tenantId: string
-): Promise<deleteTenantState> => {
+export const deleteTenant = async (tenantId: string): Promise<Response> => {
   try {
     await prisma.tenant.delete({
       where: { id: tenantId },

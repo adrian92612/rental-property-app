@@ -11,7 +11,7 @@ export const UnitSchema = z.object({
       required_error: "Rent amount is required",
       invalid_type_error: "Rent amount must be a number",
     })
-    .min(0, "Must be greater than 0"),
+    .min(0, "Cannot be less than 0"),
   dueDate: z.coerce
     .number()
     .int("Must be a whole number")

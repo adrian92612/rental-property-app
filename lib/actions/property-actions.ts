@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { AddPropertySchema } from "../zod-schemas/property";
-import { getUserId, uploadImage } from "./actions";
+import { FormResponse, getUserId, Response, uploadImage } from "./actions";
 import prisma from "@/prisma/prisma";
 import { createId } from "@paralleldrive/cuid2";
 import { Property, Tenant, Unit } from "@prisma/client";
@@ -14,39 +14,16 @@ export type PropertiesIncludeAll = Property & {
   })[];
 };
 
-export type PropertiesIncludeUnits = Property & {
-  units: Unit[];
-};
-
 export type PropertyIncludeAll = Property & {
   units: (Unit & {
     tenant: Tenant | null;
   })[];
 };
 
-export type PropertyIncludeUnits = Property & {
-  units: Unit[];
-};
-
-export type PropUnitIncludeTenant = Unit & {
-  tenant: Tenant | null;
-};
-
-export type upsertPropertyFormState = {
-  message: string;
-  success?: boolean;
-  fields?: Record<string, string | number>;
-};
-
-export type updatePropertyImageState = {
+export type updatePropertyImageResponse = {
   message: string;
   success: boolean;
   imageUrl?: string;
-};
-
-export type deletePropertyState = {
-  success: boolean;
-  message: string;
 };
 
 export const getProperties = async (): Promise<PropertiesIncludeAll[]> => {
@@ -78,7 +55,7 @@ export const getProperties = async (): Promise<PropertiesIncludeAll[]> => {
 
 export const getProperty = async (
   propertyId: string
-): Promise<PropertyIncludeAll | null> => {
+): Promise<PropertyIncludeAll> => {
   try {
     const property = await prisma.property.findUnique({
       where: { id: propertyId },
@@ -96,7 +73,7 @@ export const getProperty = async (
     return property;
   } catch (error) {
     console.error("Failed to fetch property: ", error);
-    return null;
+    throw error;
   }
 };
 
@@ -104,7 +81,7 @@ export const updatePropertyImage = async (
   propertyId: string,
   file: File,
   publicId: string
-): Promise<updatePropertyImageState> => {
+): Promise<updatePropertyImageResponse> => {
   try {
     const res = await uploadImage(file);
     if (!res) throw new Error("Image upload failed");
@@ -136,9 +113,9 @@ export const updatePropertyImage = async (
 };
 
 export const upsertProperty = async (
-  prevState: upsertPropertyFormState,
+  prevState: FormResponse,
   formData: FormData
-): Promise<upsertPropertyFormState> => {
+): Promise<FormResponse> => {
   const data = Object.fromEntries(formData);
   const imageFile = formData.get("image") as File;
   delete data.image;
@@ -147,10 +124,14 @@ export const upsertProperty = async (
   const parsedData = AddPropertySchema.safeParse(data);
 
   if (!parsedData.success) {
-    return { message: "Failed to add/edit property", fields: parsedData.data };
+    return {
+      success: false,
+      message: "Failed to add/edit property",
+      fields: parsedData.data,
+    };
   }
 
-  if (imageFile?.name !== "undefined") {
+  if (imageFile !== null && imageFile?.name !== "undefined") {
     const res = await uploadImage(imageFile);
     if (res) {
       const { imageUrl, publicId } = res;
@@ -209,8 +190,8 @@ export const upsertProperty = async (
 
     if (propertyId) {
       return {
-        message: "Property updated successfully!",
         success: true,
+        message: "Property updated successfully!",
       };
     }
 
@@ -231,15 +212,14 @@ export const upsertProperty = async (
     console.error("Failed to add/update property: ", error);
     delete parsedData.data.image;
     return {
+      success: false,
       message: "Failed to add/update property",
       fields: parsedData.data,
     };
   }
 };
 
-export const deleteProperty = async (
-  propertyId: string
-): Promise<deletePropertyState> => {
+export const deleteProperty = async (propertyId: string): Promise<Response> => {
   try {
     const property = await prisma.property.findUnique({
       where: { id: propertyId },

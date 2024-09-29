@@ -5,6 +5,7 @@ import { createId } from "@paralleldrive/cuid2";
 import { Property, Tenant, Unit } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { UnitSchema } from "../zod-schemas/unit";
+import { FormResponse, Response } from "./actions";
 
 export type UnitDetailsInfo = Unit & {
   property: Property;
@@ -29,23 +30,6 @@ export type PropertyIdName = {
   name: string;
 };
 
-export type upsertUnitFormState = {
-  message: string;
-  success?: boolean;
-  fields?: Record<string, string | number>;
-};
-
-export type deleteUnitState = {
-  message: string;
-  success: boolean;
-};
-
-export type FormState = {
-  success?: boolean;
-  message: string;
-  fields?: Record<string, string>;
-};
-
 export const getPropertyIdsAndNames = async (): Promise<PropertyIdName[]> => {
   try {
     const properties = prisma.property.findMany({
@@ -66,7 +50,7 @@ export const getPropertyIdsAndNames = async (): Promise<PropertyIdName[]> => {
 
 export const getUnitFormData = async (
   unitId: string
-): Promise<UnitFormData | null> => {
+): Promise<UnitFormData> => {
   try {
     const unit = await prisma.unit.findUnique({
       where: { id: unitId },
@@ -85,15 +69,15 @@ export const getUnitFormData = async (
     return unit;
   } catch (error) {
     console.error("Failed to fetch form data: ", error);
-    return null;
+    throw error;
   }
 };
 
 export const getUnitDetails = async (
   unitId: string
-): Promise<UnitDetailsInfo | null> => {
-  if (!unitId) return null;
+): Promise<UnitDetailsInfo> => {
   try {
+    if (!unitId) throw new Error("Unit Id is missing");
     const unit = await prisma.unit.findUnique({
       where: { id: unitId },
       include: {
@@ -107,7 +91,7 @@ export const getUnitDetails = async (
     return unit;
   } catch (error) {
     console.error("Failed to fetch unit details: ", error);
-    return null;
+    throw error;
   }
 };
 
@@ -129,20 +113,21 @@ export const getUnitsTableInfo = async (): Promise<UnitFormData[]> => {
     return units;
   } catch (error) {
     console.error("Failed to fetch units: ", error);
-    return [];
+    throw error;
   }
 };
 
 export const upsertUnit = async (
-  prevState: any,
+  prevState: FormResponse,
   formData: FormData
-): Promise<upsertUnitFormState> => {
+): Promise<FormResponse> => {
   const data = Object.fromEntries(formData);
 
   const parsedData = UnitSchema.safeParse(data);
 
   if (!parsedData.success) {
     return {
+      success: false,
       message: "Failed to add/edit unit",
       fields: parsedData.data,
     };
@@ -158,6 +143,7 @@ export const upsertUnit = async (
 
     if (!property)
       return {
+        success: false,
         message: "Property not found",
         fields: parsedData.data,
       };
@@ -203,12 +189,17 @@ export const upsertUnit = async (
       message: `${number} is added to ${property.name}`,
     };
   } catch (error) {
-    console.log("Failed to add/edit unit: ", error);
-    return { message: "Failed to add/edit unit", fields: parsedData.data };
+    const msg = `Failed to ${unitId ? "update" : "add"} unit`;
+    console.log(msg, error);
+    return {
+      success: false,
+      message: msg,
+      fields: parsedData.data,
+    };
   }
 };
 
-export const deleteUnit = async (unitId: string): Promise<deleteUnitState> => {
+export const deleteUnit = async (unitId: string): Promise<Response> => {
   try {
     await prisma.unit.delete({
       where: { id: unitId },
@@ -221,8 +212,8 @@ export const deleteUnit = async (unitId: string): Promise<deleteUnitState> => {
   } catch (error) {
     console.error("Failed to delete unit, try again later: ", error);
     return {
-      message: `Failed to delete unit ID ${unitId}`,
       success: false,
+      message: `Failed to delete unit ID ${unitId}`,
     };
   }
 };

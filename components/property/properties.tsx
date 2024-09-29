@@ -1,6 +1,6 @@
 "use client";
 
-import { PropertyIncludeUnits } from "@/lib/actions/property-actions";
+import { PropertiesIncludeAll } from "@/lib/actions/property-actions";
 import { PropertiesCard } from "./properties-card";
 import { Input } from "../ui/input";
 import {
@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
 type PropertiesProp = {
-  properties: PropertyIncludeUnits[];
+  properties: PropertiesIncludeAll[];
 };
 
 const categories = [

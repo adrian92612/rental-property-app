@@ -7,24 +7,17 @@ import { genSalt, hashSync } from "bcrypt-ts";
 import { createId } from "@paralleldrive/cuid2";
 import { LoginSchema } from "../zod-schemas/login";
 import { cloudinary } from "../cloudinary-config";
-import { successState } from "./tenant-actions";
 import { revalidatePath } from "next/cache";
 
-export type FormState = {
+export type FormResponse = {
   success: boolean;
   message: string;
-  fields?: Record<string, string>;
+  fields?: Record<string, string | number | Date>;
 };
 
-export type SuccessState = {
+export type Response = {
   success: boolean;
   message: string;
-};
-
-export type loginFormState = {
-  message: string;
-  success?: boolean;
-  fields?: Record<string, string>;
 };
 
 export type uploadImageInfo = {
@@ -32,21 +25,23 @@ export type uploadImageInfo = {
   publicId: string;
 };
 
-export type registerUserFormState = {
-  message: string;
-  success?: boolean;
-  fields?: Record<string, string>;
+type deleteNotesProps = {
+  id: string;
+  index: number;
+  notes: string[];
+  model: "property" | "unit" | "tenant";
 };
 
 export const login = async (
-  prevState: loginFormState,
+  prevState: FormResponse,
   formData: FormData
-): Promise<loginFormState> => {
+): Promise<FormResponse> => {
   const data = Object.fromEntries(formData);
   const parsedData = LoginSchema.safeParse(data);
 
   if (!parsedData.success) {
     return {
+      success: false,
       message: "Failed to login",
       fields: parsedData.data,
     };
@@ -65,6 +60,7 @@ export const login = async (
   } catch (error) {
     console.error("Failed to login: ", error);
     return {
+      success: false,
       message: "Invalid credentials",
       fields: parsedData.data,
     };
@@ -80,9 +76,18 @@ export const logout = async () => {
   await signOut({ redirectTo: "/" });
 };
 
-export const getUserId = async (): Promise<string | undefined> => {
-  const session = await auth();
-  return session?.user?.id;
+export const getUserId = async (): Promise<string> => {
+  try {
+    const session = await auth();
+    if (!session || !session.user?.id) {
+      throw new Error("Failed to authenticate");
+    }
+
+    return session.user.id;
+  } catch (error) {
+    console.error("Failed to get user id: ", error);
+    throw error;
+  }
 };
 
 export type getUserImageObj = {
@@ -91,7 +96,7 @@ export type getUserImageObj = {
   image: string | null;
 };
 
-export const getUserImage = async (): Promise<getUserImageObj | null> => {
+export const getUserImage = async (): Promise<getUserImageObj> => {
   try {
     const userId = await getUserId();
     const user = await prisma.user.findUnique({
@@ -102,23 +107,24 @@ export const getUserImage = async (): Promise<getUserImageObj | null> => {
         image: true,
       },
     });
-    if (user) return user;
-    throw new Error("User not found");
+    if (!user) throw new Error("User not found");
+    return user;
   } catch (error) {
     console.error("Unable to get user image: ", error);
-    return null;
+    throw error;
   }
 };
 
 export const registerUser = async (
   prevState: any,
   formData: FormData
-): Promise<registerUserFormState> => {
+): Promise<FormResponse> => {
   const data = Object.fromEntries(formData);
   const parsedData = RegistrationSchema.safeParse(data);
 
   if (!parsedData.success) {
     return {
+      success: false,
       message: "Failed to register, try again",
       fields: parsedData.data,
     };
@@ -133,6 +139,7 @@ export const registerUser = async (
 
     if (isEmailUnique) {
       return {
+        success: false,
         message: "Email address is already registered to another user",
         fields: parsedData.data,
       };
@@ -149,19 +156,21 @@ export const registerUser = async (
         password: hashedPassword,
       },
     });
-    return { message: "Registration successful!", success: true };
+    return {
+      success: true,
+      message: "Registration successful!",
+    };
   } catch (error) {
     console.error("Failed to register user: ", error);
     return {
+      success: false,
       message: "Failed to register user",
       fields: parsedData.data,
     };
   }
 };
 
-export const uploadImage = async (
-  image: File
-): Promise<uploadImageInfo | undefined> => {
+export const uploadImage = async (image: File): Promise<uploadImageInfo> => {
   try {
     if (image && image.type.startsWith("image/")) {
       const arrayBuffer = await image.arrayBuffer();
@@ -178,13 +187,14 @@ export const uploadImage = async (
     throw new Error("File must be an image");
   } catch (error) {
     console.error("Error uploading image: ", error);
+    throw error;
   }
 };
 
 export const addNote = async (
   prevState: any,
   formData: FormData
-): Promise<FormState> => {
+): Promise<FormResponse> => {
   const id = formData.get("id") as string;
   const note = formData.get("note") as string;
   const model = formData.get("model") as string;
@@ -238,19 +248,12 @@ export const addNote = async (
   }
 };
 
-type deleteNotesProps = {
-  id: string;
-  index: number;
-  notes: string[];
-  model: "property" | "unit" | "tenant";
-};
-
 export const deleteNote = async ({
   id,
   index,
   notes,
   model,
-}: deleteNotesProps): Promise<SuccessState> => {
+}: deleteNotesProps): Promise<Response> => {
   try {
     const newNotes = notes.filter((_, i) => i !== index);
     if (model === "property") {

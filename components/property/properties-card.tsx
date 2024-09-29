@@ -13,10 +13,7 @@ import {
 import { DetailsBtn } from "../details-btn";
 import { FormDialog } from "../form-dialog";
 import { DeleteBtn } from "../delete-btn";
-import {
-  PropertiesIncludeUnits,
-  PropertyIncludeAll,
-} from "@/lib/actions/property-actions";
+import { PropertyIncludeAll } from "@/lib/actions/property-actions";
 import { PropertyForm } from "./property-form";
 import { PropertyCardImage } from "./property-card-image";
 import { format } from "date-fns";
@@ -24,7 +21,7 @@ import { format } from "date-fns";
 export const PropertiesCard = ({
   property,
 }: {
-  property: PropertiesIncludeUnits;
+  property: PropertyIncludeAll;
 }) => {
   return (
     <Card>

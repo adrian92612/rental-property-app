@@ -31,16 +31,18 @@ type TenantFormProps = {
 
 export const TenantForm = ({ closeDialog, tenant }: TenantFormProps) => {
   const [state, action, isPending] = useActionState(upsertTenant, {
+    success: false,
     message: "",
   });
   const form = useForm<z.output<typeof TenantSchema>>({
     resolver: zodResolver(TenantSchema),
+    mode: "onBlur",
     defaultValues: {
-      firstName: tenant?.firstName ?? "",
-      lastName: tenant?.lastName ?? "",
-      email: tenant?.email ?? "",
-      phoneNumber: tenant?.phoneNumber ?? "",
-      termInMonths: tenant?.termInMonths ?? 1,
+      firstName: tenant?.firstName,
+      lastName: tenant?.lastName,
+      email: tenant?.email,
+      phoneNumber: tenant?.phoneNumber,
+      termInMonths: tenant?.termInMonths || undefined,
       leaseStart: tenant?.leaseStart,
       leaseEnd: tenant?.leaseEnd,
       ...(state?.fields ?? {}),

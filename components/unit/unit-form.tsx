@@ -33,15 +33,17 @@ type UnitFormProps = {
 
 export const UnitForm = ({ closeDialog, unit, properties }: UnitFormProps) => {
   const [state, action, isPending] = useActionState(upsertUnit, {
+    success: false,
     message: "",
   });
 
   const form = useForm<z.output<typeof UnitSchema>>({
     resolver: zodResolver(UnitSchema),
+    mode: "onBlur",
     defaultValues: {
       number: unit?.number,
-      rentAmount: unit?.rentAmount ?? 0,
-      dueDate: unit?.dueDate ?? 1,
+      rentAmount: unit?.rentAmount || undefined,
+      dueDate: unit?.dueDate || undefined,
       ...(state?.fields ?? {}),
     },
   });
@@ -159,7 +161,7 @@ export const UnitForm = ({ closeDialog, unit, properties }: UnitFormProps) => {
             <FormItem>
               <FormLabel className="font-bold">Rent Amount</FormLabel>
               <FormControl>
-                <Input {...field} type="number" />
+                <Input {...field} type="number" placeholder="0" />
               </FormControl>
               <FormMessage />
             </FormItem>
