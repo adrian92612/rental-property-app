@@ -4,7 +4,6 @@ import { getUser } from "@/lib/actions/actions";
 
 const UserSettings = async () => {
   const user = await getUser();
-  console.log(user);
   return (
     <>
       <Header headerLabel="User Settings" formComponent="none" />

@@ -81,7 +81,7 @@ type ContentProps = {
 export const Content = ({ label, value }: ContentProps) => {
   return (
     <div className="flex items-start gap-1">
-      <span className="font-bold">{label}</span>
+      <span className="font-bold font-montserrat">{label}</span>
       <span>{value}</span>
     </div>
   );

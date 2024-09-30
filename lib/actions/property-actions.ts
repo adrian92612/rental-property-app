@@ -191,7 +191,7 @@ export const upsertProperty = async (
     if (propertyId) {
       return {
         success: true,
-        message: "Property updated successfully!",
+        message: `${name} has been updated`,
       };
     }
 
@@ -207,13 +207,17 @@ export const upsertProperty = async (
       await prisma.unit.createMany({ data: unitData });
     }
 
-    return { message: "Property has been added!", success: true };
+    return {
+      success: true,
+      message: `${name} has been added`,
+    };
   } catch (error) {
-    console.error("Failed to add/update property: ", error);
+    const msg = `Failed to ${propertyId ? "update" : "add"} ${name}`;
+    console.error(msg, error);
     delete parsedData.data.image;
     return {
       success: false,
-      message: "Failed to add/update property",
+      message: msg,
       fields: parsedData.data,
     };
   }

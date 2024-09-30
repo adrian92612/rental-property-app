@@ -9,6 +9,7 @@ import { LoginSchema } from "../zod-schemas/login";
 import { cloudinary } from "../cloudinary-config";
 import { revalidatePath } from "next/cache";
 import { User } from "@prisma/client";
+import { EditUserSchema } from "../zod-schemas/user";
 
 export type FormResponse = {
   success: boolean;
@@ -164,6 +165,46 @@ export const updateUserImage = async (
   } catch (error) {
     console.error("Failed to update user avatar: ", error);
     throw error;
+  }
+};
+
+export const updateUserInfo = async (
+  prevState: FormResponse,
+  formData: FormData
+): Promise<FormResponse> => {
+  const data = Object.fromEntries(formData);
+  const parsedData = EditUserSchema.safeParse(data);
+
+  if (!parsedData.success) {
+    return {
+      success: false,
+      message: "Failed to update user information, try again later",
+      fields: parsedData.data,
+    };
+  }
+  const { userId, firstName, lastName, phoneNumber } = parsedData.data;
+  try {
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        firstName,
+        lastName,
+        phoneNumber,
+      },
+    });
+
+    revalidatePath("/dashboard/user-settings");
+    return {
+      success: true,
+      message: "User information has been updated",
+    };
+  } catch (error) {
+    console.error("Failed to update user information: ", error);
+    return {
+      success: false,
+      message: "Failed to update user information, try again later",
+      fields: parsedData.data,
+    };
   }
 };
 

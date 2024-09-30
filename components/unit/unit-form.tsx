@@ -1,6 +1,12 @@
 "use client";
 
-import { useActionState, useEffect, useRef } from "react";
+import {
+  useActionState,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -36,29 +42,34 @@ export const UnitForm = ({ closeDialog, unit, properties }: UnitFormProps) => {
     success: false,
     message: "",
   });
+  const [toastShown, setToastShown] = useState<boolean>(false);
 
   const form = useForm<z.output<typeof UnitSchema>>({
     resolver: zodResolver(UnitSchema),
     mode: "onBlur",
     defaultValues: {
       number: unit?.number,
-      rentAmount: unit?.rentAmount || undefined,
-      dueDate: unit?.dueDate || undefined,
+      rentAmount: unit?.rentAmount || 0,
+      dueDate: unit?.dueDate || 0,
       ...(state?.fields ?? {}),
     },
   });
   const formRef = useRef<HTMLFormElement>(null);
   const { toast } = useToast();
 
-  useEffect(() => {
-    if (state.success) {
+  const handleStateChange = useCallback(() => {
+    if (state.success) closeDialog();
+    if (state.message && !toastShown) {
       toast({
-        title: `Unit has been succesfully ${unit ? "updated" : "added"}`,
+        title: state.message,
       });
-      state.success = false;
-      closeDialog();
+      setToastShown(true);
     }
-  }, [state.success, toast, unit, closeDialog]);
+  }, [state, toast, closeDialog, toastShown]);
+
+  useEffect(() => {
+    handleStateChange();
+  }, [handleStateChange]);
 
   return (
     <Form {...form}>
@@ -72,7 +83,6 @@ export const UnitForm = ({ closeDialog, unit, properties }: UnitFormProps) => {
           })(e);
         }}
       >
-        {state.message && <span>{state.message}</span>}
         {unit && (
           <>
             <input type="hidden" name="unitId" value={unit.id} />

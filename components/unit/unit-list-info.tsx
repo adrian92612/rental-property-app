@@ -183,8 +183,6 @@ const VacancyPieChart = ({ vacant, occupied }: VacancyPieChartProps) => {
 };
 
 export const UnitListInfo = ({ units }: UnitListInfoProps) => {
-  console.log(units[0]);
-
   const getVacancy = () => {
     return units.filter((unit) => unit.tenant === null).length;
   };

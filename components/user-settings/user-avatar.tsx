@@ -56,12 +56,7 @@ export const UserAvatar = ({ user }: UserPersonalInfoProps) => {
         className="hidden"
         onChange={handleInputChange}
       />
-      <Button
-        onClick={handleButtonClick}
-        disabled={pending}
-        size="sm"
-        className="bg-primary-foreground text-primary "
-      >
+      <Button onClick={handleButtonClick} disabled={pending} size="sm">
         {pending ? "Updating..." : "Change Avatar"}
       </Button>
     </div>

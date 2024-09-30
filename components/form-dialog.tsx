@@ -52,6 +52,10 @@ export const FormDialog = ({
       </DialogTrigger>
       <DialogContent className="bg-primary-foreground rounded-sm w-11/12 max-w-[400px]">
         <DialogHeader>
+          <DialogTitle className="sr-only">
+            {" "}
+            {formFor === "edit" ? "Edit" : "Add"}
+          </DialogTitle>
           <DialogDescription className="sr-only">
             Form for adding/editing models
           </DialogDescription>

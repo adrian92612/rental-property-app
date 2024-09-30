@@ -1,6 +1,12 @@
 "use client";
 
-import { useActionState, useEffect, useRef } from "react";
+import {
+  useActionState,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -34,6 +40,7 @@ export const TenantForm = ({ closeDialog, tenant }: TenantFormProps) => {
     success: false,
     message: "",
   });
+  const [toastShown, setToastShown] = useState<boolean>(false);
   const form = useForm<z.output<typeof TenantSchema>>({
     resolver: zodResolver(TenantSchema),
     mode: "onBlur",
@@ -64,15 +71,20 @@ export const TenantForm = ({ closeDialog, tenant }: TenantFormProps) => {
     }
   }, [leaseStart, termInMonths, setValue]);
 
-  useEffect(() => {
-    if (state.success) {
+  const handleStateChange = useCallback(() => {
+    if (state.success) closeDialog();
+
+    if (state.message && !toastShown) {
       toast({
-        title: `Tenant has been succesfully ${tenant ? "updated" : "added"}`,
+        title: state.message,
       });
-      closeDialog();
-      state.success = false;
+      setToastShown(true);
     }
-  }, [state.success, toast, tenant, closeDialog]);
+  }, [state, toast, closeDialog, toastShown]);
+
+  useEffect(() => {
+    handleStateChange();
+  }, [handleStateChange]);
 
   const formRef = useRef<HTMLFormElement>(null);
 
