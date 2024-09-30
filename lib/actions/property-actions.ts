@@ -2,7 +2,13 @@
 
 import { revalidatePath } from "next/cache";
 import { AddPropertySchema } from "../zod-schemas/property";
-import { FormResponse, getUserId, Response, uploadImage } from "./actions";
+import {
+  FormResponse,
+  getUserId,
+  ImageResponse,
+  Response,
+  uploadImage,
+} from "./actions";
 import prisma from "@/prisma/prisma";
 import { createId } from "@paralleldrive/cuid2";
 import { Property, Tenant, Unit } from "@prisma/client";
@@ -18,12 +24,6 @@ export type PropertyIncludeAll = Property & {
   units: (Unit & {
     tenant: Tenant | null;
   })[];
-};
-
-export type updatePropertyImageResponse = {
-  message: string;
-  success: boolean;
-  imageUrl?: string;
 };
 
 export const getProperties = async (): Promise<PropertiesIncludeAll[]> => {
@@ -81,7 +81,7 @@ export const updatePropertyImage = async (
   propertyId: string,
   file: File,
   publicId: string
-): Promise<updatePropertyImageResponse> => {
+): Promise<ImageResponse> => {
   try {
     const res = await uploadImage(file);
     if (!res) throw new Error("Image upload failed");

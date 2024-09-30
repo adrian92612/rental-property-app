@@ -8,6 +8,7 @@ import { createId } from "@paralleldrive/cuid2";
 import { LoginSchema } from "../zod-schemas/login";
 import { cloudinary } from "../cloudinary-config";
 import { revalidatePath } from "next/cache";
+import { User } from "@prisma/client";
 
 export type FormResponse = {
   success: boolean;
@@ -23,6 +24,18 @@ export type Response = {
 export type uploadImageInfo = {
   imageUrl: string;
   publicId: string;
+};
+
+export type ImageResponse = {
+  success: boolean;
+  message: string;
+  imageUrl?: string;
+};
+
+type getUserImageObj = {
+  firstName: string;
+  lastName: string;
+  image: string | null;
 };
 
 type deleteNotesProps = {
@@ -90,10 +103,19 @@ export const getUserId = async (): Promise<string> => {
   }
 };
 
-export type getUserImageObj = {
-  firstName: string;
-  lastName: string;
-  image: string | null;
+export const getUser = async (): Promise<User> => {
+  try {
+    const userId = await getUserId();
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) throw new Error("User not found");
+    return user;
+  } catch (error) {
+    console.error("Failed to get user: ", error);
+    throw error;
+  }
 };
 
 export const getUserImage = async (): Promise<getUserImageObj> => {
@@ -111,6 +133,36 @@ export const getUserImage = async (): Promise<getUserImageObj> => {
     return user;
   } catch (error) {
     console.error("Unable to get user image: ", error);
+    throw error;
+  }
+};
+
+export const updateUserImage = async (
+  userId: string,
+  file: File,
+  publicId: string
+): Promise<ImageResponse> => {
+  try {
+    const res = await uploadImage(file);
+    if (!res) throw new Error("Failed to upload image");
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        image: res.imageUrl,
+        imagePublicId: res.publicId,
+      },
+    });
+    if (publicId) await cloudinary.uploader.destroy(publicId);
+    revalidatePath("/dashboard/user-settings");
+
+    return {
+      success: true,
+      message: "Avatar image has been updated",
+      imageUrl: res.imageUrl,
+    };
+  } catch (error) {
+    console.error("Failed to update user avatar: ", error);
     throw error;
   }
 };

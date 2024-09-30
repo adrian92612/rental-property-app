@@ -1,6 +1,5 @@
 import { getUserImage, logout } from "@/lib/actions/actions";
 import { Button } from "../ui/button";
-import { IoIosMenu } from "react-icons/io";
 import { BsBuildingsFill, BsPeopleFill } from "react-icons/bs";
 import { FaKey } from "react-icons/fa6";
 import { MdSpaceDashboard } from "react-icons/md";
@@ -8,6 +7,7 @@ import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { getAvatarFallback } from "@/lib/utils";
 import { SideBarSheet } from "./sidebar-sheet";
+import { IoSettingsSharp } from "react-icons/io5";
 
 const links = [
   {
@@ -29,6 +29,11 @@ const links = [
     href: "/dashboard/tenants",
     label: "Tenants",
     icon: <BsPeopleFill />,
+  },
+  {
+    href: "/dashboard/user-settings",
+    label: "Settings",
+    icon: <IoSettingsSharp />,
   },
 ];
 

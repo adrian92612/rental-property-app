@@ -22,9 +22,7 @@ export const PropertyCardImage = ({ property }: { property: Property }) => {
     try {
       const file = e.target.files?.[0];
       setIsPending(true);
-      if (!file) {
-        throw new Error("File is missing.");
-      }
+      if (!file) throw new Error("File is missing.");
 
       const res = await updatePropertyImage(
         property.id,
@@ -47,6 +45,7 @@ export const PropertyCardImage = ({ property }: { property: Property }) => {
       setIsPending(false);
     }
   };
+
   return (
     <div className="relative border rounded-sm w-full h-[300px] flex justify-center items-center overflow-hidden">
       {isPending ? (
