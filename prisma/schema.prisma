@@ -19,6 +19,7 @@ model User {
   lastName      String
   password      String?
   email         String    @unique
+  phoneNumber   String?
   emailVerified DateTime?
   image         String?
   imagePublicId String?
