@@ -14,15 +14,21 @@ datasource db {
 }
 
 model User {
-  id            String    @id
-  firstName     String
-  lastName      String
-  password      String?
-  email         String    @unique
-  phoneNumber   String?
-  emailVerified DateTime?
-  image         String?
-  imagePublicId String?
+  id              String    @id
+  firstName       String
+  lastName        String
+  password        String?
+  email           String    @unique
+  phoneNumber     String?
+  emailVerified   DateTime?
+  image           String?
+  imagePublicId   String?
+  notifyEmail     Boolean   @default(false)
+  notifySms       Boolean   @default(false)
+  notifyPush      Boolean   @default(false)
+  notifyUpdates   Boolean   @default(false)
+  notifyReminders Boolean   @default(false)
+  notifyOffers    Boolean   @default(false)
 
   accounts Account[]
   sessions Session[]
