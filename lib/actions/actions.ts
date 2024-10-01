@@ -3,13 +3,14 @@
 import { auth, signIn, signOut } from "@/auth";
 import { RegistrationSchema } from "../zod-schemas/register";
 import prisma from "@/prisma/prisma";
-import { genSalt, hashSync } from "bcrypt-ts";
+import { compare, genSalt, hashSync } from "bcrypt-ts";
 import { createId } from "@paralleldrive/cuid2";
 import { LoginSchema } from "../zod-schemas/login";
 import { cloudinary } from "../cloudinary-config";
 import { revalidatePath } from "next/cache";
 import { User } from "@prisma/client";
 import { EditUserSchema } from "../zod-schemas/user";
+import { UpdatePasswordSchema } from "../zod-schemas/update-password";
 
 export type FormResponse = {
   success: boolean;
@@ -67,6 +68,7 @@ export const login = async (
       email: parsedData.data.email,
       password: parsedData.data.password,
     });
+
     return {
       message: "Login successful!",
       success: true,
@@ -203,6 +205,58 @@ export const updateUserInfo = async (
     return {
       success: false,
       message: "Failed to update user information, try again later",
+      fields: parsedData.data,
+    };
+  }
+};
+
+export const updatePassword = async (
+  prevState: FormResponse,
+  formData: FormData
+): Promise<FormResponse> => {
+  const data = Object.fromEntries(formData);
+  const parsedData = UpdatePasswordSchema.safeParse(data);
+
+  if (!parsedData.success) {
+    console.log(parsedData.error);
+    return {
+      success: false,
+      message: "Failed to update password",
+      fields: parsedData.data,
+    };
+  }
+  const { userId, hashedPassword, currentPassword, password } = parsedData.data;
+  const isValid = await compare(currentPassword, hashedPassword);
+  if (!isValid) {
+    return {
+      success: false,
+      message: "Current Password is incorrect",
+      fields: {
+        ...parsedData.data,
+        message: "Current password is incorrect",
+      },
+    };
+  }
+  const salt = await genSalt(10);
+  const newHashedPassword = hashSync(password, salt);
+
+  try {
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        password: newHashedPassword,
+      },
+    });
+
+    return {
+      success: true,
+      message: "Password has been updated",
+    };
+  } catch (error) {
+    console.error("Failed to update password: ", error);
+    return {
+      success: false,
+      message: "Failed to update password",
       fields: parsedData.data,
     };
   }

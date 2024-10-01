@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 
 export const RegistrationForm = () => {
   const [state, action, isPending] = useActionState(registerUser, {
+    success: false,
     message: "",
   });
   const form = useForm<z.output<typeof RegistrationSchema>>({
