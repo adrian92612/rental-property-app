@@ -186,7 +186,7 @@ export const UserPassword = ({ user }: UserPersonalInfoProps) => {
   };
 
   return (
-    <Card>
+    <Card className="lg:col-span-2">
       <CardHeader>
         <CardTitle>Password</CardTitle>
       </CardHeader>

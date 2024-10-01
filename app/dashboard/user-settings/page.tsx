@@ -1,4 +1,5 @@
 import { Header } from "@/components/header";
+import { NotificationPreferences } from "@/components/user-settings/notifications";
 import { UserPassword } from "@/components/user-settings/user-password";
 import { UserPersonalInfo } from "@/components/user-settings/user-personal-info";
 import { getUser } from "@/lib/actions/actions";
@@ -8,9 +9,10 @@ const UserSettings = async () => {
   return (
     <>
       <Header headerLabel="User Settings" formComponent="none" />
-      <div className="space-y-5">
+      <div className="grid gap-5 lg:grid-cols-2">
         <UserPersonalInfo user={user} />
         {user.password && <UserPassword user={user} />}
+        <NotificationPreferences user={user} />
       </div>
     </>
   );

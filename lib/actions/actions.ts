@@ -15,7 +15,7 @@ import { UpdatePasswordSchema } from "../zod-schemas/update-password";
 export type FormResponse = {
   success: boolean;
   message: string;
-  fields?: Record<string, string | number | Date>;
+  fields?: Record<string, string | number | Date | boolean>;
 };
 
 export type Response = {
@@ -167,6 +167,38 @@ export const updateUserImage = async (
   } catch (error) {
     console.error("Failed to update user avatar: ", error);
     throw error;
+  }
+};
+
+export const updateNotifications = async (
+  prevState: Response,
+  formData: FormData
+): Promise<Response> => {
+  const data = Object.fromEntries(formData);
+  try {
+    await prisma.user.update({
+      where: { id: data.userId as string },
+      data: {
+        notifyEmail: !!data.notifyEmail,
+        notifySms: !!data.notifySms,
+        notifyPush: !!data.notifyPush,
+        notifyUpdates: !!data.notifyUpdates,
+        notifyReminders: !!data.notifyReminders,
+        notifyOffers: !!data.notifyOffers,
+      },
+    });
+
+    revalidatePath("/dashboard/user-settings");
+    return {
+      success: true,
+      message: "Notification preferences has been updated",
+    };
+  } catch (error) {
+    console.error("Failed to update notification preferences: ", error);
+    return {
+      success: false,
+      message: "Failed to update notification preferences",
+    };
   }
 };
 

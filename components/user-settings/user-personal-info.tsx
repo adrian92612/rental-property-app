@@ -9,7 +9,7 @@ export type UserPersonalInfoProps = {
 
 export const UserPersonalInfo = ({ user }: UserPersonalInfoProps) => {
   return (
-    <Card>
+    <Card className="lg:col-span-2">
       <CardHeader>
         <CardTitle>User Information</CardTitle>
       </CardHeader>
