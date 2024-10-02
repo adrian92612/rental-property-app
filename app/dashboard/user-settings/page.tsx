@@ -1,4 +1,5 @@
 import { Header } from "@/components/header";
+import { BillingPayment } from "@/components/user-settings/billing-payment";
 import { NotificationPreferences } from "@/components/user-settings/notifications";
 import { UserPassword } from "@/components/user-settings/user-password";
 import { UserPersonalInfo } from "@/components/user-settings/user-personal-info";
@@ -13,6 +14,7 @@ const UserSettings = async () => {
         <UserPersonalInfo user={user} />
         {user.password && <UserPassword user={user} />}
         <NotificationPreferences user={user} />
+        <BillingPayment user={user} />
       </div>
     </>
   );

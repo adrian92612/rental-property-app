@@ -76,11 +76,12 @@ CardFooter.displayName = "CardFooter";
 type ContentProps = {
   label: string;
   value: string;
+  className?: string;
 };
 
-export const Content = ({ label, value }: ContentProps) => {
+export const Content = ({ label, value, className }: ContentProps) => {
   return (
-    <div className="flex items-start gap-1">
+    <div className={cn("flex items-start gap-1", className)}>
       <span className="font-bold font-montserrat">{label}</span>
       <span>{value}</span>
     </div>

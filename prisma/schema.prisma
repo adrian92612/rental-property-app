@@ -29,6 +29,9 @@ model User {
   notifyUpdates   Boolean   @default(false)
   notifyReminders Boolean   @default(false)
   notifyOffers    Boolean   @default(false)
+  paymentMethod   String    @default("card")
+  subscription    String    @default("monthly")
+  billingAddress  String?
 
   accounts Account[]
   sessions Session[]

@@ -12,7 +12,7 @@ import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 
-const Document = ({ label }: { label: string }) => {
+export const Document = ({ label }: { label: string }) => {
   const { toast } = useToast();
   return (
     <div className="flex gap-1 items-center w-full">

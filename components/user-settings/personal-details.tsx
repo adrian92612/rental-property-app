@@ -87,7 +87,7 @@ const EditDetailsForm = ({ user, toggleEdit }: EditDetailsFormProps) => {
                   First Name:
                 </FormLabel>
                 <FormControl>
-                  <Input {...field} className="max-w-56" />
+                  <Input {...field} className="max-w-56 text-base" />
                 </FormControl>
               </div>
               <FormMessage />
@@ -104,7 +104,7 @@ const EditDetailsForm = ({ user, toggleEdit }: EditDetailsFormProps) => {
                   Last Name:
                 </FormLabel>
                 <FormControl>
-                  <Input {...field} className="max-w-56" />
+                  <Input {...field} className="max-w-56 text-base" />
                 </FormControl>
               </div>
               <FormMessage />
@@ -121,7 +121,7 @@ const EditDetailsForm = ({ user, toggleEdit }: EditDetailsFormProps) => {
                   Phone Number:
                 </FormLabel>
                 <FormControl>
-                  <Input {...field} className="max-w-56" />
+                  <Input {...field} className="max-w-56 text-base" />
                 </FormControl>
               </div>
               <FormMessage />
@@ -169,9 +169,17 @@ export const PersonalDetails = ({ user }: UserPersonalInfoProps) => {
           <EditDetailsForm user={user} toggleEdit={toggleEdit} />
         ) : (
           <div>
-            <Content label="First Name:" value={user.firstName} />
-            <Content label="Last Name:" value={user.lastName} />
-            <Content label="Phone Number:" value={user.phoneNumber || "N/A"} />
+            <Content
+              label="First Name:"
+              value={user.firstName}
+              className="h-9"
+            />
+            <Content label="Last Name:" value={user.lastName} className="h-9" />
+            <Content
+              label="Phone Number:"
+              value={user.phoneNumber || "N/A"}
+              className="h-9"
+            />
           </div>
         )}
       </div>

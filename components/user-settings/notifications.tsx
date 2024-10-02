@@ -66,10 +66,28 @@ export const NotificationPreferences = ({ user }: { user: User }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Notification Preferences</CardTitle>
+        <div className="flex items-center justify-between h-8">
+          <CardTitle>Notification Preferences</CardTitle>
+          {showButton && (
+            <div className="flex items-center justify-end gap-2">
+              <Button
+                type="button"
+                variant="destructive"
+                size="sm"
+                onClick={handleCancel}
+                disabled={isPending}
+              >
+                Cancel
+              </Button>
+              <Button form="form" type="submit" size="sm" disabled={isPending}>
+                Save
+              </Button>
+            </div>
+          )}
+        </div>
       </CardHeader>
       <CardContent className="pb-6">
-        <form action={action}>
+        <form id="form" action={action}>
           <input type="hidden" id="userId" name="userId" value={user.id} />
           <div className="space-y-2 mb-5">
             <h2 className="font-bold">Where you receive these notifications</h2>
@@ -106,23 +124,6 @@ export const NotificationPreferences = ({ user }: { user: User }) => {
               </div>
             ))}
           </div>
-
-          {showButton && (
-            <div className="flex items-center justify-end gap-2 mt-5">
-              <Button
-                type="button"
-                variant="destructive"
-                size="sm"
-                onClick={handleCancel}
-                disabled={isPending}
-              >
-                Cancel
-              </Button>
-              <Button type="submit" size="sm" disabled={isPending}>
-                Save
-              </Button>
-            </div>
-          )}
         </form>
       </CardContent>
     </Card>
