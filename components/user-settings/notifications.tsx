@@ -24,6 +24,9 @@ export const NotificationPreferences = ({ user }: { user: User }) => {
     notifyUpdates: user.notifyUpdates,
     notifyReminders: user.notifyReminders,
     notifyOffers: user.notifyOffers,
+    notifyAlerts: user.notifyAlerts,
+    notifyEvents: user.notifyEvents,
+    notifyReports: user.notifyReports,
   });
 
   const [showButton, setShowButton] = useState<boolean>(false);
@@ -44,6 +47,9 @@ export const NotificationPreferences = ({ user }: { user: User }) => {
       notifyUpdates: user.notifyUpdates,
       notifyReminders: user.notifyReminders,
       notifyOffers: user.notifyOffers,
+      notifyAlerts: user.notifyAlerts,
+      notifyEvents: user.notifyEvents,
+      notifyReports: user.notifyReports,
     });
     setShowButton(false);
   };
@@ -79,7 +85,12 @@ export const NotificationPreferences = ({ user }: { user: User }) => {
               >
                 Cancel
               </Button>
-              <Button form="form" type="submit" size="sm" disabled={isPending}>
+              <Button
+                form="notificationForm"
+                type="submit"
+                size="sm"
+                disabled={isPending}
+              >
                 Save
               </Button>
             </div>
@@ -87,7 +98,7 @@ export const NotificationPreferences = ({ user }: { user: User }) => {
         </div>
       </CardHeader>
       <CardContent className="pb-6">
-        <form id="form" action={action}>
+        <form id="notificationForm" action={action}>
           <input type="hidden" id="userId" name="userId" value={user.id} />
           <div className="space-y-2 mb-5">
             <h2 className="font-bold">Where you receive these notifications</h2>

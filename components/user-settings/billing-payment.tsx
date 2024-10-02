@@ -10,11 +10,13 @@ import {
   Content,
 } from "../ui/card";
 import { Button } from "../ui/button";
-import { useState } from "react";
+import React, { useActionState, useCallback, useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import { LuPencilLine } from "react-icons/lu";
 import { Label } from "../ui/label";
 import { Document, Documents } from "../documents-card";
+import { updateBillingPayment } from "@/lib/actions/actions";
+import { useToast } from "@/hooks/use-toast";
 
 type BillingPaymentProps = {
   user: User;
@@ -39,34 +41,76 @@ const paymentMethods = [
   },
 ];
 
+const subscriptions = [
+  {
+    value: "monthly",
+    label: "Monthly",
+  },
+  {
+    value: "annual",
+    label: "Annual",
+  },
+];
+
 const documents = ["Payment History", "Tax Information"];
 
 export const BillingPayment = ({ user }: BillingPaymentProps) => {
+  const [state, action, isPending] = useActionState(updateBillingPayment, {
+    success: false,
+    message: "",
+  });
   const [showFormButton, setShowFormButton] = useState<boolean>(false);
-  const [activePayment, setActivePayment] = useState<string>(
+  const [paymentMethod, setPaymentMethod] = useState<string>(
     user.paymentMethod
   );
+  const [subscription, setSubscription] = useState<string>(user.subscription);
   const [showBillingAddress, setShowBillingAddress] = useState<boolean>(true);
   const [billingAddress, setBillingAddress] = useState<string>(
     user.billingAddress || ""
   );
+  const { toast } = useToast();
+  const handleToast = useCallback(() => {
+    if (state.success) {
+      setShowBillingAddress(true);
+      setShowFormButton(false);
+    }
+    if (state.message) {
+      toast({
+        title: state.message,
+      });
+    }
+  }, [state, toast]);
+
+  useEffect(() => {
+    handleToast();
+  }, [handleToast]);
 
   const handlePayment = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setActivePayment(e.currentTarget.value);
+    setPaymentMethod(e.currentTarget.value);
+    setShowFormButton(true);
+  };
+  const handleSubscription = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setSubscription(e.currentTarget.value);
     setShowFormButton(true);
   };
 
-  const handleBillingAddress = () => {};
+  const handleBillingAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setBillingAddress(e.target.value);
+  };
+
   const handleBillingAddressInput = () => {
     setShowFormButton(true);
     setShowBillingAddress(false);
   };
 
   const handleCancel = () => {
-    setActivePayment(user.paymentMethod);
+    setPaymentMethod(user.paymentMethod);
+    setSubscription(user.subscription);
+    setBillingAddress(user.billingAddress || "");
     setShowBillingAddress(true);
     setShowFormButton(false);
   };
+
   return (
     <Card>
       <CardHeader>
@@ -79,11 +123,16 @@ export const BillingPayment = ({ user }: BillingPaymentProps) => {
                 variant="destructive"
                 size="sm"
                 onClick={handleCancel}
-                // disabled={isPending}
+                disabled={isPending}
               >
                 Cancel
               </Button>
-              <Button type="submit" form="form" size="sm">
+              <Button
+                type="submit"
+                form="billingForm"
+                size="sm"
+                disabled={isPending}
+              >
                 Save
               </Button>
             </div>
@@ -91,19 +140,40 @@ export const BillingPayment = ({ user }: BillingPaymentProps) => {
         </div>
       </CardHeader>
       <CardContent className="space-y-5">
-        <div className="grid md:grid-cols-2 gap-3">
-          {paymentMethods.map((payment) => (
-            <Button
-              key={payment.value}
-              variant={
-                activePayment === payment.value ? "default" : "secondary"
-              }
-              value={payment.value}
-              onClick={handlePayment}
-            >
-              {payment.label}
-            </Button>
-          ))}
+        <div>
+          <h2 className="font-bold mb-2">Payment Method</h2>
+          <div className="grid md:grid-cols-2 gap-3">
+            {paymentMethods.map((payment) => (
+              <Button
+                key={payment.value}
+                variant={
+                  paymentMethod === payment.value ? "default" : "secondary"
+                }
+                value={payment.value}
+                onClick={handlePayment}
+                disabled={isPending}
+              >
+                {payment.label}
+              </Button>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <h2 className="font-bold mb-2">Subscription</h2>
+          <div className="grid grid-cols-2 bg-secondary p-2 rounded-sm">
+            {subscriptions.map((sub) => (
+              <Button
+                key={sub.value}
+                variant={subscription === sub.value ? "default" : "secondary"}
+                value={sub.value}
+                onClick={handleSubscription}
+                className="border-none shadow-none"
+              >
+                {sub.label}
+              </Button>
+            ))}
+          </div>
         </div>
 
         {showBillingAddress ? (
@@ -117,6 +187,7 @@ export const BillingPayment = ({ user }: BillingPaymentProps) => {
               size="icon"
               className="text-2xl"
               onClick={handleBillingAddressInput}
+              disabled={isPending}
             >
               <LuPencilLine />
             </Button>
@@ -133,19 +204,21 @@ export const BillingPayment = ({ user }: BillingPaymentProps) => {
               id="billingAddress"
               value={billingAddress}
               onChange={handleBillingAddress}
+              disabled={isPending}
             />
           </div>
         )}
-        <form id="form" action="">
-          <input type="hidden" value={activePayment} name="activePayment" />
+        <form id="billingForm" action={action}>
+          <input type="hidden" value={user.id} name="userId" />
+          <input type="hidden" value={paymentMethod} name="paymentMethod" />
+          <input type="hidden" value={subscription} name="subscription" />
           <input type="hidden" value={billingAddress} name="billingAddress" />
-          <div></div>
         </form>
       </CardContent>
       <CardFooter className="pb-5">
         <ul className="w-full flex items-center justify-around">
           {documents.map((doc) => (
-            <li key={doc} className="">
+            <li key={doc}>
               <Document label={doc} />
             </li>
           ))}

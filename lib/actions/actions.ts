@@ -170,6 +170,35 @@ export const updateUserImage = async (
   }
 };
 
+export const updateBillingPayment = async (
+  prevState: Response,
+  formData: FormData
+): Promise<Response> => {
+  try {
+    const data = Object.fromEntries(formData);
+    console.log(data);
+    await prisma.user.update({
+      where: { id: data.userId as string },
+      data: {
+        paymentMethod: data.paymentMethod as string,
+        subscription: data.subscription as string,
+        billingAddress: (data.billingAddress || "") as string,
+      },
+    });
+    revalidatePath("/dashboard/user-settings");
+    return {
+      success: true,
+      message: "Billing & Payment has been updated",
+    };
+  } catch (error) {
+    console.error("Failed to update Billing & Payment", error);
+    return {
+      success: false,
+      message: "Failed to update Billing & Payment",
+    };
+  }
+};
+
 export const updateNotifications = async (
   prevState: Response,
   formData: FormData
@@ -185,6 +214,9 @@ export const updateNotifications = async (
         notifyUpdates: !!data.notifyUpdates,
         notifyReminders: !!data.notifyReminders,
         notifyOffers: !!data.notifyOffers,
+        notifyAlerts: !!data.notifyAlerts,
+        notifyEvents: !!data.notifyEvents,
+        notifyReports: !!data.notifyReports,
       },
     });
 
