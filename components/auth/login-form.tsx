@@ -21,7 +21,10 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export const LoginForm = () => {
-  const [state, action, isPending] = useActionState(login, { message: "" });
+  const [state, action, isPending] = useActionState(login, {
+    success: false,
+    message: "",
+  });
   const form = useForm<z.output<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {

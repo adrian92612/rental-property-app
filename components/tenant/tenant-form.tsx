@@ -80,6 +80,8 @@ export const TenantForm = ({ closeDialog, tenant }: TenantFormProps) => {
       });
       setToastShown(true);
     }
+
+    if (!state.success) setToastShown(false);
   }, [state, toast, closeDialog, toastShown]);
 
   useEffect(() => {
@@ -87,6 +89,8 @@ export const TenantForm = ({ closeDialog, tenant }: TenantFormProps) => {
   }, [handleStateChange]);
 
   const formRef = useRef<HTMLFormElement>(null);
+  console.log(toastShown);
+  console.log("asfdasfdsaf");
 
   return (
     <Form {...form}>
