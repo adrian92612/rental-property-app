@@ -5,7 +5,7 @@ import { createId } from "@paralleldrive/cuid2";
 import { Property, Tenant, Unit } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { UnitSchema } from "../zod-schemas/unit";
-import { FormResponse, Response } from "./actions";
+import { FormResponse, getUserId, Response } from "./actions";
 
 export type UnitDetailsInfo = Unit & {
   property: Property;
@@ -32,7 +32,9 @@ export type PropertyIdName = {
 
 export const getPropertyIdsAndNames = async (): Promise<PropertyIdName[]> => {
   try {
+    const userId = await getUserId();
     const properties = prisma.property.findMany({
+      where: { userId: userId },
       select: {
         id: true,
         name: true,
@@ -75,9 +77,8 @@ export const getUnitFormData = async (
 
 export const getUnitDetails = async (
   unitId: string
-): Promise<UnitDetailsInfo> => {
+): Promise<UnitDetailsInfo | null> => {
   try {
-    if (!unitId) throw new Error("Unit Id is missing");
     const unit = await prisma.unit.findUnique({
       where: { id: unitId },
       include: {
@@ -91,13 +92,17 @@ export const getUnitDetails = async (
     return unit;
   } catch (error) {
     console.error("Failed to fetch unit details: ", error);
-    throw error;
+    return null;
   }
 };
 
 export const getUnitsTableInfo = async (): Promise<UnitFormData[]> => {
   try {
+    const userId = await getUserId();
     const units = await prisma.unit.findMany({
+      where: {
+        property: { userId: userId },
+      },
       include: {
         property: {
           select: { name: true },

@@ -49,7 +49,7 @@ export const getProperties = async (): Promise<PropertiesIncludeAll[]> => {
     return properties;
   } catch (error) {
     console.error("Failed to fetch properties: ", error);
-    throw error;
+    return [];
   }
 };
 

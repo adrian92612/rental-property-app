@@ -124,7 +124,7 @@ const UnitsPerPropertyBarChart = ({
         <div className="text-[12px]">
           <h5 className="font-bold">Properties with most units</h5>
           <ul>
-            {topProperties.length &&
+            {!!topProperties.length &&
               topProperties.map(([id, prop], i) => (
                 <li key={i}>
                   {prop.propertyName}: {prop.units.length}

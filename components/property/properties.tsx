@@ -81,7 +81,7 @@ export const Properties = ({ properties }: PropertiesProp) => {
           className="max-w-52"
         />
       </div>
-      {sortedProperties && sortedProperties.length > 0 ? (
+      {sortedProperties && sortedProperties.length ? (
         <ul className="grid justify-items-stretch gap-5 lg:grid-cols-2 xl:grid-cols-3 pb-5">
           {sortedProperties.map((property) => (
             <li key={property.id}>
@@ -90,7 +90,7 @@ export const Properties = ({ properties }: PropertiesProp) => {
           ))}
         </ul>
       ) : (
-        <p>No properties found.</p>
+        <h2 className="text-center font-bold text-lg">No properties found.</h2>
       )}
     </section>
   );
