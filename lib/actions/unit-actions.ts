@@ -79,8 +79,12 @@ export const getUnitDetails = async (
   unitId: string
 ): Promise<UnitDetailsInfo | null> => {
   try {
+    const userId = await getUserId();
     const unit = await prisma.unit.findUnique({
-      where: { id: unitId },
+      where: {
+        id: unitId,
+        property: { userId: userId },
+      },
       include: {
         property: true,
         tenant: true,

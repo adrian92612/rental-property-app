@@ -49,6 +49,7 @@ export const PropertyForm = ({ closeDialog, property }: PropertyFormProps) => {
       purchasePrice: property?.purchasePrice || undefined,
       monthlyExpense: property?.monthlyExpense || undefined,
       mortgagePayment: property?.mortgagePayment || undefined,
+      image: undefined,
       ...(state?.fields ?? {}),
     },
   });
@@ -81,8 +82,7 @@ export const PropertyForm = ({ closeDialog, property }: PropertyFormProps) => {
           })(e);
         }}
       >
-        {state.message && <span>{state.message}</span>}
-        <input type="hidden" name="propertyId" value={property?.id} />
+        <input type="hidden" name="propertyId" value={property?.id ?? ""} />
 
         <FormField
           control={form.control}

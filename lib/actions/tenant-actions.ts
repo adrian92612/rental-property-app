@@ -5,31 +5,37 @@ import { TenantSchema } from "../zod-schemas/tenant";
 import { createId } from "@paralleldrive/cuid2";
 import { revalidatePath } from "next/cache";
 import { Tenant } from "@prisma/client";
-import { FormResponse, Response } from "./actions";
+import { FormResponse, getUserId, Response } from "./actions";
 
-export const getTenantData = async (tenantId: string): Promise<Tenant> => {
+export const getTenantData = async (
+  tenantId: string
+): Promise<Tenant | null> => {
   try {
+    const userId = await getUserId();
     const tenant = await prisma.tenant.findUnique({
-      where: { id: tenantId },
+      where: { id: tenantId, userId: userId },
     });
 
     if (!tenant) throw new Error("Failed to get tenant");
     return tenant;
   } catch (error) {
     console.error("Failed to fetch tenant data: ", error);
-    throw error;
+    return null;
   }
 };
 
 export const getTenantsTableInfo = async (): Promise<Tenant[]> => {
   try {
-    const tenants = await prisma.tenant.findMany({});
+    const userId = await getUserId();
+    const tenants = await prisma.tenant.findMany({
+      where: { userId: userId },
+    });
     if (!tenants) throw new Error("Failed to fetch tenants");
 
     return tenants;
   } catch (error) {
     console.error("Failed to fetch tenants: ", error);
-    throw error;
+    return [];
   }
 };
 
@@ -132,6 +138,7 @@ export const upsertTenant = async (
   } = parsedData.data;
 
   try {
+    const userId = await getUserId();
     const existingTenant = await prisma.tenant.findUnique({
       where: { email },
     });
@@ -169,6 +176,7 @@ export const upsertTenant = async (
         termInMonths,
         leaseStart,
         leaseEnd,
+        userId,
       },
     });
 
