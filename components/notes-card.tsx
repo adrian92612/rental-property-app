@@ -119,7 +119,7 @@ export const Notes = ({ notes, id, model }: NotesProps) => {
           <Textarea
             name="note"
             disabled={isPending}
-            defaultValue={state.fields?.note || ""}
+            defaultValue={(state.fields?.note || "") as string}
             placeholder="Add a note..."
             className="resize-none lg:h-52"
           />
