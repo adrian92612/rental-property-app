@@ -5,14 +5,18 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
+import { BsFillBuildingsFill } from "react-icons/bs";
 
 const RegisterPage = () => {
   return (
-    <Card className="w-11/12 max-w-[350px] rounded-sm">
+    <Card className="w-11/12 max-w-[350px] rounded-sm text-xl bg-slate-200">
       <CardHeader className="font-bold text-center">
-        Rental Property App
+        <CardTitle className="flex items-center justify-center gap-2">
+          Rental Property App <BsFillBuildingsFill />
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <RegistrationForm />

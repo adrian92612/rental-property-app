@@ -25,6 +25,7 @@ export const RegistrationForm = () => {
   });
   const form = useForm<z.output<typeof RegistrationSchema>>({
     resolver: zodResolver(RegistrationSchema),
+    mode: "onBlur",
     defaultValues: {
       email: "",
       firstName: "",
