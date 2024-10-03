@@ -6,16 +6,20 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
+import { BsFillBuildingsFill } from "react-icons/bs";
 
 const LoginPage = () => {
   return (
-    <Card className="w-11/12 max-w-[350px] rounded-sm">
-      <CardHeader className="font-bold text-center">
-        Rental Property App
+    <Card className="w-11/12 max-w-[350px] rounded-sm bg-slate-100">
+      <CardHeader className="font-bold text-center text-xl">
+        <CardTitle className="flex items-center justify-center gap-2">
+          Rental Property App <BsFillBuildingsFill />
+        </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-3">
         <LoginForm />
         <div className="flex justify-center items-center gap-2">
           <div className="flex-grow bg-gray-200 h-px"></div>

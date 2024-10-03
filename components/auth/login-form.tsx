@@ -27,6 +27,7 @@ export const LoginForm = () => {
   });
   const form = useForm<z.output<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
+    mode: "onBlur",
     defaultValues: {
       email: "",
       password: "",
