@@ -7,6 +7,7 @@ import { getUser } from "@/lib/actions/actions";
 
 const UserSettings = async () => {
   const user = await getUser();
+  await new Promise((resolve) => setTimeout(resolve, 3000));
   return (
     <>
       <Header headerLabel="User Settings" formComponent="none" />

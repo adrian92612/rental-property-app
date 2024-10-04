@@ -2,11 +2,15 @@ import { cn } from "@/lib/utils";
 import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
 import { Skeleton } from "./ui/skeleton";
 
-const ContentLabelSkeleton = () => {
+type ContentLabelSkeletonProps = {
+  height?: number;
+};
+
+const ContentLabelSkeleton = ({ height = 4 }: ContentLabelSkeletonProps) => {
   return (
-    <div className="flex items-center gap-2">
-      <Skeleton className="h-4 w-14" />
-      <Skeleton className="h-4 w-3/4" />
+    <div className="flex items-center gap-2 w-full">
+      <Skeleton className={`h-${height} w-14`} />
+      <Skeleton className={`h-${height} w-1/2`} />
     </div>
   );
 };
@@ -37,10 +41,18 @@ export const ChartSkeleton = () => {
   );
 };
 
-export const HeaderSkeleton = () => {
+type HeaderSkeletonProps = {
+  noForm?: boolean;
+};
+
+export const HeaderSkeleton = ({ noForm }: HeaderSkeletonProps) => {
   return (
     <div className="sticky top-0 flex items-center justify-between px-5 py-2 backdrop-blur-md z-10 dark:text-primary">
-      <Skeleton className="w-10 h-9" />
+      {noForm ? (
+        <div className="w-10 h-9"></div>
+      ) : (
+        <Skeleton className="w-10 h-9" />
+      )}
       <Skeleton className="w-48 h-9" />
       <Skeleton className="w-10 h-9 " />
     </div>
@@ -282,6 +294,121 @@ export const UnitDetailsSkeleton = () => {
       </CardContent>
       <CardFooter className="flex justify-end pb-6">
         <Skeleton className="w-16 h-8" />
+      </CardFooter>
+    </Card>
+  );
+};
+
+export const UserPersonalInfoSkeleton = () => {
+  return (
+    <Card className="lg:col-span-2 min-h-[358px]">
+      <CardHeader>
+        <Skeleton className="w-40 h-5" />
+      </CardHeader>
+      <CardContent className="space-y-5 pb-6">
+        <div className="space-y-2">
+          <Skeleton className="w-28 h-7" />
+          <div className="flex items-center gap-2">
+            <Skeleton className="w-10 h-10 rounded-full" />
+            <Skeleton className="w-28 h-8" />
+          </div>
+        </div>
+        <div className="space-y-3">
+          <Skeleton className="w-40 h-7" />
+          <ContentLabelSkeleton height={5} />
+          <ContentLabelSkeleton height={5} />
+          <ContentLabelSkeleton height={5} />
+          <div className="flex justify-end items-center">
+            <Skeleton className="w-12 h-8" />
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export const UserPasswordSkeleton = () => {
+  return (
+    <Card className="lg:col-span-2">
+      <CardHeader>
+        <Skeleton className="w-40 h-5" />
+      </CardHeader>
+      <CardContent className="pb-6">
+        <Skeleton className="w-32 h-8" />
+      </CardContent>
+    </Card>
+  );
+};
+
+const SwitchSkeleton = () => {
+  return (
+    <div className="flex items-center justify-between">
+      <Skeleton className="w-14 h-5" />
+      <Skeleton className="w-9 h-5" />
+    </div>
+  );
+};
+
+export const NotificationPreferencesSkeleton = () => {
+  return (
+    <Card className="min-h-[422px]">
+      <CardHeader>
+        <Skeleton className="w-52 h-5" />
+      </CardHeader>
+      <CardContent className="pb-6">
+        <div className="space-y-2 mb-5">
+          <Skeleton className="w-3/4 h-7" />
+          <SwitchSkeleton />
+          <SwitchSkeleton />
+          <SwitchSkeleton />
+        </div>
+        <div className="space-y-2">
+          <Skeleton className="w-3/4 h-7" />
+          <SwitchSkeleton />
+          <SwitchSkeleton />
+          <SwitchSkeleton />
+          <SwitchSkeleton />
+          <SwitchSkeleton />
+          <SwitchSkeleton />
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export const BillingPaymentSkeleton = () => {
+  return (
+    <Card>
+      <CardHeader>
+        <Skeleton className="w-52 h-5" />
+      </CardHeader>
+      <CardContent className="space-y-5">
+        <div>
+          <Skeleton className="w-1/2 h-7 mb-2" />
+
+          <div className="grid md:grid-cols-2 gap-3">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <Skeleton key={i} className="h-9" />
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <Skeleton className="w-1/4 h-7 mb-2" />
+          <Skeleton className="w-full h-14" />
+        </div>
+        <div>
+          <div className="flex justify-between items-center">
+            <ContentLabelSkeleton height={7} />
+            <Skeleton className="w-8 h-8" />
+          </div>
+        </div>
+      </CardContent>
+      <CardFooter className="pb-5">
+        <div className="w-full flex items-center justify-around">
+          <Skeleton className="w-40 h-6" />
+          <Skeleton className="w-40 h-6" />
+        </div>
       </CardFooter>
     </Card>
   );

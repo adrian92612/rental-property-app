@@ -190,7 +190,7 @@ export const UserPassword = ({ user }: UserPersonalInfoProps) => {
       <CardHeader>
         <CardTitle>Password</CardTitle>
       </CardHeader>
-      <CardContent className="mb-5">
+      <CardContent className="pb-6">
         {!showForm ? (
           <Button size="sm" onClick={toggleForm}>
             Change Password
