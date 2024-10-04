@@ -69,10 +69,10 @@ export const getProperty = async (
       },
     });
 
-    throw new Prisma.PrismaClientKnownRequestError("Prisma Error", {
-      code: "123",
-      clientVersion: "1.2.3",
-    });
+    // throw new Prisma.PrismaClientKnownRequestError("Prisma Error", {
+    //   code: "123",
+    //   clientVersion: "1.2.3",
+    // });
 
     if (!property) throw new Error(`Property with ID ${propertyId} not found`);
 
