@@ -5,6 +5,7 @@ import { PersonalInformation } from "@/components/tenant/personal-information-ca
 import { UnitDetails } from "@/components/tenant/unit-details-card";
 import { getProperties } from "@/lib/actions/property-actions";
 import { getTenantData } from "@/lib/actions/tenant-actions";
+import ModelNotFound from "../../model-not-found";
 
 const documentList = [
   "Lease Agreement",
@@ -24,10 +25,12 @@ const documentList = [
 ];
 
 const TenantDetailsPage = async ({ params }: { params: { id: string } }) => {
-  const tenant = await getTenantData(params.id);
-  const properties = await getProperties();
+  const [tenant, properties] = await Promise.all([
+    getTenantData(params.id),
+    getProperties(),
+  ]);
 
-  if (!tenant) return <div>No Tenant Found</div>;
+  if (!tenant) return <ModelNotFound model="Tenant" />;
 
   return (
     <>
@@ -37,7 +40,7 @@ const TenantDetailsPage = async ({ params }: { params: { id: string } }) => {
         <UnitDetails
           unitId={tenant.unitId}
           tenantId={tenant.id}
-          properties={properties || []}
+          properties={properties}
         />
         <Notes notes={tenant.notes || []} id={tenant.id} model={"tenant"} />
         <Documents list={documentList} model="tenant" />

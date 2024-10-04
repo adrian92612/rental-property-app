@@ -8,6 +8,7 @@ import {
   getPropertyIdsAndNames,
   getUnitDetails,
 } from "@/lib/actions/unit-actions";
+import ModelNotFound from "../../model-not-found";
 
 const documentList = [
   "Lease Agreement",
@@ -21,26 +22,28 @@ const documentList = [
 ];
 
 const UnitDetailsPage = async ({ params }: { params: { id: string } }) => {
-  const unit = await getUnitDetails(params.id);
-  const fetchedProperties = await getPropertyIdsAndNames();
-  const tenants = await getTenantsTableInfo();
+  const [unit, fetchedProperties, tenants] = await Promise.all([
+    getUnitDetails(params.id),
+    getPropertyIdsAndNames(),
+    getTenantsTableInfo(),
+  ]);
 
   const availableTenants = tenants?.filter((tenant) => tenant.unitId === null);
 
-  if (!unit) return <div>404 Not Found</div>;
+  if (!unit) return <ModelNotFound model="Unit" />;
 
   return (
     <>
       <Header
         headerLabel="Unit Details"
         formComponent="unit"
-        properties={fetchedProperties || []}
+        properties={fetchedProperties}
       />
       <div className="grid justify-items-stretch lg:grid-cols-2 mt-5 gap-8">
         <UnitDetailsCard unit={unit} />
         <TenantDetailsCard
           tenant={unit.tenant}
-          availableTenants={availableTenants || []}
+          availableTenants={availableTenants}
           unitId={unit.id}
         />
         <Notes notes={unit.notes} id={unit.id} model="unit" />

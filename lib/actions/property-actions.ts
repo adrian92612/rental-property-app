@@ -55,7 +55,7 @@ export const getProperties = async (): Promise<PropertiesIncludeAll[]> => {
 
 export const getProperty = async (
   propertyId: string
-): Promise<PropertyIncludeAll> => {
+): Promise<PropertyIncludeAll | null> => {
   try {
     const property = await prisma.property.findUnique({
       where: { id: propertyId },
@@ -73,7 +73,7 @@ export const getProperty = async (
     return property;
   } catch (error) {
     console.error("Failed to fetch property: ", error);
-    throw error;
+    return null;
   }
 };
 

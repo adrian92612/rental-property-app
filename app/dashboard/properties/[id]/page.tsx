@@ -7,6 +7,8 @@ import { IncomeExpenseChart } from "@/components/property/property-charts";
 import { propertyUnitsColumns } from "@/components/property/property-unit-columns";
 import { getProperty } from "@/lib/actions/property-actions";
 import { UnitFormData } from "@/lib/actions/unit-actions";
+import { notFound } from "next/navigation";
+import ModelNotFound from "../../model-not-found";
 
 const documentList = [
   "Property Deed",
@@ -34,7 +36,7 @@ const documentList = [
 const PropertyDetailsPage = async ({ params }: { params: { id: string } }) => {
   const property = await getProperty(params.id);
 
-  if (!property) return <div>404 Not Found</div>;
+  if (!property) return <ModelNotFound model="Property" />;
 
   const rentalIncome = property.units
     .filter((unit) => unit.tenant !== null)
