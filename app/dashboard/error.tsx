@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 
 export default function ErrorBoundary({
@@ -10,7 +11,6 @@ export default function ErrorBoundary({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Log the error to an error reporting service
     console.error(error);
   }, [error]);
 
@@ -22,12 +22,7 @@ export default function ErrorBoundary({
           ? `Error: ${error.message}`
           : "An unexpected error occurred. Please try again later."}
       </p>
-      <button
-        onClick={reset}
-        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-      >
-        Try again
-      </button>
+      <Button>Try again</Button>
     </div>
   );
 }

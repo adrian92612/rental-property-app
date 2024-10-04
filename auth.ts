@@ -15,6 +15,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     strategy: "jwt",
   },
   secret: process.env.AUTH_SECRET,
+  trustHost: true,
   adapter: {
     ...PrismaAdapter(prisma),
     createUser: async (data: any) => {
