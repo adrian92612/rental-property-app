@@ -112,7 +112,7 @@ export const Notes = ({ notes, id, model }: NotesProps) => {
       <CardHeader>
         <CardTitle>Notes</CardTitle>
       </CardHeader>
-      <CardContent className="grid lg:grid-cols-2 gap-5">
+      <CardContent className="grid lg:grid-cols-2 gap-5 pb-6">
         <form action={action}>
           <input type="hidden" name="id" value={id} />
           <input type="hidden" name="model" value={model} />
@@ -121,7 +121,7 @@ export const Notes = ({ notes, id, model }: NotesProps) => {
             disabled={isPending}
             defaultValue={(state.fields?.note || "") as string}
             placeholder="Add a note..."
-            className="resize-none lg:h-52"
+            className="resize-none h-52"
           />
           <div className="flex justify-end mt-2">
             <Button size="sm" disabled={isPending}>

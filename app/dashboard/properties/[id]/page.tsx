@@ -7,7 +7,6 @@ import { IncomeExpenseChart } from "@/components/property/property-charts";
 import { propertyUnitsColumns } from "@/components/property/property-unit-columns";
 import { getProperty } from "@/lib/actions/property-actions";
 import { UnitFormData } from "@/lib/actions/unit-actions";
-import { notFound } from "next/navigation";
 import ModelNotFound from "../../model-not-found";
 
 const documentList = [
@@ -29,12 +28,12 @@ const documentList = [
   "Tenant Roster",
   "Rental Income Statements",
   "Property Management Agreements",
-  "Homeowners Association (HOA) Documents",
   "Licenses and Permits",
 ];
 
 const PropertyDetailsPage = async ({ params }: { params: { id: string } }) => {
   const property = await getProperty(params.id);
+  await new Promise((resolve) => setTimeout(resolve, 3000));
 
   if (!property) return <ModelNotFound model="Property" />;
 

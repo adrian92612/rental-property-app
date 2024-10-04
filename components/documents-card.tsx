@@ -44,14 +44,13 @@ export const Documents = ({ list, model }: DocumentsProps) => {
       <CardHeader>
         <CardTitle>Documents</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pb-6">
         <div className="grid  md:grid-cols-2 lg:grid-cols-3 gap-2">
           {list.map((doc, i) => (
             <Document key={i} label={doc} />
           ))}
         </div>
       </CardContent>
-      <CardFooter></CardFooter>
     </Card>
   );
 };

@@ -22,7 +22,7 @@ export default function ErrorBoundary({
           ? `Error: ${error.message}`
           : "An unexpected error occurred. Please try again later."}
       </p>
-      <Button>Try again</Button>
+      <Button onClick={reset}>Try again</Button>
     </div>
   );
 }

@@ -1,3 +1,15 @@
+import {
+  ChartSkeleton,
+  HeaderSkeleton,
+  PropertiesSkeleton,
+} from "@/components/skeletons";
+
 export default function Loading() {
-  return <div>Loading Properties</div>;
+  return (
+    <>
+      <HeaderSkeleton />
+      <ChartSkeleton />
+      <PropertiesSkeleton />
+    </>
+  );
 }
