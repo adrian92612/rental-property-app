@@ -8,6 +8,7 @@ import { PropertiesInfo } from "@/components/property/property-charts";
 
 const PropertiesPage = async () => {
   const properties = (await getProperties()) as PropertiesIncludeAll[];
+  await new Promise((resolve) => setTimeout(resolve, 3000));
   return (
     <>
       <Header headerLabel="Properties" formComponent="property" />
