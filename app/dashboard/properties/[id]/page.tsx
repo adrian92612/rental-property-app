@@ -32,7 +32,6 @@ const documentList = [
 
 const PropertyDetailsPage = async ({ params }: { params: { id: string } }) => {
   const property = await getProperty(params.id);
-  await new Promise((resolve) => setTimeout(resolve, 3000));
 
   if (!property) return <ModelNotFound model="Property" />;
 

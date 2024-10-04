@@ -49,7 +49,7 @@ export const UnitDetails = async ({
         <Content label="Rent Amount: " value={getRentAmount()} />
         <Content label="Due Date: " value={unit?.dueDate?.toString() || ""} />
       </CardContent>
-      <CardFooter className="flex justify-end gap-2">
+      <CardFooter className="flex justify-end pb-6">
         {unit ? (
           <UnassignUnit tenantId={tenantId} unitId={unit.id} />
         ) : (

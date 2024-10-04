@@ -66,7 +66,7 @@ export const PersonalInformation = ({ tenant }: PersonalInformationProps) => {
           />
         </div>
       </CardContent>
-      <CardFooter className="flex justify-end">
+      <CardFooter className="flex justify-end pb-6">
         <FormDialog formFor="edit" className="text-2xl">
           {(closeDialog) => (
             <TenantForm closeDialog={closeDialog} tenant={tenant} />

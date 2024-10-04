@@ -13,8 +13,6 @@ const OverviewPage = async () => {
     getTenantsTableInfo(),
   ]);
 
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-
   return (
     <>
       <Header headerLabel="Overview" formComponent="none" />

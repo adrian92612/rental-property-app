@@ -231,3 +231,58 @@ export const TenantDetailsCardSkeleton = () => {
     </Card>
   );
 };
+
+export const PersonalInformationSkeleton = () => {
+  return (
+    <Card className="xl:col-span-2">
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <Skeleton className="max-w-52 w-full h-5" />
+          <Skeleton className="w-9 h-9 rounded-full" />
+        </div>
+      </CardHeader>
+      <CardContent className="grid xl:grid-cols-2 gap-2">
+        <div className="space-y-2">
+          <Skeleton className="h-5 w-40" />
+          <ContentLabelSkeleton />
+          <ContentLabelSkeleton />
+          <ContentLabelSkeleton />
+          <ContentLabelSkeleton />
+        </div>
+        <div className="space-y-2">
+          <Skeleton className="h-5 w-40" />
+          <ContentLabelSkeleton />
+          <ContentLabelSkeleton />
+          <ContentLabelSkeleton />
+          <ContentLabelSkeleton />
+        </div>
+      </CardContent>
+      <CardFooter className="flex justify-end pb-6 gap-1">
+        <Skeleton className="w-8 h-8" />
+        <Skeleton className="w-8 h-8" />
+      </CardFooter>
+    </Card>
+  );
+};
+
+export const UnitDetailsSkeleton = () => {
+  return (
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <Skeleton className="max-w-52 w-full h-5" />
+          <Skeleton className="w-9 h-9" />
+        </div>
+      </CardHeader>
+      <CardContent>
+        <ContentLabelSkeleton />
+        <ContentLabelSkeleton />
+        <ContentLabelSkeleton />
+        <ContentLabelSkeleton />
+      </CardContent>
+      <CardFooter className="flex justify-end pb-6">
+        <Skeleton className="w-16 h-8" />
+      </CardFooter>
+    </Card>
+  );
+};
