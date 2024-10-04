@@ -29,6 +29,7 @@ const UnitDetailsPage = async ({ params }: { params: { id: string } }) => {
   ]);
 
   const availableTenants = tenants?.filter((tenant) => tenant.unitId === null);
+  await new Promise((resolve) => setTimeout(resolve, 3000));
 
   if (!unit) return <ModelNotFound model="Unit" />;
 

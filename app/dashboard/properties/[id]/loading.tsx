@@ -5,7 +5,7 @@ import {
   HeaderSkeleton,
   NotesSkeleton,
   PropertyCardSkeleton,
-  PropertyUnitsTableSkeleton,
+  TableSkeleton,
 } from "@/components/skeletons";
 
 export default function Loading() {
@@ -16,9 +16,9 @@ export default function Loading() {
         <PropertyCardSkeleton />
         <ChartCardSkeleton />
         <NotesSkeleton />
-        <DocumentsSkeleton />
+        <DocumentsSkeleton listLength={18} />
       </div>
-      <PropertyUnitsTableSkeleton />
+      <TableSkeleton />
     </>
   );
 }

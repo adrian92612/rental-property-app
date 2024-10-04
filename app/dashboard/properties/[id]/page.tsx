@@ -25,7 +25,6 @@ const documentList = [
   "Floor Plans and Blueprints",
   "Utility Bills",
   "Lease Agreements for Units",
-  "Tenant Roster",
   "Rental Income Statements",
   "Property Management Agreements",
   "Licenses and Permits",

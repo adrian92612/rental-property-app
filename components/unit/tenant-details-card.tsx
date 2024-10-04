@@ -68,7 +68,7 @@ export const TenantDetailsCard = ({
           value={tenant?.termInMonths ? `${tenant.termInMonths} months` : ""}
         />
       </CardContent>
-      <CardFooter className="justify-end">
+      <CardFooter className="justify-end pb-6">
         {!tenant ? (
           <AssignTenant tenants={availableTenants || []} unitId={unitId} />
         ) : (

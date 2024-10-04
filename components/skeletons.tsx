@@ -2,6 +2,15 @@ import { cn } from "@/lib/utils";
 import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
 import { Skeleton } from "./ui/skeleton";
 
+const ContentLabelSkeleton = () => {
+  return (
+    <div className="flex items-center gap-2">
+      <Skeleton className="h-4 w-14" />
+      <Skeleton className="h-4 w-3/4" />
+    </div>
+  );
+};
+
 export const ChartCardSkeleton = () => {
   return (
     <Card>
@@ -70,18 +79,9 @@ export const PropertiesCardSkeleton = () => {
         </div>
       </CardHeader>
       <CardContent className="space-y-2">
-        <div className="flex items-center gap-2">
-          <Skeleton className="h-4 w-14" />
-          <Skeleton className="h-4 w-3/4" />
-        </div>
-        <div className="flex items-center gap-2">
-          <Skeleton className="h-4 w-14" />
-          <Skeleton className="h-4 w-1/2" />
-        </div>
-        <div className="flex items-center gap-2">
-          <Skeleton className="h-4 w-14" />
-          <Skeleton className="h-4 w-1/2" />
-        </div>
+        <ContentLabelSkeleton />
+        <ContentLabelSkeleton />
+        <ContentLabelSkeleton />
       </CardContent>
       <CardFooter className="justify-end gap-1 pb-2">
         <Skeleton className="h-8 w-8 rounded-lg" />
@@ -104,26 +104,11 @@ export const PropertyCardSkeleton = () => {
         </div>
       </CardHeader>
       <CardContent className="space-y-2">
-        <div className="flex items-center gap-2">
-          <Skeleton className="h-4 w-14" />
-          <Skeleton className="h-4 w-3/4" />
-        </div>
-        <div className="flex items-center gap-2">
-          <Skeleton className="h-4 w-14" />
-          <Skeleton className="h-4 w-1/2" />
-        </div>
-        <div className="flex items-center gap-2">
-          <Skeleton className="h-4 w-14" />
-          <Skeleton className="h-4 w-1/2" />
-        </div>
-        <div className="flex items-center gap-2">
-          <Skeleton className="h-4 w-14" />
-          <Skeleton className="h-4 w-1/2" />
-        </div>
-        <div className="flex items-center gap-2">
-          <Skeleton className="h-4 w-14" />
-          <Skeleton className="h-4 w-1/2" />
-        </div>
+        <ContentLabelSkeleton />
+        <ContentLabelSkeleton />
+        <ContentLabelSkeleton />
+        <ContentLabelSkeleton />
+        <ContentLabelSkeleton />
       </CardContent>
       <CardFooter className="justify-end gap-1 pb-2">
         <Skeleton className="h-8 w-8 rounded-lg" />
@@ -158,9 +143,13 @@ export const NotesSkeleton = ({ forTenant }: NotesSkeletonProps) => {
 
 type DocumentsSkeletonProps = {
   forUnit?: boolean;
+  listLength: number;
 };
 
-export const DocumentsSkeleton = ({ forUnit }: DocumentsSkeletonProps) => {
+export const DocumentsSkeleton = ({
+  forUnit,
+  listLength,
+}: DocumentsSkeletonProps) => {
   return (
     <Card className={cn(forUnit ? "lg:col-span-2" : "xl:col-span-3")}>
       <CardHeader>
@@ -168,7 +157,7 @@ export const DocumentsSkeleton = ({ forUnit }: DocumentsSkeletonProps) => {
       </CardHeader>
       <CardContent className="pb-6">
         <div className="grid  md:grid-cols-2 lg:grid-cols-3 gap-2">
-          {Array.from({ length: 15 }).map((_, i) => (
+          {Array.from({ length: listLength }).map((_, i) => (
             <Skeleton key={i} className="h-5 w-3/4" />
           ))}
         </div>
@@ -177,7 +166,7 @@ export const DocumentsSkeleton = ({ forUnit }: DocumentsSkeletonProps) => {
   );
 };
 
-export const PropertyUnitsTableSkeleton = () => {
+export const TableSkeleton = () => {
   return (
     <div className="space-y-4">
       <div className="rounded-sm border shadow-lg bg-card">
@@ -193,5 +182,52 @@ export const PropertyUnitsTableSkeleton = () => {
         <Skeleton className="w-14 h-9" />
       </div>
     </div>
+  );
+};
+
+export const UnitDetailsCardSkeleton = () => {
+  return (
+    <Card className="min-h-64">
+      <CardHeader>
+        <Skeleton className="h-5 w-24" />
+      </CardHeader>
+      <CardContent className="space-y-2">
+        <ContentLabelSkeleton />
+        <ContentLabelSkeleton />
+        <ContentLabelSkeleton />
+        <ContentLabelSkeleton />
+        <ContentLabelSkeleton />
+      </CardContent>
+      <CardFooter className="justify-end items-center gap-1 pb-6">
+        <Skeleton className="w-8 h-8" />
+        <Skeleton className="w-8 h-8" />
+      </CardFooter>
+    </Card>
+  );
+};
+
+export const TenantDetailsCardSkeleton = () => {
+  return (
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <Skeleton className="w-9 h-9 rounded-full" />
+          <Skeleton className="w-32 h-5" />
+          <Skeleton className="w-9 h-9" />
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-2">
+        <ContentLabelSkeleton />
+        <ContentLabelSkeleton />
+        <ContentLabelSkeleton />
+        <ContentLabelSkeleton />
+        <ContentLabelSkeleton />
+        <ContentLabelSkeleton />
+        <ContentLabelSkeleton />
+      </CardContent>
+      <CardFooter className="justify-end pb-6">
+        <Skeleton className="w-16 h-8" />
+      </CardFooter>
+    </Card>
   );
 };

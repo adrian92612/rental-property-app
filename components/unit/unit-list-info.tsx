@@ -81,7 +81,7 @@ const UnitsPerPropertyBarChart = ({
             accessibilityLayer
             data={chartData}
             margin={{
-              top: 20,
+              top: 35,
             }}
           >
             <CartesianGrid vertical={false} />
@@ -101,12 +101,14 @@ const UnitsPerPropertyBarChart = ({
               stackId="a"
               fill="var(--color-occupied)"
               radius={[0, 0, 4, 4]}
+              maxBarSize={40}
             />
             <Bar
               dataKey="units"
               stackId="a"
               fill="var(--color-units)"
               radius={[4, 4, 0, 0]}
+              maxBarSize={40}
             >
               <LabelList
                 dataKey="units"
