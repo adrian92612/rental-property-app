@@ -9,7 +9,7 @@ import {
 import Link from "next/link";
 import { BsFillBuildingsFill } from "react-icons/bs";
 
-export default function Home() {
+export default async function Home() {
   return (
     <main className="h-screen w-full flex items-center justify-center bg-gradient-to-r from-slate-500 to-slate-800">
       <Card className="bg-transparent border-none">
