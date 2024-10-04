@@ -11,8 +11,9 @@ import {
 } from "./actions";
 import prisma from "@/prisma/prisma";
 import { createId } from "@paralleldrive/cuid2";
-import { Property, Tenant, Unit } from "@prisma/client";
+import { Prisma, Property, Tenant, Unit } from "@prisma/client";
 import { cloudinary } from "../cloudinary-config";
+import { handlePrismaError } from "../utils";
 
 export type PropertiesIncludeAll = Property & {
   units: (Unit & {
@@ -68,11 +69,18 @@ export const getProperty = async (
       },
     });
 
+    throw new Prisma.PrismaClientKnownRequestError("Prisma Error", {
+      code: "123",
+      clientVersion: "1.2.3",
+    });
+
     if (!property) throw new Error(`Property with ID ${propertyId} not found`);
 
     return property;
   } catch (error) {
     console.error("Failed to fetch property: ", error);
+    const msg = handlePrismaError(error);
+    if (msg) throw new Error(msg);
     return null;
   }
 };
