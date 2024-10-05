@@ -1,5 +1,4 @@
 import { Header } from "@/components/header";
-import { HeaderWrapper } from "@/components/header-wrapper";
 import { PropertiesInfo } from "@/components/property/property-charts";
 import { TenantListInfo } from "@/components/tenant/tenant-list-info";
 import { UnitListInfo } from "@/components/unit/unit-list-info";
@@ -17,7 +16,6 @@ const OverviewPage = async () => {
   return (
     <>
       <Header headerLabel="Overview" formComponent="none" />
-      {/* <HeaderWrapper headerLabel="Overview" formComponent="none" /> */}
       <PropertiesInfo properties={properties} />
       <UnitListInfo units={units} />
       <TenantListInfo tenants={tenants} />

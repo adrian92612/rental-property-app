@@ -7,8 +7,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { registerMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { BsFillBuildingsFill } from "react-icons/bs";
+
+export const metadata = registerMetadata;
 
 const RegisterPage = () => {
   return (

@@ -2,7 +2,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Libre_Baskerville, Montserrat } from "next/font/google";
 import { ThemeProvider } from "@/components/ui/theme-provider";
-import { metadata } from "@/lib/metadata";
+import { rootMetadata } from "@/lib/metadata";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -16,7 +16,7 @@ const libreBaskerville = Libre_Baskerville({
   variable: "--font-libre-baskerville",
 });
 
-export const pageMetadata = metadata;
+export const metadata = rootMetadata;
 
 export default function RootLayout({
   children,

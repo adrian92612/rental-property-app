@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 
-export const metadata: Metadata = {
+export const rootMetadata: Metadata = {
   title: {
     default: "Rental Property Dashboard",
     template: "%s | Rental Property Dashboard",
@@ -8,11 +8,18 @@ export const metadata: Metadata = {
   description: "Manage your rental properties, units, and tenants seamlessly.",
 };
 
+export const loginMetadata: Metadata = {
+  title: "Login",
+  description: "Login to your rental property dashboard account.",
+};
+
+export const registerMetadata: Metadata = {
+  title: "Register",
+  description: "Register to rental property dashboard.",
+};
+
 export const dashboardMetadata: Metadata = {
-  title: {
-    default: "Dashboard Overview | Rental Property Dashboard",
-    template: "%s | Rental Property Dashboard",
-  },
+  title: "Dashboard Overview",
   description: "View the overview of your rental properties and activity.",
 };
 
