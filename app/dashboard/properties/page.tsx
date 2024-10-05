@@ -5,6 +5,9 @@ import {
 import { Header } from "@/components/header";
 import { Properties } from "@/components/property/properties";
 import { PropertiesInfo } from "@/components/property/property-charts";
+import { propertiesMetadata } from "@/lib/metadata";
+
+export const metadata = propertiesMetadata;
 
 const PropertiesPage = async () => {
   const properties = (await getProperties()) as PropertiesIncludeAll[];

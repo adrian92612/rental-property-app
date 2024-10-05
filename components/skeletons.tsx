@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
 import { Skeleton } from "./ui/skeleton";
@@ -47,14 +49,16 @@ type HeaderSkeletonProps = {
 
 export const HeaderSkeleton = ({ noForm }: HeaderSkeletonProps) => {
   return (
-    <div className="sticky top-0 flex items-center justify-between px-5 py-2 backdrop-blur-md z-10 dark:text-primary">
-      {noForm ? (
-        <div className="w-10 h-9"></div>
-      ) : (
-        <Skeleton className="w-10 h-9" />
-      )}
-      <Skeleton className="w-48 h-9" />
-      <Skeleton className="w-10 h-9 " />
+    <div>
+      <div className="sticky top-0 flex items-center justify-between px-5 py-2 backdrop-blur-md z-10 dark:text-primary">
+        {noForm ? (
+          <div className="w-10 h-9"></div>
+        ) : (
+          <Skeleton className="w-10 h-9" />
+        )}
+        <Skeleton className="w-48 h-9" />
+        <Skeleton className="w-10 h-9 " />
+      </div>
     </div>
   );
 };

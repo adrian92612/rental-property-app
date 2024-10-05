@@ -9,6 +9,17 @@ import {
   getUnitDetails,
 } from "@/lib/actions/unit-actions";
 import ModelNotFound from "../../model-not-found";
+import { unitDetailsMetadata } from "@/lib/metadata";
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: { id: string };
+}) => {
+  const unit = await getUnitDetails(params.id);
+  if (!unit) return unitDetailsMetadata("Property not found");
+  return unitDetailsMetadata(unit.number);
+};
 
 const documentList = [
   "Lease Agreement",

@@ -169,6 +169,7 @@ export const BillingPayment = ({ user }: BillingPaymentProps) => {
                 value={sub.value}
                 onClick={handleSubscription}
                 className="border-none shadow-none"
+                disabled={isPending}
               >
                 {sub.label}
               </Button>

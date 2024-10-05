@@ -8,6 +8,17 @@ import { propertyUnitsColumns } from "@/components/property/property-unit-column
 import { getProperty } from "@/lib/actions/property-actions";
 import { UnitFormData } from "@/lib/actions/unit-actions";
 import ModelNotFound from "../../model-not-found";
+import { propertyDetailsMetadata } from "@/lib/metadata";
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: { id: string };
+}) => {
+  const property = await getProperty(params.id);
+  if (!property) return propertyDetailsMetadata("Property not found");
+  return propertyDetailsMetadata(property.name);
+};
 
 const documentList = [
   "Property Deed",

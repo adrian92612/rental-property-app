@@ -6,6 +6,17 @@ import { UnitDetails } from "@/components/tenant/unit-details-card";
 import { getProperties } from "@/lib/actions/property-actions";
 import { getTenantData } from "@/lib/actions/tenant-actions";
 import ModelNotFound from "../../model-not-found";
+import { tenantDetailsMetadata } from "@/lib/metadata";
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: { id: string };
+}) => {
+  const tenant = await getTenantData(params.id);
+  if (!tenant) return tenantDetailsMetadata("Tenant not found");
+  return tenantDetailsMetadata(`${tenant.firstName} ${tenant.lastName}`);
+};
 
 const documentList = [
   "Lease Agreement",

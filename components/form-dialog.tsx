@@ -16,7 +16,6 @@ import React, { useState } from "react";
 import { Button } from "./ui/button";
 import { PiNotePencilBold } from "react-icons/pi";
 import { cn } from "@/lib/utils";
-import { Edit } from "lucide-react";
 
 type FormDialogProps = {
   formFor: "property" | "unit" | "tenant" | "edit";

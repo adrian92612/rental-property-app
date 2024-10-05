@@ -4,6 +4,9 @@ import { NotificationPreferences } from "@/components/user-settings/notification
 import { UserPassword } from "@/components/user-settings/user-password";
 import { UserPersonalInfo } from "@/components/user-settings/user-personal-info";
 import { getUser } from "@/lib/actions/actions";
+import { settingsMetadata } from "@/lib/metadata";
+
+export const metadata = settingsMetadata;
 
 const UserSettings = async () => {
   const user = await getUser();

@@ -1,4 +1,7 @@
 import { SideBar } from "@/components/dashboard/sidebar";
+import { dashboardMetadata } from "@/lib/metadata";
+
+export const metadata = dashboardMetadata;
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (

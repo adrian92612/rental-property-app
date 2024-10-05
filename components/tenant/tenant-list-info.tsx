@@ -145,7 +145,6 @@ const TenantTermDistribution = ({ tenants }: TenantListInfoProps) => {
 
 const TenantGrowthLineChart = ({ tenants }: TenantListInfoProps) => {
   const chartData = generateTenantGrowthData(tenants);
-  console.log(chartData);
   // Get the last two months for comparison
   const currentMonthData = chartData[chartData.length - 1].tenants;
   const previousMonthData = chartData[chartData.length - 2].tenants;

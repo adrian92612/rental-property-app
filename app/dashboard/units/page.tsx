@@ -6,6 +6,9 @@ import {
   getPropertyIdsAndNames,
   getUnitsTableInfo,
 } from "@/lib/actions/unit-actions";
+import { unitsMetadata } from "@/lib/metadata";
+
+export const metadata = unitsMetadata;
 
 const UnitsPage = async () => {
   const [units, fetchedProperties] = await Promise.all([
