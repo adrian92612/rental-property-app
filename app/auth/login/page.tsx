@@ -16,7 +16,7 @@ export const metadata = loginMetadata;
 
 const LoginPage = () => {
   return (
-    <Card className="w-11/12 max-w-[350px] rounded-sm bg-slate-100">
+    <Card className="w-11/12 max-w-[350px] rounded-sm bg-slate-100 dark:text-primary-foreground">
       <CardHeader className="font-bold text-center text-xl">
         <CardTitle className="flex items-center justify-center gap-2">
           Rental Property App <BsFillBuildingsFill />
@@ -32,7 +32,12 @@ const LoginPage = () => {
         <LoginSocialForm />
       </CardContent>
       <CardFooter>
-        <Button asChild variant="link" size="sm" className="w-full">
+        <Button
+          asChild
+          variant="link"
+          size="sm"
+          className="w-full dark:text-primary-foreground"
+        >
           <Link href="/auth/register">
             Don&apos;t have an account? Register here
           </Link>

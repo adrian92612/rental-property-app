@@ -14,10 +14,10 @@ export default async function Home() {
     <main className="h-screen w-full flex items-center justify-center bg-gradient-to-r from-slate-500 to-slate-800">
       <Card className="bg-transparent border-none">
         <CardHeader>
-          <CardTitle className="font-bold text-5xl text-primary-foreground flex flex-col items-center gap-2">
+          <CardTitle className="font-bold text-5xl text-primary-foreground dark:text-primary flex flex-col items-center gap-2">
             <BsFillBuildingsFill /> Rental Property Dashboard
           </CardTitle>
-          <CardDescription className="text-muted">
+          <CardDescription className="text-muted dark:text-muted-foreground">
             Manage your properties with ease
           </CardDescription>
         </CardHeader>

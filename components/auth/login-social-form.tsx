@@ -4,7 +4,10 @@ import { FaGithub, FaGoogle } from "react-icons/fa";
 
 export const LoginSocialForm = async () => {
   return (
-    <form action={loginSocial} className="flex items-center gap-2">
+    <form
+      action={loginSocial}
+      className="flex items-center gap-2 dark:text-primary"
+    >
       <Button
         variant="outline"
         size="sm"
