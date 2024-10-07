@@ -19,7 +19,11 @@ export const registerMetadata: Metadata = {
 };
 
 export const dashboardMetadata: Metadata = {
-  title: "Dashboard Overview",
+  // title: "Dashboard Overview",
+  title: {
+    default: "Dashboard Overview",
+    template: "%s | Rental Property Dashboard",
+  },
   description: "View the overview of your rental properties and activity.",
 };
 

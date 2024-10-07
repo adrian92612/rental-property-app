@@ -17,7 +17,7 @@ export const generateMetadata = async ({
   params: { id: string };
 }) => {
   const unit = await getUnitDetails(params.id);
-  if (!unit) return unitDetailsMetadata("Property not found");
+  if (!unit) return unitDetailsMetadata("Unit not found");
   return unitDetailsMetadata(unit.number);
 };
 

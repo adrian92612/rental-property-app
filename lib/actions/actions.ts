@@ -248,6 +248,7 @@ export const updateUserInfo = async (
       fields: parsedData.data,
     };
   }
+
   const { userId, firstName, lastName, phoneNumber } = parsedData.data;
   try {
     await prisma.user.update({
@@ -291,6 +292,7 @@ export const updatePassword = async (
   }
   const { userId, hashedPassword, currentPassword, password } = parsedData.data;
   const isValid = await compare(currentPassword, hashedPassword);
+
   if (!isValid) {
     return {
       success: false,
@@ -409,6 +411,7 @@ export const addNote = async (
   const id = formData.get("id") as string;
   const note = formData.get("note") as string;
   const model = formData.get("model") as string;
+
   try {
     if (model === "property") {
       await prisma.property.update({
