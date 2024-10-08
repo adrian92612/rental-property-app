@@ -34,13 +34,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (isLoggedIn && redirectIfLoggedIn.includes(pathname)) {
         return Response.redirect(new URL("/dashboard", nextUrl));
       }
+      if (!isLoggedIn && isOnProtectedPage) {
+        return Response.redirect(new URL("/auth/login", nextUrl));
+      }
 
       if (!isLoggedIn && !redirectIfLoggedIn.includes(pathname)) {
         return Response.redirect(new URL("/", nextUrl));
-      }
-
-      if (!isLoggedIn && isOnProtectedPage) {
-        return Response.redirect(new URL("/auth/login", nextUrl));
       }
 
       return true;

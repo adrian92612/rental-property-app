@@ -59,6 +59,7 @@ export const RegistrationForm = () => {
             action(new FormData(formRef.current!));
           })(e);
         }}
+        data-id="registration-form"
       >
         {state.message && (
           <span className="text-red-500">* {state.message}</span>

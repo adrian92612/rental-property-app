@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "cypress:open": "cypress open",
     "postinstall": "prisma generate"
   },
   "dependencies": {
@@ -53,6 +54,8 @@
     "@types/node": "^20",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
+    "cypress": "^13.15.0",
+    "cypress-real-events": "^1.13.0",
     "eslint": "^8",
     "eslint-config-next": "15.0.0-rc.0",
     "postcss": "^8",
