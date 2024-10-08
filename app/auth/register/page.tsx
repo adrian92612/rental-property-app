@@ -29,7 +29,7 @@ const RegisterPage = () => {
           asChild
           variant="link"
           size="sm"
-          className="w-full text-primary-foreground"
+          className="w-full dark:text-primary-foreground"
         >
           <Link href="/auth/login">Already have an account? Login here</Link>
         </Button>

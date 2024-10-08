@@ -3,8 +3,16 @@ import { z } from "zod";
 export const RegistrationSchema = z
   .object({
     email: z.string().trim().min(1, "Email is required").email(),
-    firstName: z.string().trim().min(1, "First name is required"),
-    lastName: z.string().trim().min(1, "Last name is required"),
+    firstName: z
+      .string()
+      .trim()
+      .min(1, "First name is required")
+      .max(50, "Cannot be more than 50 characters"),
+    lastName: z
+      .string()
+      .trim()
+      .min(1, "Last name is required")
+      .max(50, "Cannot be more than 50 characters"),
     password: z
       .string()
       .trim()
@@ -15,13 +23,15 @@ export const RegistrationSchema = z
           const hasNumber = /[0-9]/.test(value);
           const hasSpecialChar = /[^A-Za-z0-9]/.test(value);
           const minCharCount = value.length > 0;
+          const maxCharCount = value.length <= 50;
 
           if (
             !hasLowercase ||
             !hasUppercase ||
             !hasNumber ||
             !hasSpecialChar ||
-            !minCharCount
+            !minCharCount ||
+            !maxCharCount
           ) {
             return false;
           }
@@ -29,7 +39,7 @@ export const RegistrationSchema = z
         },
         {
           message:
-            "Password must be at least 6 characters; have at least 1 lowercase, 1 uppercase, 1 number, and 1 special character.",
+            "Password must be between 6 to 50 characters; have at least 1 lowercase, 1 uppercase, 1 number, and 1 special character",
         }
       ),
     confirmPassword: z.string().trim(),

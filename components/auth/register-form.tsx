@@ -132,7 +132,7 @@ export const RegistrationForm = () => {
         <Button
           type="submit"
           size="sm"
-          className="w-full mt-2 font-bold text-lg bg-primary-foreground dark:text-primary"
+          className="w-full mt-2 font-bold text-lg dark:bg-primary-foreground dark:text-primary"
           disabled={isPending}
         >
           {isPending ? "Signing Up..." : "Sign Up"}
