@@ -45,6 +45,7 @@ export const FormDialog = ({
           variant="ghost"
           size="icon"
           className={cn(formFor === "edit" ? "text-xl" : "text-3xl", className)}
+          data-id="form-btn"
         >
           {icons[formFor]}
         </Button>

@@ -87,6 +87,7 @@ export const DeleteBtn = ({
           size="icon"
           className={cn("text-xl", className)}
           disabled={isPending}
+          data-id="alert-delete-btn"
         >
           <RiDeleteBin5Fill />
         </Button>
@@ -100,7 +101,12 @@ export const DeleteBtn = ({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleDelete}>Confirm</AlertDialogAction>
+          <AlertDialogAction
+            onClick={handleDelete}
+            data-id="confirm-delete-btn"
+          >
+            Confirm
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

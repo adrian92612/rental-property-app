@@ -24,7 +24,7 @@ export const PropertiesCard = ({
   property: PropertyIncludeAll;
 }) => {
   return (
-    <Card>
+    <Card data-id="properties-card-div">
       <CardHeader>
         <PropertyCardImage property={property} />
         <CardTitle className="mt-2">{property.name}</CardTitle>

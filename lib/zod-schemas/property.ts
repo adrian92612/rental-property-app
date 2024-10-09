@@ -2,25 +2,25 @@ import { z } from "zod";
 
 export const AddPropertySchema = z.object({
   name: z
-    .string()
+    .string({ required_error: "Property name is required" })
     .trim()
     .min(1, "Property name is required")
-    .max(100, "Cannot be more than 100 characters"),
+    .max(50, "Cannot be more than 50 characters"),
   address: z
-    .string()
+    .string({ required_error: "Address is required" })
     .trim()
     .min(1, "Address is required")
-    .max(100, "Cannot be more than 100 characters"),
+    .max(50, "Cannot be more than 50 characters"),
   owner: z
-    .string()
+    .string({ required_error: "Owner is required" })
     .trim()
     .min(1, "Owner is required")
-    .max(100, "Cannot be more than 100 characters"),
+    .max(50, "Cannot be more than 50 characters"),
   contactInfo: z
-    .string()
+    .string({ required_error: "Contact information is required" })
     .trim()
     .min(1, "Contact information is required")
-    .max(100, "Cannot be more than 100 characters"),
+    .max(50, "Cannot be more than 50 characters"),
   purchasePrice: z.coerce
     .number({
       required_error: "Purchase Price is required",
