@@ -13,7 +13,7 @@ describe("CRUD on property", () => {
       .click();
   });
 
-  it("should create and display the property", () => {
+  it("should perform CRUD on property", () => {
     //click form button
     cy.get('div[data-id="header-div"] button[data-id="form-btn"]').click();
 
@@ -154,14 +154,7 @@ describe("CRUD on property", () => {
     //submit
     cy.get('button[type="submit"]').click();
 
-    // diplay
-    cy.get("h3")
-      .contains("Cypress Tower")
-      .scrollIntoView()
-      .should("be.visible");
-  });
-
-  it("should be able to edit properties", () => {
+    // edit property
     cy.contains("h3", "Cypress Tower")
       .scrollIntoView()
       .parents('div[data-id="properties-card-div"]')
@@ -179,9 +172,8 @@ describe("CRUD on property", () => {
 
     // diplay
     cy.get("h3").contains("name edited").scrollIntoView().should("be.visible");
-  });
 
-  it("should be able to delete the property", () => {
+    // delete property
     cy.contains("h3", "name edited")
       .scrollIntoView()
       .parents('div[data-id="properties-card-div"]')

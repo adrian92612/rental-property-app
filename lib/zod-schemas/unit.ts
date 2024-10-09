@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const UnitSchema = z.object({
   number: z
-    .string()
+    .string({ required_error: "Unit No. is required" })
     .trim()
     .min(1, "Unit No. is required")
     .max(20, "Cannot be more than 20 characters"),
