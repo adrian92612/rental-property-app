@@ -1,7 +1,7 @@
 import "cypress-real-events";
 
 describe("CRUD on unit", () => {
-  beforeEach(() => {
+  it("should be able perfrom CRUD on unit", () => {
     cy.visit("/auth/login");
     cy.get('input[name="email"]').type("cypress@test.com");
     cy.get('input[name="password"]').type("Password123!");
@@ -9,9 +9,7 @@ describe("CRUD on unit", () => {
 
     //go to units
     cy.get("a").contains(/units/i).click();
-  });
 
-  it("should be able perfrom CRUD on unit", () => {
     //click form button
     cy.get('div[data-id="header-div"] button[data-id="form-btn"]').click();
 

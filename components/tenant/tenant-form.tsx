@@ -41,6 +41,7 @@ export const TenantForm = ({ closeDialog, tenant }: TenantFormProps) => {
     message: "",
   });
   const [toastShown, setToastShown] = useState<boolean>(false);
+  const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
   const form = useForm<z.output<typeof TenantSchema>>({
     resolver: zodResolver(TenantSchema),
     mode: "onBlur",
@@ -191,7 +192,7 @@ export const TenantForm = ({ closeDialog, tenant }: TenantFormProps) => {
           render={({ field }) => (
             <FormItem className="">
               <FormLabel>Lease Start</FormLabel>
-              <Popover>
+              <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
@@ -214,7 +215,10 @@ export const TenantForm = ({ closeDialog, tenant }: TenantFormProps) => {
                   <Calendar
                     mode="single"
                     selected={field.value}
-                    onSelect={field.onChange}
+                    onSelect={(e) => {
+                      field.onChange(e);
+                      setIsCalendarOpen(false);
+                    }}
                     initialFocus
                   />
                 </PopoverContent>
@@ -234,7 +238,9 @@ export const TenantForm = ({ closeDialog, tenant }: TenantFormProps) => {
           name="leaseEnd"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Lease End</FormLabel>
+              <FormLabel className={leaseStart ? "text-primary" : ""}>
+                Lease End
+              </FormLabel>
               <FormControl>
                 <Input
                   {...field}
@@ -242,7 +248,7 @@ export const TenantForm = ({ closeDialog, tenant }: TenantFormProps) => {
                   value={field.value ? format(field.value, "PPP") : ""}
                 />
               </FormControl>
-              <FormMessage />
+              {!leaseStart && <FormMessage />}
             </FormItem>
           )}
         />

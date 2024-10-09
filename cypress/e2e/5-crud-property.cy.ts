@@ -1,7 +1,7 @@
 import "cypress-real-events";
 
 describe("CRUD on property", () => {
-  beforeEach(() => {
+  it("should perform CRUD on property", () => {
     cy.visit("/auth/login");
     cy.get('input[name="email"]').type("cypress@test.com");
     cy.get('input[name="password"]').type("Password123!");
@@ -11,9 +11,7 @@ describe("CRUD on property", () => {
     cy.get("a")
       .contains(/properties/i)
       .click();
-  });
 
-  it("should perform CRUD on property", () => {
     //click form button
     cy.get('div[data-id="header-div"] button[data-id="form-btn"]').click();
 

@@ -4,9 +4,18 @@ export const TenantSchema = z
   .object({
     tenantId: z.string().trim().optional(),
     unitId: z.string().trim().optional(),
-    firstName: z.string().trim().min(1, "First name is required"),
-    lastName: z.string().trim().min(1, "Last name is required"),
-    email: z.string().trim().email("Not a valid email address"),
+    firstName: z
+      .string({ required_error: "First name is required" })
+      .trim()
+      .min(1, "First name is required"),
+    lastName: z
+      .string({ required_error: "Last name is required" })
+      .trim()
+      .min(1, "Last name is required"),
+    email: z
+      .string({ required_error: "Email is required" })
+      .trim()
+      .email("Not a valid email address"),
     phoneNumber: z
       .string({
         required_error: "Phone number is required",

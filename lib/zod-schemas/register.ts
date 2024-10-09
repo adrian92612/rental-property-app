@@ -2,14 +2,18 @@ import { z } from "zod";
 
 export const RegistrationSchema = z
   .object({
-    email: z.string().trim().min(1, "Email is required").email(),
+    email: z
+      .string({ required_error: "Email is required" })
+      .trim()
+      .min(1, "Email is required")
+      .email(),
     firstName: z
-      .string()
+      .string({ required_error: "First name is required" })
       .trim()
       .min(1, "First name is required")
       .max(50, "Cannot be more than 50 characters"),
     lastName: z
-      .string()
+      .string({ required_error: "Last name is required" })
       .trim()
       .min(1, "Last name is required")
       .max(50, "Cannot be more than 50 characters"),

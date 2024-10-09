@@ -1,4 +1,4 @@
-/// <reference types="cypress" />
+// / <reference types="cypress" />
 // ***********************************************
 // This example commands.ts shows you how to
 // create various custom commands and overwrite
@@ -35,3 +35,20 @@
 //     }
 //   }
 // }
+
+declare namespace Cypress {
+  interface Chainable<Subject = any> {
+    login(visit: string): Chainable<any>;
+  }
+}
+
+Cypress.Commands.add("login", (visit) => {
+  cy.session(visit, () => {
+    cy.visit("/auth/login");
+    cy.get('input[name="email"]').type("cypress@test.com");
+    cy.get('input[name="password"]').type("Password123!");
+    cy.get('button[type="submit"]').click();
+    cy.url().should("contain", "/dashboard");
+  });
+  cy.visit(`/dashboard/${visit}`);
+});
