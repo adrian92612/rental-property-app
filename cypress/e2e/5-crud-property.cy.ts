@@ -1,17 +1,11 @@
 import "cypress-real-events";
 
 describe("CRUD on property", () => {
-  it("should perform CRUD on property", () => {
-    cy.visit("/auth/login");
-    cy.get('input[name="email"]').type("cypress@test.com");
-    cy.get('input[name="password"]').type("Password123!");
-    cy.get('button[type="submit"]').click();
+  beforeEach(() => {
+    cy.login("properties");
+  });
 
-    //go to properties
-    cy.get("a")
-      .contains(/properties/i)
-      .click();
-
+  it("should create a property", () => {
     //click form button
     cy.get('div[data-id="header-div"] button[data-id="form-btn"]').click();
 
@@ -149,9 +143,12 @@ describe("CRUD on property", () => {
     cy.realPress("Tab");
     cy.get("p").contains("There must be at least 1 unit").should("not.exist");
 
-    //submit
+    //submit and display
     cy.get('button[type="submit"]').click();
+    cy.contains("h3", "Cypress Tower").scrollIntoView().should("be.visible");
+  });
 
+  it("should be able to edit property", () => {
     // edit property
     cy.contains("h3", "Cypress Tower")
       .scrollIntoView()
@@ -166,11 +163,13 @@ describe("CRUD on property", () => {
     cy.get('input[name="purchasePrice"]').clear().type("2000000");
     cy.get('input[name="monthlyExpense"]').clear().type("40000");
     cy.get('input[name="mortgagePayment"]').clear().type("160000");
+
+    // submit and display
     cy.get('button[type="submit"]').click();
-
-    // diplay
     cy.get("h3").contains("name edited").scrollIntoView().should("be.visible");
+  });
 
+  it("should be able to delete property", () => {
     // delete property
     cy.contains("h3", "name edited")
       .scrollIntoView()

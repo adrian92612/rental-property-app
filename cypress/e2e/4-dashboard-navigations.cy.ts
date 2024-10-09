@@ -4,47 +4,34 @@ describe("dashboard navigations", () => {
   const baseUrl = Cypress.config("baseUrl");
 
   beforeEach(() => {
-    cy.visit("/auth/login");
-    cy.get('input[name="email"]').type("cypress@test.com");
-    cy.get('input[name="password"]').type("Password123!");
-    cy.get('button[type="submit"]').click();
+    cy.login("none");
   });
 
-  it("should go to each path correctly", () => {
-    cy.visit("/dashboard");
-    cy.get("h1")
-      .contains(/overview/i)
-      .should("be.visible");
+  it("should go to properties page", () => {
     // properties
-    cy.get("a")
-      .contains(/properties/i)
-      .click();
+    cy.contains("a", /properties/i).click();
     cy.url().should("eq", `${baseUrl}/dashboard/properties`);
-    cy.get("h1")
-      .contains(/properties/i)
-      .should("be.visible");
+    cy.contains("h1", /properties/i).should("be.visible");
+  });
 
+  it("should go to units page", () => {
     // units
-    cy.get("a").contains(/units/i).click();
+    cy.contains("a", /units/i).click();
     cy.url().should("eq", `${baseUrl}/dashboard/units`);
-    cy.get("h1").contains(/units/i).should("be.visible");
+    cy.contains("h1", /units/i).should("be.visible");
+  });
 
+  it("should go to tenants page", () => {
     // tenants
-    cy.get("a")
-      .contains(/tenants/i)
-      .click();
+    cy.contains("a", /tenants/i).click();
     cy.url().should("eq", `${baseUrl}/dashboard/tenants`);
-    cy.get("h1")
-      .contains(/tenants/i)
-      .should("be.visible");
+    cy.contains("h1", /tenants/i).should("be.visible");
+  });
 
+  it("should go to user settings page", () => {
     // user settings
-    cy.get("a")
-      .contains(/settings/i)
-      .click();
+    cy.contains("a", /settings/i).click();
     cy.url().should("eq", `${baseUrl}/dashboard/user-settings`);
-    cy.get("h1")
-      .contains(/user settings/i)
-      .should("be.visible");
+    cy.contains("h1", /user settings/i).should("be.visible");
   });
 });

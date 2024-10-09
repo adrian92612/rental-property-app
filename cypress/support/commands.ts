@@ -50,5 +50,5 @@ Cypress.Commands.add("login", (visit) => {
     cy.get('button[type="submit"]').click();
     cy.url().should("contain", "/dashboard");
   });
-  cy.visit(`/dashboard/${visit}`);
+  cy.visit(`/dashboard/${visit !== "none" ? visit : ""}`);
 });

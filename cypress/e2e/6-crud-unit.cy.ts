@@ -1,20 +1,15 @@
 import "cypress-real-events";
 
 describe("CRUD on unit", () => {
-  it("should be able perfrom CRUD on unit", () => {
-    cy.visit("/auth/login");
-    cy.get('input[name="email"]').type("cypress@test.com");
-    cy.get('input[name="password"]').type("Password123!");
-    cy.get('button[type="submit"]').click();
+  beforeEach(() => {
+    cy.login("units");
+  });
 
-    //go to units
-    cy.get("a").contains(/units/i).click();
-
+  it("should create a unit", () => {
     //click form button
     cy.get('div[data-id="header-div"] button[data-id="form-btn"]').click();
 
     // validate form and send
-
     // number
     cy.get('input[name="number"]').click();
     cy.realPress("Tab");
@@ -61,8 +56,12 @@ describe("CRUD on unit", () => {
     // submit and display
     cy.get('button[type="submit"]').click();
     cy.contains("button", "Unit No.").scrollIntoView().click().click();
+    cy.contains("td", "9999").should("be.visible");
+  });
 
+  it("should be able to edit unit", () => {
     // edit unit
+    cy.contains("button", "Unit No.").scrollIntoView().click().click();
     cy.contains("td", "9999")
       .parent("tr")
       .find('button[data-id="form-btn"]')
@@ -71,10 +70,13 @@ describe("CRUD on unit", () => {
     cy.get('input[name="rentAmount"]').clear().type("200");
     cy.get('input[name="dueDate"]').clear().type("12");
     cy.get('button[type="submit"]').click();
+    cy.contains("td", "unit number edited").should("be.visible");
+  });
 
+  it("should be able to delete unit", () => {
     // delete unit
+    cy.contains("button", "Unit No.").scrollIntoView().click().click();
     cy.contains("td", "unit number edited")
-      .scrollIntoView()
       .parent("tr")
       .find('button[data-id="alert-delete-btn"]')
       .click();
