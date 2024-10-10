@@ -16,6 +16,12 @@ A simple CRUD-based rental property dashboard that allows management of properti
 
   - Uses Cypress for testing the entire flow of the application, ensuring data integrity and feature correctness.
 
+## Live Demo
+
+Check out the live demo of the app here:
+
+[Vercel Deployment](https://rental-property-app.vercel.app/)
+
 ## Tech Stack
 
 - **Next.js**: Server-side rendering and static site generation for performance and SEO.
