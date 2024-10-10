@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Rental Property Dashboard
+
+A simple CRUD-based rental property dashboard that allows management of properties, units, tenants, and users. The app includes end-to-end testing and is built using modern web development technologies like Next.js, TailwindCSS, ShadCN, PostgreSQL, Prisma, Auth.js, and TypeScript.
+
+## Features
+
+- **CRUD Operations**:
+
+  - Manage properties, units, tenants, and users with full create, read, update, and delete functionality.
+
+- **Authentication**:
+
+  - User authentication using **Auth.js** to ensure secure access to user-specific data, handling both sessions and credentials seamlessly.
+
+- **End-to-End Testing**:
+
+  - Uses Cypress for testing the entire flow of the application, ensuring data integrity and feature correctness.
+
+## Tech Stack
+
+- **Next.js**: Server-side rendering and static site generation for performance and SEO.
+- **TypeScript**: Strongly typed JavaScript for type safety and code scalability.
+- **TailwindCSS**: Utility-first CSS framework for rapid UI development.
+- **ShadCN**: Collection of accessible components built on top of Radix UI primitives.
+- **PostgreSQL**: Relational database for managing data.
+- **Prisma**: Type-safe ORM for database access.
+- **Auth.js**: Lightweight authentication library for managing sessions and credentials.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js v16+
+- PostgreSQL
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clone the repository:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+   ```bash
+   git clone https://github.com/your-username/rental-property-dashboard.git
+   cd rental-property-dashboard
+   ```
 
-## Learn More
+2. Install dependencies:
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   npm install
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Set up the environment variables:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Create a .env file in the root of your project and add your PostgreSQL database connection string and other necessary environment variables. See the .env.example
 
-## Deploy on Vercel
+4. Run database migrations:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   npx prisma migrate dev
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+5. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+### Running Tests
+
+End-to-end tests are written with Cypress.
+
+1. Run the Cypress test:
+   ```bash
+   npm run cypress:open
+   ```
+
+### Deployment
+
+For deployment, you can use platforms like Vercel or Netlify. Ensure you add the necessary environment variables in your deployment settings.
+
+### Project Structure
+
+    ```bash
+        ├── components      # Reusable UI components
+        ├── pages           # Next.js pages
+        ├── prisma          # Prisma database schema and migrations
+        ├── public          # Static files
+        ├── styles          # TailwindCSS custom styles
+        └── tests           # Cypress end-to-end tests
+    ```
+
+### License
+
+This project is licensed under the MIT License.
+
+### Contributing
+
+Contributions are welcome! If you have any ideas for improving the app or fixing bugs, feel free to submit a pull request.
