@@ -78,14 +78,12 @@ For deployment, you can use platforms like Vercel or Netlify. Ensure you add the
 
 ### Project Structure
 
-    ```bash
         ├── components      # Reusable UI components
         ├── pages           # Next.js pages
         ├── prisma          # Prisma database schema and migrations
         ├── public          # Static files
         ├── styles          # TailwindCSS custom styles
         └── tests           # Cypress end-to-end tests
-    ```
 
 ### License
 
