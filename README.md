@@ -87,15 +87,6 @@ End-to-end tests are written with Cypress.
 
 For deployment, you can use platforms like Vercel or Netlify. Ensure you add the necessary environment variables in your deployment settings.
 
-### Project Structure
-
-        ├── components      # Reusable UI components
-        ├── pages           # Next.js pages
-        ├── prisma          # Prisma database schema and migrations
-        ├── public          # Static files
-        ├── styles          # TailwindCSS custom styles
-        └── tests           # Cypress end-to-end tests
-
 ### License
 
 This project is licensed under the MIT License.
