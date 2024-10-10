@@ -2,11 +2,16 @@
 
 A simple CRUD-based rental property dashboard that allows management of properties, units, tenants, and users. The app includes end-to-end testing and is built using modern web development technologies like Next.js, TailwindCSS, ShadCN, PostgreSQL, Prisma, Auth.js, and TypeScript.
 
+> **Note:** Some features are missing and the project is not fully functioning. This is still a work in progress.
+
 ## Features
 
 - **CRUD Operations**:
 
-  - Manage properties, units, tenants, and users with full create, read, update, and delete functionality.
+  - Property Management: Create, read, update, and delete property records, including property details like name, address, owner, and image.
+  - Unit Management: Manage units within properties, specifying unit number, rent amount, and lease terms.
+  - Tenant Management: Handle tenant information, assign tenants to units, manage leases, and track rent payments.
+  - User Management: Manage user settings and details like password, image etc.
 
 - **Authentication**:
 
